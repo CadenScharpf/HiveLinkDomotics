@@ -1,0 +1,3 @@
+export {UserRoles, ISessionUser, INewUser} from './src/User';
+export { IUser } from './src/DbInterface'; //{IProductReq, IProductRes, IProductCategoryReq, IProductCategoryRes, IProductDiscountReq, IProductDiscountRes, IProductInventoryReq, IProductInventoryRes, IShoppingSessionReq, IShoppingSessionRes} from './src/Products';
+export {IRegisterReq, ILoginReq, IRegisterRes, ILoginRes} from './src/Auth';
