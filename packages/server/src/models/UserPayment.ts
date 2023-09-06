@@ -7,10 +7,11 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
+import { IUserPayment } from "hive-link-common";
 
 @Index("FK_user_TO_user_payment", ["userId"], {})
 @Entity("user_payment", { schema: "hivelink" })
-export class UserPayment {
+export class UserPayment implements IUserPayment{
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -29,11 +30,11 @@ export class UserPayment {
   @Column("date", { name: "expiry" })
   expiry!: string;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @ManyToOne(() => User, (user) => user.userPayments, {
     onDelete: "NO ACTION",

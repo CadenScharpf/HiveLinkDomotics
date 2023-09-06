@@ -8,11 +8,12 @@ import {
 } from "typeorm";
 import { Product } from "./Product";
 import { ShoppingSession } from "./ShoppingSession";
+import { ICartItem } from "hive-link-common";
 
 @Index("FK_product_TO_cart_item", ["productId"], {})
 @Index("FK_shopping_session_TO_cart_item", ["sessionId"], {})
 @Entity("cart_item", { schema: "hivelink" })
-export class CartItem {
+export class CartItem implements ICartItem {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -25,11 +26,11 @@ export class CartItem {
   @Column("int", { name: "quantity" })
   quantity!: number;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @ManyToOne(() => Product, (product) => product.cartItems, {
     onDelete: "NO ACTION",

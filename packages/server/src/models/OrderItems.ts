@@ -8,11 +8,12 @@ import {
 } from "typeorm";
 import { OrderDetails } from "./OrderDetails";
 import { Product } from "./Product";
+import { IOrderItems } from "hive-link-common";
 
 @Index("FK_order_details_TO_order_items", ["orderId"], {})
 @Index("FK_product_TO_order_items", ["productId"], {})
 @Entity("order_items", { schema: "hivelink" })
-export class OrderItems {
+export class OrderItems implements IOrderItems {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -25,11 +26,11 @@ export class OrderItems {
   @Column("int", { name: "quantity" })
   quantity!: number;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @ManyToOne(() => OrderDetails, (orderDetails) => orderDetails.orderItems, {
     onDelete: "NO ACTION",

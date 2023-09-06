@@ -67,7 +67,7 @@ CREATE TABLE product_category
   name        VARCHAR(255) NOT NULL,
   description TEXT         NULL    ,
   created_at  TIMESTAMP    NOT NULL,
-  modified_at TIMESTAMP    NOT NULL,
+  updated_at TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Product Category';
 
@@ -112,7 +112,7 @@ CREATE TABLE user
   role        INT          NOT NULL,
   auth_hash   VARCHAR(255) NULL    ,
   created_at  TIMESTAMP    NOT NULL,
-  modified_at TIMESTAMP    NOT NULL,
+  updated_at TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User';
 

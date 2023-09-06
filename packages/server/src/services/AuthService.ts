@@ -6,7 +6,7 @@ import { tick } from '@src/util/misc';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { RouteError } from '@src/other/classes';
 import { IUser } from 'hive-link-common';
-import User from '@src/models/User';
+import { User } from '@src/models/User';
 import { INewUser, ISessionUser } from 'hive-link-common';
 import SessionUtil from '@src/util/SessionUtil';
 import { IReq } from '@src/routes/types/types';
@@ -39,13 +39,13 @@ async function me(req: IReq): Promise<ISessionUser> {
   var user: ISessionUser = {
     id: 0,
     email: '',
-    name: '',
+    firstName: '',
+    lastName: '',
     role: 1,
-    phone: '',
   }
   await SessionUtil.getSessionData<ISessionUser>(req).then((_user: ISessionUser | undefined | string) => {
-    const {id, email, name, role, phone} = _user as ISessionUser;
-    user = {id, email, name, role, phone} as ISessionUser;
+    const {id, email, firstName, lastName, role} = _user as ISessionUser;
+    user = {id, email, firstName, lastName, role} as ISessionUser;
     console.log(user);
     return user as ISessionUser;
   }
@@ -60,6 +60,7 @@ async function me(req: IReq): Promise<ISessionUser> {
 async function login(email: string, password: string): Promise<IUser> {
   // Fetch user
   const user = await UserRepo.getOne(email);
+  
   if (!user) {
     throw new RouteError(
       HttpStatusCodes.UNAUTHORIZED,
@@ -82,11 +83,8 @@ async function login(email: string, password: string): Promise<IUser> {
 }
 
 
-
-
-
 async function register(_newUser: INewUser): Promise<IUser> {
-  const {email, telephone, firstName, lastName, password } = _newUser;
+  const {email, firstName, lastName, password } = _newUser;
   const authHash = await PwdUtil.getHash(password);
   const user = await UserRepo.getOne(email);
   if (user) {
@@ -95,7 +93,7 @@ async function register(_newUser: INewUser): Promise<IUser> {
       `User with email "${email}" already exists`,
     );
   }
-  const newUser  = User.from({firstName, lastName, telephone, email, authHash})
+  const newUser  = User.from({firstName, lastName, email, authHash})
   await UserRepo.add(newUser);
   return newUser;
 }

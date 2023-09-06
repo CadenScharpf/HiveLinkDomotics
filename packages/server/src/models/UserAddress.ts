@@ -9,10 +9,11 @@ import {
 } from "typeorm";
 import { OrderDetails } from "./OrderDetails";
 import { User } from "./User";
+import { IUserAddress } from "hive-link-common";
 
 @Index("FK_user_TO_user_address", ["userId"], {})
 @Entity("user_address", { schema: "hivelink" })
-export class UserAddress {
+export class UserAddress implements IUserAddress {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -40,11 +41,11 @@ export class UserAddress {
   @Column("varchar", { name: "mobile", nullable: true, length: 20 })
   mobile!: string | null;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string; 
 
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.address)
   orderDetails!: OrderDetails[];

@@ -60,7 +60,7 @@ export interface IProductCategory {
   name: string;
   description: string | null;
   createdAt: string;
-  modifiedAt: string;
+  updatedAt: string;
 }
 
 // Product Discount
@@ -101,7 +101,7 @@ export interface IUser {
   role: number;
   authHash: string | null;
   createdAt: string;
-  modifiedAt: string;
+  updatedAt: string;
 }
 
 // User Address

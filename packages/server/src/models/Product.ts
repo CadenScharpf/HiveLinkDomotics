@@ -12,12 +12,13 @@ import { OrderItems } from "./OrderItems";
 import { ProductCategory } from "./ProductCategory";
 import { ProductDiscount } from "./ProductDiscount";
 import { ProductInventory } from "./ProductInventory";
+import { IProduct } from "hive-link-common";
 
 @Index("FK_product_category_TO_product", ["categoryId"], {})
 @Index("FK_product_discount_TO_product", ["discountId"], {})
 @Index("FK_product_inventory_TO_product", ["inventoryId"], {})
 @Entity("product", { schema: "hivelink" })
-export class Product {
+export class Product implements IProduct {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -40,16 +41,16 @@ export class Product {
   sku!: string;
 
   @Column("decimal", { name: "price", precision: 10, scale: 2 })
-  price!: string;
+  price!: number;
 
   @Column("tinyint", { name: "active", width: 1 })
   active!: boolean;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.product)
   cartItems!: CartItem[];

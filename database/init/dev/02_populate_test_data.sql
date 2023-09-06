@@ -1,5 +1,5 @@
 -- Insert data into product_category table
-INSERT INTO product_category (name, description, created_at, modified_at)
+INSERT INTO product_category (name, description, created_at, updated_at)
 VALUES
   ('Electronics', 'Electronic products category', NOW(), NOW()),
   ('Clothing', 'Clothing products category', NOW(), NOW()),
@@ -20,7 +20,7 @@ VALUES
   (200, NOW(), NOW());
 
 -- Insert data into user table
-INSERT INTO user (email,  first_name, last_name, role, auth_hash, telephone, created_at, modified_at)
+INSERT INTO user (email,  first_name, last_name, role, auth_hash, telephone, created_at, updated_at)
 VALUES
   ('user1@example.com', 'John', 'Doe', 0, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", '123-456-7890',  NOW(), NOW()),
   ('user2@example.com',  'Jane', 'Smith', 1, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", NULL, NOW(), NOW());

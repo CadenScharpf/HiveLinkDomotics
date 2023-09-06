@@ -11,12 +11,13 @@ import { PaymentDetails } from "./PaymentDetails";
 import { UserAddress } from "./UserAddress";
 import { User } from "./User";
 import { OrderItems } from "./OrderItems";
+import { IOrderDetails } from "hive-link-common";
 
 @Index("FK_payment_details_TO_order_details", ["paymentId"], {})
 @Index("FK_user_address_TO_order_details", ["addressId"], {})
 @Index("FK_user_TO_order_details", ["userId"], {})
 @Entity("order_details", { schema: "hivelink" })
-export class OrderDetails {
+export class OrderDetails implements IOrderDetails {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -30,13 +31,13 @@ export class OrderDetails {
   addressId!: number;
 
   @Column("decimal", { name: "total", precision: 10, scale: 2 })
-  total!: string;
+  total!: number;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @ManyToOne(
     () => PaymentDetails,

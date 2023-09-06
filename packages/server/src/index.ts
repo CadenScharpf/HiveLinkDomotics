@@ -13,17 +13,6 @@ const SERVER_START_MSG =
 
 AppDataSource.initialize()
   .then(async () => {
-    /*     console.log("Inserting a new user into the database...")
-      
-      user.firstName = "Timber"
-      user.lastName = "Saw"
-      user.age = 25
-      await AppDataSource.manager.save(user)
-      console.log("Saved a new user with id: " + user.id)
-  
-      console.log("Loading users from the database...")*/
-    //
-
     entities.map(async (entity) => {
       const table = await AppDataSource.manager.find(entity);
       console.log(`Loaded ${entity.name}s`, table);

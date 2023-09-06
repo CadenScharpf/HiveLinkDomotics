@@ -28,11 +28,11 @@ export class User {
   @Column("varchar", { name: "auth_hash", nullable: true, length: 255 })
   authHash!: string | null;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "modified_at" })
-  modifiedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.user)
   orderDetails!: OrderDetails[];

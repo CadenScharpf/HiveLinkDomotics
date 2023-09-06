@@ -1,8 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { OrderDetails } from "./OrderDetails";
+import { IPaymentDetails } from "hive-link-common";
 
 @Entity("payment_details", { schema: "hivelink" })
-export class PaymentDetails {
+export class PaymentDetails implements IPaymentDetails {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -10,16 +11,16 @@ export class PaymentDetails {
   userPaymentId!: number;
 
   @Column("decimal", { name: "amount", precision: 10, scale: 2 })
-  amount!: string;
+  amount!: number;
 
   @Column("varchar", { name: "status", length: 255 })
   status!: string;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.payment)
   orderDetails!: OrderDetails[];

@@ -1,8 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./Product";
+import { IProductDiscount } from "hive-link-common";
 
 @Entity("product_discount", { schema: "hivelink" })
-export class ProductDiscount {
+export class ProductDiscount implements IProductDiscount{
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -13,16 +14,16 @@ export class ProductDiscount {
   description!: string | null;
 
   @Column("decimal", { name: "percent", precision: 10, scale: 2 })
-  percent!: string;
+  percent!: number;
 
   @Column("tinyint", { name: "active", width: 1 })
   active!: boolean;
 
-  @Column("timestamp", { name: "created_at" })
-  createdAt!: Date;
+  @Column({ name: "created_at" })
+  createdAt!: string;
 
-  @Column("timestamp", { name: "updated_at" })
-  updatedAt!: Date;
+  @Column( { name: "updated_at" })
+  updatedAt!: string;
 
   @OneToMany(() => Product, (product) => product.discount)
   products!: Product[];
