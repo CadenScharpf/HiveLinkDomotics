@@ -21,7 +21,7 @@ const authRouter = Router();
 // Register user
 authRouter.post(
   Paths.Auth.Register,
-  validate(['user', User.isUser]),
+  //validate(['user', User.isUser]), TODO
   AuthRoutes.register,
 );
 
@@ -69,7 +69,7 @@ userRouter.get(
 userRouter.post(
   Paths.Users.Add,
   adminMw,
-  validate(['user', User.isUser]),
+  //validate(['user', User.isUser]),TODO
   UserRoutes.add,
 );
 
@@ -77,7 +77,7 @@ userRouter.post(
 userRouter.put(
   Paths.Users.Update,
   adminMw,
-  validate(['user', User.isUser]),
+  //validate(['user', User.isUser]),TODO
   UserRoutes.update,
 );
 

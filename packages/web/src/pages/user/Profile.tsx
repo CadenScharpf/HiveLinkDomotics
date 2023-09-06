@@ -11,7 +11,7 @@ const Profile: React.FC = () => {
     <div className="container">
       <header className="jumbotron">
         <h3>
-          <strong>{auth.user.name}</strong> Profile
+          <strong>{auth.user.firstName}</strong> Profile
         </h3>
       </header>
       <p>

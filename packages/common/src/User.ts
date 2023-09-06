@@ -7,15 +7,14 @@ export enum UserRoles {
 
   export interface ISessionUser {
     id: number;
-    email: string;
-    name: string;
+    email: IUser['email'];
+    firstName: IUser['firstName'];
+    lastName: IUser['lastName'];
     role: IUser['role'];
-    phone: string;
   }
 
   export interface INewUser {
     email: string;
-    telephone: string;
     firstName: string;
     lastName: string;
     password: string;

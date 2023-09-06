@@ -1,5 +1,5 @@
 import { IUser } from 'hive-link-common';
-import { getRandomInt } from '@src/util/misc';
+import { getRandomInt } from '../util/misc';
 import orm from './MockOrm';
 
 

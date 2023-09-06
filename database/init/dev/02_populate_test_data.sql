@@ -20,10 +20,10 @@ VALUES
   (200, NOW(), NOW());
 
 -- Insert data into user table
-INSERT INTO user (email, telephone, first_name, last_name, role, auth_hash, created_at, modified_at)
+INSERT INTO user (email,  first_name, last_name, role, auth_hash, telephone, created_at, modified_at)
 VALUES
-  ('user1@example.com', '123-456-7890', 'John', 'Doe', 0, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", NOW(), NOW()),
-  ('user2@example.com', NULL, 'Jane', 'Smith', 1, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", NOW(), NOW());
+  ('user1@example.com', 'John', 'Doe', 0, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", '123-456-7890',  NOW(), NOW()),
+  ('user2@example.com',  'Jane', 'Smith', 1, "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy", NULL, NOW(), NOW());
 
 -- Insert data into user_address table
 INSERT INTO user_address (user_id, address_line1, address_line2, city, postal_code, country, telephone, mobile, created_at, updated_at)

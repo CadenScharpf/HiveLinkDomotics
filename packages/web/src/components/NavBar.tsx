@@ -33,7 +33,7 @@ function NavBar() {
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
         {auth.user ? (
           <>
-            <Link to={"/user/profile"}>{auth.user.name}</Link>
+            <Link to={"/user/profile"}>{auth.user.firstName}</Link>
             <button onClick={() => {auth.logout(); navigate('/') }}>Logout</button>
           </>
         ) : (

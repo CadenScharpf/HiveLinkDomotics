@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -836,
-    "scrollLeft": -454,
-    "zoomLevel": 0.8,
+    "scrollTop": -412,
+    "scrollLeft": -551,
+    "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -257,10 +257,10 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 1043.1218,
           "top": 1405.6275,
-          "zIndex": 15,
+          "zIndex": 163,
           "widthName": 60,
           "widthComment": 60,
           "color": "#47D400"
@@ -392,7 +392,7 @@
           "active": false,
           "left": 180.324,
           "top": 255.9946,
-          "zIndex": 1,
+          "zIndex": 185,
           "widthName": 102.45166015625,
           "widthComment": 103.16259765625,
           "color": "#F44336"
@@ -662,7 +662,7 @@
           "active": false,
           "left": 875.7418,
           "top": 81.6211,
-          "zIndex": 9,
+          "zIndex": 154,
           "widthName": 60,
           "widthComment": 106.76806640625,
           "color": "#F44336"
@@ -840,7 +840,7 @@
           "active": false,
           "left": 183.9122,
           "top": 17.5448,
-          "zIndex": 5,
+          "zIndex": 186,
           "widthName": 101.0107421875,
           "widthComment": 100.99169921875,
           "color": "#F44336"
@@ -949,7 +949,7 @@
           "active": false,
           "left": 202.2922,
           "top": 452.198,
-          "zIndex": 4,
+          "zIndex": 187,
           "widthName": 105.33984375,
           "widthComment": 120,
           "color": "#F44336"
@@ -1104,7 +1104,7 @@
           "active": false,
           "left": 0,
           "top": 1148.0283,
-          "zIndex": 6,
+          "zIndex": 184,
           "widthName": 96.6689453125,
           "widthComment": 90.14990234375,
           "color": "#FFEB3B"
@@ -1282,7 +1282,7 @@
           "active": false,
           "left": 589.7548,
           "top": 923.352,
-          "zIndex": 2,
+          "zIndex": 192,
           "widthName": 77.15625,
           "widthComment": 74.96630859375,
           "color": "#FFEB3B"
@@ -1437,7 +1437,7 @@
           "active": false,
           "left": 0,
           "top": 928.9344,
-          "zIndex": 12,
+          "zIndex": 182,
           "widthName": 70.63720703125,
           "widthComment": 64.12451171875,
           "color": "#FFEB3B"
@@ -1638,7 +1638,7 @@
           "active": false,
           "left": 308.8561,
           "top": 1414.2176,
-          "zIndex": 3,
+          "zIndex": 191,
           "widthName": 84.3798828125,
           "widthComment": 84.36083984375,
           "color": "#00BCD4"
@@ -1908,7 +1908,7 @@
           "active": false,
           "left": 933.527,
           "top": 545.7776,
-          "zIndex": 7,
+          "zIndex": 189,
           "widthName": 80.76806640625,
           "widthComment": 80.7490234375,
           "color": "#00BCD4"
@@ -2040,7 +2040,7 @@
           "active": false,
           "left": 1577.7782,
           "top": 846.9446,
-          "zIndex": 10,
+          "zIndex": 188,
           "widthName": 106.076171875,
           "widthComment": 85.10986328125,
           "color": "#FF9800"
@@ -2195,12 +2195,12 @@
           "active": false,
           "left": 1481.2678,
           "top": 461.0404,
-          "zIndex": 11,
+          "zIndex": 138,
           "widthName": 60,
           "widthComment": 114.00439453125,
           "color": "#FF9800"
         },
-        "visible": false,
+        "visible": true,
         "id": "a20e9f83-8fcb-4601-91b5-ad31637a96f0"
       }
     ],
@@ -2520,7 +2520,7 @@
           "direction": "bottom"
         },
         "constraintName": "fk_shopping_session_to_cart_item",
-        "visible": false,
+        "visible": true,
         "id": "5f6d1da3-432f-4594-9640-98d34d160ae1"
       },
       {
@@ -2546,7 +2546,7 @@
           "direction": "left"
         },
         "constraintName": "fk_product_to_cart_item",
-        "visible": false,
+        "visible": true,
         "id": "195599b2-372a-4a33-af06-fe35ef8c17bf"
       }
     ]
