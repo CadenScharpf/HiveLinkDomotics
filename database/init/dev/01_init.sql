@@ -106,7 +106,7 @@ CREATE TABLE user
 (
   id          INT          NOT NULL AUTO_INCREMENT,
   email       VARCHAR(255) NOT NULL,
-  telephone   VARCHAR(20)  NOT NULL,
+  telephone   VARCHAR(20)  NULL    ,
   first_name  VARCHAR(255) NOT NULL,
   last_name   VARCHAR(255) NOT NULL,
   role        INT          NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE user_address
   postal_code   VARCHAR(255) NOT NULL,
   country       VARCHAR(255) NOT NULL,
   telephone     VARCHAR(20)  NOT NULL,
-  mobile        VARCHAR(20)  NOT NULL,
+  mobile        VARCHAR(20)  NULL    ,
   created_at    TIMESTAMP    NOT NULL,
   updated_at    TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)

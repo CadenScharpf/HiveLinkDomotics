@@ -13,13 +13,13 @@ CREATE TABLE cart_item
 
 CREATE TABLE order_details
 (
-  id         INT       NOT NULL AUTO_INCREMENT,
-  user_id    INT       NOT NULL,
-  payment_id INT       NOT NULL,
-  address_id INT       NOT NULL,
-  total      DECIMAL   NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
+  id         INT            NOT NULL AUTO_INCREMENT,
+  user_id    INT            NOT NULL,
+  payment_id INT            NOT NULL,
+  address_id INT            NOT NULL,
+  total      DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP      NOT NULL,
+  updated_at TIMESTAMP      NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Order Detaiil';
 
@@ -36,50 +36,50 @@ CREATE TABLE order_items
 
 CREATE TABLE payment_details
 (
-  id         INT       NOT NULL AUTO_INCREMENT,
-  amount     DECIMAL   NOT NULL,
-  provider   VARCHAR   NOT NULL,
-  status     VARCHAR   NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
+  id              INT            NOT NULL AUTO_INCREMENT,
+  user_payment_id int            NOT NULL,
+  amount          DECIMAL(10, 2) NOT NULL,
+  status          VARCHAR(255)   NOT NULL,
+  created_at      TIMESTAMP      NOT NULL,
+  updated_at      TIMESTAMP      NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Payment Detail';
 
 CREATE TABLE product
 (
-  id           INT       NOT NULL AUTO_INCREMENT,
-  category_id  INT       NOT NULL,
-  discount_id  INT       NOT NULL,
-  inventory_id INT       NOT NULL,
-  name         VARCHAR   NOT NULL,
-  desc         TEXT      NULL    ,
-  sku          VARCHAR   NOT NULL,
-  price        DECIMAL   NOT NULL,
-  active       BOOLEAN   NOT NULL,
-  created_at   TIMESTAMP NOT NULL,
-  updated_at   TIMESTAMP NOT NULL,
+  id           INT            NOT NULL AUTO_INCREMENT,
+  category_id  INT            NOT NULL,
+  discount_id  INT            NOT NULL,
+  inventory_id INT            NOT NULL,
+  name         VARCHAR(255)   NOT NULL,
+  description  TEXT           NULL    ,
+  sku          VARCHAR(255)   NOT NULL,
+  price        DECIMAL(10, 2) NOT NULL,
+  active       BOOLEAN        NOT NULL,
+  created_at   TIMESTAMP      NOT NULL,
+  updated_at   TIMESTAMP      NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Hardware Product';
 
 CREATE TABLE product_category
 (
-  id          INT       NOT NULL AUTO_INCREMENT,
-  name        VARCHAR   NOT NULL,
-  desc        TEXT      NULL    ,
-  created_at  TIMESTAMP NOT NULL,
-  modified_at TIMESTAMP NOT NULL,
+  id          INT          NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(255) NOT NULL,
+  description TEXT         NULL    ,
+  created_at  TIMESTAMP    NOT NULL,
+  modified_at TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Product Category';
 
 CREATE TABLE product_discount
 (
-  id         INT       NOT NULL AUTO_INCREMENT,
-  name       VARCHAR   NOT NULL,
-  desc       TEXT      NULL    ,
-  percent    DECIMAL   NOT NULL,
-  active     BOOLEAN   NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
+  id          INT            NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(255)   NOT NULL,
+  description TEXT           NULL    ,
+  percent     DECIMAL(10, 2) NOT NULL,
+  active      BOOLEAN        NOT NULL,
+  created_at  TIMESTAMP      NOT NULL,
+  updated_at  TIMESTAMP      NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Product Discount';
 
@@ -94,51 +94,54 @@ CREATE TABLE product_inventory
 
 CREATE TABLE shopping_session
 (
-  id         INT       NOT NULL AUTO_INCREMENT,
-  user_id    INT       NOT NULL,
-  total      DECIMAL   NOT NULL,
-  created_at timestamp NOT NULL,
-  updated_at timestamp NOT NULL,
+  id         INT            NOT NULL AUTO_INCREMENT,
+  user_id    INT            NOT NULL,
+  total      DECIMAL(10, 2) NOT NULL,
+  created_at timestamp      NOT NULL,
+  updated_at timestamp      NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Shopping Cart';
 
 CREATE TABLE user
 (
-  id          INT       NOT NULL AUTO_INCREMENT,
-  email       VARCHAR   NOT NULL,
-  telephone   INT       NOT NULL,
-  first_name  VARCHAR   NOT NULL,
-  last_name   VARCHAR   NOT NULL,
-  role        INT       NOT NULL,
-  created_at  TIMESTAMP NOT NULL,
-  modified_at TIMESTAMP NOT NULL,
+  id          INT          NOT NULL AUTO_INCREMENT,
+  email       VARCHAR(255) NOT NULL,
+  telephone   VARCHAR(20)  NULL    ,
+  first_name  VARCHAR(255) NOT NULL,
+  last_name   VARCHAR(255) NOT NULL,
+  role        INT          NOT NULL,
+  auth_hash   VARCHAR(255) NULL    ,
+  created_at  TIMESTAMP    NOT NULL,
+  modified_at TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User';
 
 CREATE TABLE user_address
 (
-  id            INT       NOT NULL AUTO_INCREMENT,
-  user_id       INT       NOT NULL,
-  address_line1 VARCHAR   NOT NULL,
-  address_line2 VARCHAR   NOT NULL,
-  city          VARCHAR   NOT NULL,
-  postal_code   VARCHAR   NOT NULL,
-  country       VARCHAR   NOT NULL,
-  telephone     VARCHAR   NOT NULL,
-  mobile        VARCHAR   NOT NULL,
-  created_at    TIMESTAMP NOT NULL,
-  updated_at    TIMESTAMP NOT NULL,
+  id            INT          NOT NULL AUTO_INCREMENT,
+  user_id       INT          NOT NULL,
+  address_line1 VARCHAR(255) NOT NULL,
+  address_line2 VARCHAR(255) NOT NULL,
+  city          VARCHAR(255) NOT NULL,
+  postal_code   VARCHAR(255) NOT NULL,
+  country       VARCHAR(255) NOT NULL,
+  telephone     VARCHAR(20)  NOT NULL,
+  mobile        VARCHAR(20)  NULL    ,
+  created_at    TIMESTAMP    NOT NULL,
+  updated_at    TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User Address';
 
 CREATE TABLE user_payment
 (
-  id           int     NOT NULL,
-  user_id      INT     NOT NULL,
-  payment_type VARCHAR NOT NULL,
-  account_no   INT     NOT NULL,
-  provider     VARCHAR NOT NULL,
-  expiry       DATE    NOT NULL,
+  id           INT          NOT NULL AUTO_INCREMENT,
+  user_id      INT          NOT NULL,
+  payment_type VARCHAR(255) NOT NULL,
+  account_no   VARCHAR(255) NOT NULL,
+  provider     VARCHAR(255) NOT NULL,
+  expiry       DATE         NOT NULL,
+  created_at   TIMESTAMP    NOT NULL,
+  updated_at   TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User Payment';
 
@@ -206,3 +209,6 @@ ALTER TABLE cart_item
   ADD CONSTRAINT FK_product_TO_cart_item
     FOREIGN KEY (product_id)
     REFERENCES product (id);
+
+        
+      

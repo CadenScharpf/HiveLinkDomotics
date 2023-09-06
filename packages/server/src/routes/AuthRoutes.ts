@@ -23,10 +23,10 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
   // Setup Admin Cookie
   const sessionUser: ISessionUser = { 
     id: user.id,
-    email: user.name,
-    name: user.name,
+    email: user.email,
+    name: user.firstName + " " + user.lastName,
     role: user.role,
-    phone: user.phone,
+    phone: user.telephone,
   };
   await SessionUtil.addSessionData(res, sessionUser);
   res.json({ user: sessionUser });

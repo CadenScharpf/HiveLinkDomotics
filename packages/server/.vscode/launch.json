@@ -16,7 +16,7 @@
             "sourceMaps": true,
             //"outFiles": ["${workspaceFolder}/out"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app",
+            "remoteRoot": "/app/packages/server",
           }
           
 

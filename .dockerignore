@@ -2,4 +2,4 @@
 .git
 *Dockerfile*
 *docker-compose*
-database
+./database

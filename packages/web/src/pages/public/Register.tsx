@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import "yup-phone";
 
-import {IUser} from "hive-link-common";
+import { IUser } from "hive-link-common";
 import AuthService from "../../services/auth.service";
 import { INewUser } from "hive-link-common";
 import { useAuth } from "../../hooks/auth";
+
+const PHONE_NO_REGEX = /^[0-9\- ]{8,14}$/;
 
 const Register: React.FC = () => {
   const auth = useAuth();
@@ -21,14 +24,20 @@ const Register: React.FC = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
+    firstName: Yup.string()
       .test(
         "len",
-        "The username must be between 3 and 20 characters.",
+        "The first name must be between 3 and 20 characters.",
         (val: any) =>
-          val &&
-          val.toString().length >= 3 &&
-          val.toString().length <= 20
+          val && val.toString().length >= 3 && val.toString().length <= 20
+      )
+      .required("This field is required!"),
+    lastName: Yup.string()
+      .test(
+        "len",
+        "The last name must be between 3 and 20 characters.",
+        (val: any) =>
+          val && val.toString().length >= 3 && val.toString().length <= 20
       )
       .required("This field is required!"),
     email: Yup.string()
@@ -39,16 +48,16 @@ const Register: React.FC = () => {
         "len",
         "The password must be between 6 and 40 characters.",
         (val: any) =>
-          val &&
-          val.toString().length >= 6 &&
-          val.toString().length <= 40
+          val && val.toString().length >= 6 && val.toString().length <= 40
       )
+      .required("This field is required!"),
+    telephone: Yup.string()
+      .matches(PHONE_NO_REGEX, "Phone number is not valid")
       .required("This field is required!"),
   });
 
   const handleRegister = (formValue: INewUser) => {
-
-    auth.register( formValue).then(
+    auth.register(formValue).then(
       (response) => {
         setSuccessful(true);
       },
@@ -83,15 +92,23 @@ const Register: React.FC = () => {
             {!successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username"> Username </label>
-                  <Field name="username" type="text" className="form-control" />
+                  <label htmlFor="firstName"> First Name </label>
+                  <Field name="firstName" type="text" className="form-control" val=""/>
                   <ErrorMessage
-                    name="username"
+                    name="firstName"
                     component="div"
                     className="alert alert-danger"
                   />
                 </div>
-
+                <div className="form-group">
+                  <label htmlFor="lastName"> Last Name </label>
+                  <Field name="lastName" type="text" className="form-control" val=""/>
+                  <ErrorMessage
+                    name="lastName"
+                    component="div"
+                    className="alert alert-danger"
+                  />
+                </div>
                 <div className="form-group">
                   <label htmlFor="email"> Email </label>
                   <Field name="email" type="email" className="form-control" />
@@ -99,7 +116,7 @@ const Register: React.FC = () => {
                     name="email"
                     component="div"
                     className="alert alert-danger"
-                  />   
+                  />
                 </div>
 
                 <div className="form-group">
@@ -117,7 +134,23 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                  <label htmlFor="telephone"> Telephone </label>
+                  <Field
+                    name="telephone"
+                    type="tel"
+                    className="form-control"
+                  />
+                  <ErrorMessage
+                    name="telephone"
+                    component="div"
+                    className="alert alert-danger"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Sign Up
+                  </button>
                 </div>
               </div>
             )}

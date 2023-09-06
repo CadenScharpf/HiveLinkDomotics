@@ -9,7 +9,7 @@
             "command": "make dev",
             "group": {
                 "kind": "build",
-                "isDefault": false
+                "isDefault": true
             }
         },
         {
@@ -18,7 +18,7 @@
             "command": "sudo docker compose  -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps --force-recreate --build database ",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         }
     ]
