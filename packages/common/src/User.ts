@@ -14,8 +14,8 @@ export enum UserRoles {
   }
 
   export interface INewUser {
-    email: string;
-    firstName: string;
-    lastName: string;
+    email:  IUser['email'];
+    firstName: IUser['firstName'];
+    lastName: IUser['lastName'];
     password: string;
   }

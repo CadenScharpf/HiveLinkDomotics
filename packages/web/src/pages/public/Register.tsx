@@ -3,14 +3,16 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "yup-phone";
 
-import { IUser } from "hive-link-common";
+import { IRegisterRes, IUser } from "hive-link-common";
 import AuthService from "../../services/auth.service";
 import { INewUser } from "hive-link-common";
 import { useAuth } from "../../hooks/auth";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const PHONE_NO_REGEX = /^[0-9\- ]{8,14}$/;
 
 const Register: React.FC = () => {
+  let navigate: NavigateFunction = useNavigate();
   const auth = useAuth();
   const [successful, setSuccessful] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -50,28 +52,29 @@ const Register: React.FC = () => {
           val && val.toString().length >= 6 && val.toString().length <= 40
       )
       .required("This field is required!"),
-    telephone: Yup.string()
+    /* telephone: Yup.string()
       .matches(PHONE_NO_REGEX, "Phone number is not valid")
-      .required("This field is required!"),
+      .required("This field is required!"), */
   });
 
   const handleRegister = (formValue: INewUser) => {
-    auth.register(formValue).then(
-      (response) => {
+    auth
+      .register(formValue)
+      .then((response) => {
         setSuccessful(true);
-      },
-      (error) => {
+        navigate("/user/profile");
+      })
+      .catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            error.response.data.error) ||
           error.message ||
           error.toString();
 
         setMessage(resMessage);
         setSuccessful(false);
-      }
-    );
+      });
   };
 
   return (
@@ -92,7 +95,12 @@ const Register: React.FC = () => {
               <div>
                 <div className="form-group">
                   <label htmlFor="firstName"> First Name </label>
-                  <Field name="firstName" type="text" className="form-control" val=""/>
+                  <Field
+                    name="firstName"
+                    type="text"
+                    className="form-control"
+                    val=""
+                  />
                   <ErrorMessage
                     name="firstName"
                     component="div"
@@ -101,7 +109,12 @@ const Register: React.FC = () => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="lastName"> Last Name </label>
-                  <Field name="lastName" type="text" className="form-control" val=""/>
+                  <Field
+                    name="lastName"
+                    type="text"
+                    className="form-control"
+                    val=""
+                  />
                   <ErrorMessage
                     name="lastName"
                     component="div"
@@ -132,7 +145,7 @@ const Register: React.FC = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="telephone"> Telephone </label>
                   <Field
                     name="telephone"
@@ -144,7 +157,7 @@ const Register: React.FC = () => {
                     component="div"
                     className="alert alert-danger"
                   />
-                </div>
+                </div> */}
 
                 <div className="form-group">
                   <button type="submit" className="btn btn-primary btn-block">

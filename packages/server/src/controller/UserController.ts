@@ -1,8 +1,11 @@
-import UserRepo from '@src/repos/UserRepo';
 import { IUser } from 'hive-link-common';
 import { RouteError } from '@src/other/classes';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { AppDataSource } from '@src/data-source';
+import { User } from '@src/models/User';
+import { DeleteResult } from 'typeorm';
 
+const userRepo = AppDataSource.getRepository(User);
 
 // **** Variables **** //
 
@@ -15,21 +18,21 @@ export const USER_NOT_FOUND_ERR = 'User not found';
  * Get all users.
  */
 function getAll(): Promise<IUser[]> {
-  return UserRepo.getAll();
+  return userRepo.find();
 }
 
 /**
  * Add one user.
  */
-function addOne(user: IUser): Promise<void> {
-  return UserRepo.add(user);
+function addOne(user: IUser): Promise<IUser> {
+  return userRepo.save(userRepo.create({...user}));
 }
 
 /**
  * Update one user.
  */
-async function updateOne(user: IUser): Promise<void> {
-  const persists = await UserRepo.persists(user.id);
+async function updateOne(user: IUser): Promise<IUser> {
+  const persists = userRepo.findOneBy({id: user.id});
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
@@ -37,14 +40,14 @@ async function updateOne(user: IUser): Promise<void> {
     );
   }
   // Return user
-  return UserRepo.update(user);
+  return userRepo.save(userRepo.create({...user}));
 }
 
 /**
  * Delete a user by their id.
  */
-async function _delete(id: number): Promise<void> {
-  const persists = await UserRepo.persists(id);
+async function _delete(id: number): Promise<DeleteResult> {
+  const persists = userRepo.findOneBy({id: id});
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
@@ -52,7 +55,7 @@ async function _delete(id: number): Promise<void> {
     );
   }
   // Delete user
-  return UserRepo.delete(id);
+  return userRepo.delete(id);
 }
 
 

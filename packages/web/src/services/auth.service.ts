@@ -12,6 +12,8 @@ const register = (newUser: INewUser) => {
     let user: ISessionUser = response.data.user;
       localStorage.setItem("user", JSON.stringify(user));
     return user;
+  }).catch((err) => {
+    throw err;
   });
 };
 

@@ -1,13 +1,18 @@
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import SessionUtil from "@src/util/SessionUtil";
-import AuthService from "@src/services/AuthService";
+import AuthService from "@src/controller/AuthController";
 
 import { IReq, IRes } from "./types/express/misc";
-import { ISessionUser, ILoginReq, IRegisterReq, ILoginRes, IRegisterRes } from "hive-link-common";
+import {
+  ISessionUser,
+  ILoginReq,
+  IRegisterReq,
+  ILoginRes,
+  IRegisterRes,
+} from "hive-link-common";
 import { INewUser } from "hive-link-common";
 
 // **** Functions **** //
-
 
 async function me(req: IReq, res: IRes) {
   const user = await AuthService.me(req);
@@ -21,12 +26,12 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
   // Login
   const user = await AuthService.login(email, password);
   // Setup Admin Cookie
-  const sessionUser: ISessionUser = { 
+  const sessionUser: ISessionUser = {
     id: user.id,
     email: user.email,
-    name: user.firstName + " " + user.lastName,
+    firstName: user.firstName,
+    lastName: user.lastName,
     role: user.role,
-    phone: user.telephone,
   };
   await SessionUtil.addSessionData(res, sessionUser);
   res.json({ user: sessionUser });
@@ -35,10 +40,25 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
 }
 
 /**
- * Regester a new user.
+ * Regester a new user. 
  */
 async function register(req: IReq<IRegisterReq>, res: IRes<IRegisterRes>) {
-  const user = await AuthService.register(req.body.user);
+  try {
+    const user = await AuthService.register(req.body.user);
+
+    if (user) {
+      // If registration is successful, add session data and send a success response
+      await SessionUtil.addSessionData(res, user.toSessionUser());
+      res.status(HttpStatusCodes.OK).json({ user: user.toSessionUser() });
+    } else {
+      // If registration fails, send an error response
+      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Registration failed' });
+    }
+  } catch (err) {
+    // Handle exceptions and send an appropriate error response
+    console.error(err);
+    res.status(err.status).json({ error: err.message });
+  }
 }
 
 /**

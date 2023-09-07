@@ -62,23 +62,31 @@ function useProvideAuth(): IAuthContext{
     setUser(null);
   }
 
-  async function register(
-    newUser: INewUser
-  ) {
+  
+
+  async function register(newUser: INewUser) {
     setLoading(true);
-        const sessionUser = await AuthService.register(newUser).then((sessionUser) => {
-        setUser(sessionUser);
-    }).catch((err: AxiosError) => {
-      //setError(err.response?.data?.message || err.message);
-    }).finally(() => {
+  
+    try {
+      const sessionUser = await AuthService.register(newUser);
+      setUser(sessionUser);
+      setError(null); // Clear any previous errors
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("An error occurred");
+      }
+      throw err;
+    } finally {
       setLoading(false);
-    });
+    }
   }
 
   function autoSignIn() {
     setLoading(true);
     return AuthService.autoSignIn().then((sessionUser) => {
-      isSessionUser(sessionUser) && setUser(sessionUser);
+      sessionUser && setUser(sessionUser);
       return sessionUser;
     }).finally(() => setLoading(false));
 

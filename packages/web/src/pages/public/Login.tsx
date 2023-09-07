@@ -38,7 +38,6 @@ const Login: React.FC<Props> = () => {
     auth.login(username, password).then(
       () => {
         navigate("/user/profile");
-        window.location.reload();
       },
       (error) => {
         const resMessage =

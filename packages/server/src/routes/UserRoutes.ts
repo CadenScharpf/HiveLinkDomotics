@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
-import UserService from '@src/services/UserService';
+import UserService from '@src/controller/UserController';
 import { IUser } from 'hive-link-common';
 import { IReq, IRes } from './types/express/misc';
 

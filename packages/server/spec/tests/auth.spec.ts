@@ -4,9 +4,9 @@ import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
-import User from '@src/models/User';
+import { User } from '@src/models/User';
 import { UserRoles } from 'hive-link-common'
-import { Errors } from '@src/services/AuthService';
+import { Errors } from '@src/controller/AuthController';
 
 import FullPaths from '@src/routes/constants/FullPaths';
 import EnvVars from '@src/constants/EnvVars';

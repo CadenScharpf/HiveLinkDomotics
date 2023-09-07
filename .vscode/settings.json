@@ -11,7 +11,8 @@
             "driver": "MySQL",
             "name": "hivelink-db",
             "database": "hivelink",
-            "username": "docker"
+            "username": "docker",
+            "password": "docker"
         }
     ]
 }

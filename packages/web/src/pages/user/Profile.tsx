@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
       </p>
       <p>
         <strong>Role: </strong>{
-          auth.user.role && UserRoles[auth.user.role]
+          auth.user && UserRoles[auth.user.role]
         }
       </p>
     </div>

@@ -3,7 +3,7 @@ import jetValidator from 'jet-validator';
 
 import adminMw from './middleware/adminMw';
 import Paths from './constants/Paths';
-import User from '@src/models/User';
+import {User} from '@src/models/User';
 import AuthRoutes from './AuthRoutes';
 import UserRoutes from './UserRoutes';
 

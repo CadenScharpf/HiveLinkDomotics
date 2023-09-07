@@ -4,9 +4,10 @@ import { ShoppingSession } from "./ShoppingSession";
 import { UserAddress } from "./UserAddress";
 import { UserPayment } from "./UserPayment";
 import { IUser } from "hive-link-common/src/DbInterface";
+import { ISessionUser } from "hive-link-common";
 
 @Entity("user", { schema: "hivelink" })
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -45,4 +46,14 @@ export class User {
 
   @OneToMany(() => UserPayment, (userPayment) => userPayment.user)
   userPayments!: UserPayment[];
+
+  toSessionUser(): ISessionUser {
+    return {
+      id: this.id,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      role: this.role,
+    };
+  }
 }

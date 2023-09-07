@@ -11,7 +11,7 @@ export function ProtectedRoute(props: IProtectedRouteProps) {
   const { children, roles } = props;
   const auth = useAuth();
 
-  return roles.length === 0 || (auth.user && auth.user.role && roles.indexOf(auth.user.role) !== -1) ? (
+  return roles.length === 0 || (auth.user  && (roles.indexOf(auth.user.role) !== -1)) ? (
     <>{children}</>
   ) :  (
     <div>Not Authorized</div>
