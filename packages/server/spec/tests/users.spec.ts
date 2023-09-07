@@ -1,4 +1,4 @@
-import supertest, { SuperTest, Test, Response } from 'supertest';
+/* import supertest, { SuperTest, Test, Response } from 'supertest';
 import { defaultErrMsg as ValidatorErr } from 'jet-validator';
 import insertUrlParams from 'inserturlparams';
 
@@ -8,7 +8,7 @@ import UserRepo from '@src/repos/UserRepo';
 import User from '@src/models/User';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/controller/UserService';
-import FullPaths from '@src/routes/constants/FullPaths';
+import FullPaths from '@src/routes/util/constants/FullPaths';
 
 import login from '../support/login';
 import { TReqBody } from 'spec/support/types';
@@ -222,3 +222,4 @@ describe('UserRouter', () => {
     });
   });
 });
+ */

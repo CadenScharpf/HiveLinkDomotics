@@ -2,7 +2,7 @@ import { IUser } from 'hive-link-common';
 import { RouteError } from '@src/other/classes';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { AppDataSource } from '@src/data-source';
-import { User } from '@src/models/User';
+import { User } from '../entities/User';
 import { DeleteResult } from 'typeorm';
 
 const userRepo = AppDataSource.getRepository(User);

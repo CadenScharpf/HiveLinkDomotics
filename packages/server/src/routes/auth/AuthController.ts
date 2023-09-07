@@ -2,7 +2,7 @@ import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import SessionUtil from "@src/util/SessionUtil";
 import AuthService from "@src/controller/AuthController";
 
-import { IReq, IRes } from "./types/express/misc";
+import { IReq, IRes } from "../util/types/express/misc";
 import {
   ISessionUser,
   ILoginReq,
@@ -11,6 +11,9 @@ import {
   IRegisterRes,
 } from "hive-link-common";
 import { INewUser } from "hive-link-common";
+import { Router } from "express";
+import Paths from "../util/constants/Paths";
+
 
 // **** Functions **** //
 
@@ -45,6 +48,8 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
 async function register(req: IReq<IRegisterReq>, res: IRes<IRegisterRes>) {
   try {
     const user = await AuthService.register(req.body.user);
+
+    
 
     if (user) {
       // If registration is successful, add session data and send a success response

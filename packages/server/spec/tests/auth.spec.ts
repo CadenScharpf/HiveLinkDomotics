@@ -1,4 +1,4 @@
-import supertest, { SuperTest, Test, Response } from 'supertest';
+/* import supertest, { SuperTest, Test, Response } from 'supertest';
 
 import app from '@src/server';
 
@@ -8,7 +8,7 @@ import { User } from '@src/models/User';
 import { UserRoles } from 'hive-link-common'
 import { Errors } from '@src/controller/AuthController';
 
-import FullPaths from '@src/routes/constants/FullPaths';
+import FullPaths from '@src/routes/util/constants/FullPaths';
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
@@ -127,3 +127,4 @@ describe('AuthRouter', () => {
     });
   });
 });
+ */

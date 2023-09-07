@@ -110,9 +110,9 @@ CREATE TABLE user
   first_name  VARCHAR(255) NOT NULL,
   last_name   VARCHAR(255) NOT NULL,
   role        INT          NOT NULL,
-  auth_hash   VARCHAR(255) NULL    ,
+  auth_hash   VARCHAR(255) NOT NULL,
   created_at  TIMESTAMP    NOT NULL,
-  updated_at TIMESTAMP    NOT NULL,
+  updated_at TIMESTAMP     NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User';
 
@@ -209,6 +209,3 @@ ALTER TABLE cart_item
   ADD CONSTRAINT FK_product_TO_cart_item
     FOREIGN KEY (product_id)
     REFERENCES product (id);
-
-        
-      

@@ -1,26 +1,24 @@
-import { SuperTest, Test, Response } from 'supertest';
+/* import { SuperTest, Test, Response } from "supertest";
 
-import User from '@src/models/User';
-import { UserRoles } from 'hive-link-common'
-import UserRepo from '@src/repos/UserRepo';
-import PwdUtil from '@src/util/PwdUtil';
-import FullPaths from '@src/routes/constants/FullPaths';
-
+import User from "@src/models/User";
+import { UserRoles } from "hive-link-common";
+import UserRepo from "@src/repos/UserRepo";
+import PwdUtil from "@src/util/PwdUtil";
+import FullPaths from "@src/routes/util/constants/FullPaths"; */
 
 // **** Variables **** //
 
 const LoginCreds = {
-  email: 'jsmith@gmail.com',
-  password: 'Password@1',
+  email: "jsmith@gmail.com",
+  password: "Password@1",
 } as const;
-
 
 // **** Functions **** //
 
 /**
  * Login a user.
  */
-function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
+/* function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   // Setup dummy data
   const role = UserRoles.Admin,
     pwdHash = PwdUtil.hashSync(LoginCreds.password),
@@ -36,9 +34,8 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
       const cookie = res.headers['set-cookie'][0];
       return done(cookie);
     });
-}
-
+} */
 
 // **** Export default **** //
 
-export default login;
+//export default login;

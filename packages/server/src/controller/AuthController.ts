@@ -1,4 +1,3 @@
-import UserRepo from "@src/repos/UserRepo";
 
 import PwdUtil from "@src/util/PwdUtil";
 import { tick } from "@src/util/misc";
@@ -6,10 +5,10 @@ import { tick } from "@src/util/misc";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { RouteError } from "@src/other/classes";
 import { IUser } from "hive-link-common";
-import { User } from "@src/models/User";
+import { User } from "../entities/User";
 import { INewUser, ISessionUser } from "hive-link-common";
 import SessionUtil from "@src/util/SessionUtil";
-import { IReq } from "@src/routes/types/types";
+import { IReq } from "@src/routes/util/types/types";
 import { AppDataSource } from "@src/data-source";
 
 const userRepo = AppDataSource.getRepository(User);
