@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import entities from "./entities/Entities"
+import entities from "./api/common/repo/Entities"
 
 class DataSourceSingleton {
     private static instance: DataSourceSingleton;

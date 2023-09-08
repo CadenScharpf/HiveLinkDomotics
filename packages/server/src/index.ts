@@ -4,7 +4,7 @@ import logger from "jet-logger";
 import EnvVars from "@src/constants/EnvVars";
 import server from "./server";
 import { AppDataSource } from "./data-source";
-import entities from "./entities/Entities";
+import entities from "./api/common/repo/Entities";
 
 // **** Run **** //
 
