@@ -13,7 +13,7 @@ import "reflect-metadata";
 import 'express-async-errors';
 
 import BaseRouter from '@src/api/base-router';
-import Paths from '@src/api/util/constants/Paths';
+import Paths from '@src/api/common/config/Paths';
 
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';

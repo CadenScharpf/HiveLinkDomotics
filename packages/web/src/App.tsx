@@ -25,9 +25,6 @@ const layoutParams = {
 
 const App: React.FC = () => {
   const auth = useAuth();
-  console.log(
-    Paths.Subpaths.map((path) =>  getPathRoutes(path, '/'))     
-  )
   return (
     <>
       <Box sx={{ height: layoutParams.navHeight }} component="nav">

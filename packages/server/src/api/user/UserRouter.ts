@@ -1,7 +1,7 @@
 import { Router } from "express";
-import adminMw from '../util/middleware/adminMw';
+import adminMw from '../common/middleware/adminMw';
 import UserController from './UserController';
-import Paths from "../util/constants/Paths";
+import Paths from "../common/config/Paths";
 import jetValidator from "jet-validator";
 
 export const userRouter = Router();

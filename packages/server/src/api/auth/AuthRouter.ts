@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Paths from "../util/constants/Paths";
+import Paths from "../common/config/Paths";
 import AuthController from "./AuthController";
 import { ExpressValidator } from "express-validator";
 import { User } from "../user/User";

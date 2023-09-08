@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { INewUser, IUser } from 'hive-link-common';
-import { IReq, IRes } from '../util/types/express/misc';
+import { IReq, IRes } from '../common/types/express/misc';
 import { User } from './User';
 
 // **** Functions **** //

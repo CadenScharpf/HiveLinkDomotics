@@ -1,7 +1,7 @@
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import SessionUtil from "@src/util/SessionUtil";
 
-import { IReq, IRes } from "../util/types/express/misc";
+import { IReq, IRes } from "../common/types/express/misc";
 import {
   ISessionUser,
   ILoginReq,
@@ -11,7 +11,7 @@ import {
 } from "hive-link-common";
 import { INewUser } from "hive-link-common";
 import { Router } from "express";
-import Paths from "../util/constants/Paths";
+import Paths from "../common/config/Paths";
 import { User } from "../user/User";
 import { RouteError } from "@src/other/classes";
 import { USER_ERRORS } from "../user/User"; 

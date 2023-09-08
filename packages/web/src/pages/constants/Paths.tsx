@@ -3,7 +3,7 @@ import Login from "../public/Login";
 import Profile from "../user/Profile";
 import Landing from "../public/Landing";
 import Register from "../public/Register";
-import User from "../user/User";
+import UserLayout from "../user/UserLayout";
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../../components/ProtectedRoute";
 /* Roles: 
@@ -39,7 +39,7 @@ const Paths: IPath = {
     {
       Base: "user",
       Roles: [0, 1],
-      Component: <User/>,
+      Component: <UserLayout />,
       Subpaths: [
         {
           Base: "profile",
@@ -52,12 +52,28 @@ const Paths: IPath = {
   ],
 };
 
-export const getPathRoutes = (path: IPath, parentRoute: string, protect?: boolean): React.ReactElement => {
+export const getPathRoutes = (
+  path: IPath,
+  parentRoute: string,
+  protect?: boolean
+): React.ReactElement => {
   const absPath = parentRoute + path.Base + "/";
   return (
-  <Route path={path.Base} key={absPath + " route"} element={protect? <ProtectedRoute key={absPath + " component"} roles={path.Roles}>{path.Component}</ProtectedRoute>: path.Component} >
-  {path.Subpaths.map((subpath) => getPathRoutes(subpath, absPath))}
-  </Route>
+    <Route
+      path={path.Base}
+      key={absPath + " route"}
+      element={
+        protect ? (
+          <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
+            {path.Component}
+          </ProtectedRoute>
+        ) : (
+          path.Component
+        )
+      }
+    >
+      {path.Subpaths.map((subpath) => getPathRoutes(subpath, absPath))}
+    </Route>
   );
 };
 

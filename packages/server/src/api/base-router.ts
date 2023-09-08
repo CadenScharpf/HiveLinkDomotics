@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jetValidator from "jet-validator";
 
-import Paths from "./util/constants/Paths";
+import Paths from "./common/config/Paths";
 import { authRouter } from "./auth/AuthRouter";
 import { userRouter } from "./user/UserRouter";
 
