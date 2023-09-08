@@ -11,10 +11,12 @@ import entities from "./entities/Entities";
 const SERVER_START_MSG =
   "Express server started on port: " + EnvVars.Port.toString();
 
-AppDataSource.initialize()
+  const dataSource = AppDataSource.getDataSource()
+
+dataSource.initialize()
   .then(async () => {
-    /* entities.map(async (entity) => {
-      const table = await AppDataSource.manager.find(entity);
+   /*  entities.map(async (entity) => {
+      const table = await dataSource.manager.find(entity);
       console.log(`Loaded ${entity.name}s`, table);
     }); */
   })

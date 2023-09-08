@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "./User";
+import { UserEntity } from "../api/user/UserEntity";
 import { IUserPayment } from "hive-link-common";
 
 @Index("FK_user_TO_user_payment", ["userId"], {})
@@ -36,10 +36,10 @@ export class UserPayment implements IUserPayment{
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @ManyToOne(() => User, (user) => user.userPayments, {
+  @ManyToOne(() => UserEntity, (user) => user.userPayments, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "user_id", referencedColumnName: "id" }])
-  user!: User;
+  user!: UserEntity;
 }

@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { PaymentDetails } from "./PaymentDetails";
 import { UserAddress } from "./UserAddress";
-import { User } from "./User";
+import { UserEntity } from "../api/user/UserEntity";
 import { OrderItems } from "./OrderItems";
 import { IOrderDetails } from "hive-link-common";
 
@@ -54,12 +54,12 @@ export class OrderDetails implements IOrderDetails {
   @JoinColumn([{ name: "address_id", referencedColumnName: "id" }])
   address!: UserAddress;
 
-  @ManyToOne(() => User, (user) => user.orderDetails, {
+  @ManyToOne(() => UserEntity, (user) => user.orderDetails, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "user_id", referencedColumnName: "id" }])
-  user!: User;
+  user!: UserEntity;
 
   @OneToMany(() => OrderItems, (orderItems) => orderItems.order)
   orderItems!: OrderItems[];

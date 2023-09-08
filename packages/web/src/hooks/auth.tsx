@@ -47,22 +47,23 @@ function useProvideAuth(): IAuthContext{
   useEffect(() => { Cookies.get("hive-link-token") && autoSignIn(); }, []);
 
   async function login(username: string, password: string) {
-    setLoading(true);
-    await AuthService.login(username, password).then((sessionUser) => {
+    try {
+      setLoading(true);
+      const sessionUser = await AuthService.login(username, password);
       setUser(sessionUser);
-    }).catch((err: AxiosError) => { 
-      console.log(err);
-    }).finally(() => {
+    } catch (err) {
+      console.error(err);
+      // You can handle the error here or rethrow it if needed.
+      throw err;
+    } finally {
       setLoading(false);
-    });
+    }
   }
 
   function logout() {
     AuthService.logout();
     setUser(null);
   }
-
-  
 
   async function register(newUser: INewUser) {
     setLoading(true);

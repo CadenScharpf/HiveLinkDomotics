@@ -1,9 +1,10 @@
+import { IUser } from "./DbInterface";
 import { INewUser, ISessionUser } from "./User";
 
 // **** Request / Response Types **** //
 
 export interface ILoginReq {
-  email: string;
+  email: IUser['email'];
   password: string;
 }
 

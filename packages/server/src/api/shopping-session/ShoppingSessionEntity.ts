@@ -7,13 +7,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CartItem } from "./CartItem";
-import { User } from "./User";
+import { CartItemEntity } from "./cart-item/CartItemEntity";
+import { UserEntity } from "../user/UserEntity";
 import { IShoppingSession } from "hive-link-common";
 
 @Index("FK_user_TO_shopping_session", ["userId"], {})
 @Entity("shopping_session", { schema: "hivelink" })
-export class ShoppingSession implements IShoppingSession {
+export class ShoppingSessionEntity implements IShoppingSession {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -29,13 +29,13 @@ export class ShoppingSession implements IShoppingSession {
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @OneToMany(() => CartItem, (cartItem) => cartItem.session)
-  cartItems!: CartItem[];
+  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.session)
+  cartItems!: CartItemEntity[];
 
-  @ManyToOne(() => User, (user) => user.shoppingSessions, {
+  @ManyToOne(() => UserEntity, (user) => user.shoppingSessions, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "user_id", referencedColumnName: "id" }])
-  user!: User;
+  user!: UserEntity;
 }

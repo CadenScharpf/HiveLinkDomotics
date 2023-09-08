@@ -1,13 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { OrderDetails } from "./OrderDetails";
-import { ShoppingSession } from "./ShoppingSession";
-import { UserAddress } from "./UserAddress";
-import { UserPayment } from "./UserPayment";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Repository } from "typeorm";
+import { OrderDetails } from "../../entities/OrderDetails";
+import { ShoppingSessionEntity } from "../shopping-session/ShoppingSessionEntity";
+import { UserAddress } from "../../entities/UserAddress";
+import { UserPayment } from "../../entities/UserPayment";
 import { IUser } from "hive-link-common/src/DbInterface";
 import { ISessionUser } from "hive-link-common";
 
 @Entity("user", { schema: "hivelink" })
-export class User implements IUser {
+export class UserEntity implements IUser {
+
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -38,8 +39,8 @@ export class User implements IUser {
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.user)
   orderDetails!: OrderDetails[];
 
-  @OneToMany(() => ShoppingSession, (shoppingSession) => shoppingSession.user)
-  shoppingSessions!: ShoppingSession[];
+  @OneToMany(() => ShoppingSessionEntity, (shoppingSession) => shoppingSession.user)
+  shoppingSessions!: ShoppingSessionEntity[];
 
   @OneToMany(() => UserAddress, (userAddress) => userAddress.user)
   userAddresses!: UserAddress[];
@@ -47,13 +48,8 @@ export class User implements IUser {
   @OneToMany(() => UserPayment, (userPayment) => userPayment.user)
   userPayments!: UserPayment[];
 
-  toSessionUser(): ISessionUser {
-    return {
-      id: this.id,
-      email: this.email,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      role: this.role,
-    };
+  constructor(user: IUser) {
+    Object.assign(this, user);
   }
+
 }

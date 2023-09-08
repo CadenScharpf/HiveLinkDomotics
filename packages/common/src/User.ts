@@ -6,7 +6,7 @@ export enum UserRoles {
   }
 
   export interface ISessionUser {
-    id: number;
+    id: IUser['id'];
     email: IUser['email'];
     firstName: IUser['firstName'];
     lastName: IUser['lastName'];

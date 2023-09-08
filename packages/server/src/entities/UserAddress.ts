@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { OrderDetails } from "./OrderDetails";
-import { User } from "./User";
+import { UserEntity } from "../api/user/UserEntity";
 import { IUserAddress } from "hive-link-common";
 
 @Index("FK_user_TO_user_address", ["userId"], {})
@@ -50,10 +50,10 @@ export class UserAddress implements IUserAddress {
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.address)
   orderDetails!: OrderDetails[];
 
-  @ManyToOne(() => User, (user) => user.userAddresses, {
+  @ManyToOne(() => UserEntity, (user) => user.userAddresses, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "user_id", referencedColumnName: "id" }])
-  user!: User;
+  user!: UserEntity;
 }

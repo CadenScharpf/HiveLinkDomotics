@@ -6,14 +6,14 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Product } from "./Product";
-import { ShoppingSession } from "./ShoppingSession";
+import { Product } from "../../../entities/Product";
+import { ShoppingSessionEntity } from "../ShoppingSessionEntity";
 import { ICartItem } from "hive-link-common";
 
 @Index("FK_product_TO_cart_item", ["productId"], {})
 @Index("FK_shopping_session_TO_cart_item", ["sessionId"], {})
 @Entity("cart_item", { schema: "hivelink" })
-export class CartItem implements ICartItem {
+export class CartItemEntity implements ICartItem {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -40,10 +40,10 @@ export class CartItem implements ICartItem {
   product!: Product;
 
   @ManyToOne(
-    () => ShoppingSession,
+    () => ShoppingSessionEntity,
     (shoppingSession) => shoppingSession.cartItems,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "session_id", referencedColumnName: "id" }])
-  session!: ShoppingSession;
+  session!: ShoppingSessionEntity;
 }

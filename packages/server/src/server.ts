@@ -12,8 +12,8 @@ import "reflect-metadata";
 
 import 'express-async-errors';
 
-import BaseRouter from '@src/routes/api';
-import Paths from '@src/routes/util/constants/Paths';
+import BaseRouter from '@src/api/base-router';
+import Paths from '@src/api/util/constants/Paths';
 
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
@@ -25,7 +25,6 @@ import { RouteError } from '@src/other/classes';
 // **** Variables **** //
 
 const app = express();
-
 
 // **** Setup **** //
 

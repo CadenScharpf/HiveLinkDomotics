@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CartItem } from "./CartItem";
+import { CartItemEntity } from "../api/shopping-session/cart-item/CartItemEntity";
 import { OrderItems } from "./OrderItems";
 import { ProductCategory } from "./ProductCategory";
 import { ProductDiscount } from "./ProductDiscount";
@@ -52,8 +52,8 @@ export class Product implements IProduct {
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
-  cartItems!: CartItem[];
+  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
+  cartItems!: CartItemEntity[];
 
   @OneToMany(() => OrderItems, (orderItems) => orderItems.product)
   orderItems!: OrderItems[];

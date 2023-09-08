@@ -9,8 +9,6 @@ import { INewUser } from "hive-link-common";
 import { useAuth } from "../../hooks/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
-const PHONE_NO_REGEX = /^[0-9\- ]{8,14}$/;
-
 const Register: React.FC = () => {
   let navigate: NavigateFunction = useNavigate();
   const auth = useAuth();

@@ -36,14 +36,14 @@ const Login: React.FC<Props> = () => {
     setLoading(true);
 
     auth.login(username, password).then(
-      () => {
+      (response) => {
         navigate("/user/profile");
       },
       (error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            error.response.data.error) ||
           error.message ||
           error.toString();
         setLoading(false);
