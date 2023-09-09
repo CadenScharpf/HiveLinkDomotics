@@ -7,82 +7,81 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CartItemEntity } from "../shopping-session/CartItemEntity";
-import { OrderItemsEntity } from "../order/OrderItemsEntity";
-import { ProductCategoryEntity } from "./ProductCategoryEntity";
-import { ProductDiscountEntity } from "./ProductDiscountEntity";
-import { ProductInventoryEntity } from "./ProductInventoryEntity";
-import { IProduct } from "hive-link-common";
-import { UserDeviceEntity } from "../user/entities/UserDeviceEntity";
+import { CartItem } from "./CartItem";
+import { OrderItems } from "./OrderItems";
+import { ProductCategory } from "./ProductCategory";
+import { ProductDiscount } from "./ProductDiscount";
+import { ProductInventory } from "./ProductInventory";
+import { UserDevice } from "./UserDevice";
 
 @Index("FK_product_category_TO_product", ["categoryId"], {})
 @Index("FK_product_discount_TO_product", ["discountId"], {})
 @Index("FK_product_inventory_TO_product", ["inventoryId"], {})
 @Entity("product", { schema: "hivelink" })
-export class ProductEntity implements IProduct {
+export class Product {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
-  id!: number;
+  id: number;
 
   @Column("int", { name: "category_id" })
-  categoryId!: number;
+  categoryId: number;
 
   @Column("int", { name: "discount_id" })
-  discountId!: number;
+  discountId: number;
 
   @Column("int", { name: "inventory_id" })
-  inventoryId!: number;
+  inventoryId: number;
 
   @Column("varchar", { name: "name", length: 255 })
-  name!: string;
+  name: string;
 
   @Column("text", { name: "description", nullable: true })
-  description!: string | null;
+  description: string | null;
 
   @Column("varchar", { name: "sku", length: 255 })
-  sku!: string;
+  sku: string;
 
   @Column("decimal", { name: "price", precision: 10, scale: 2 })
-  price!: number;
+  price: string;
 
   @Column("tinyint", { name: "active", width: 1 })
-  active!: boolean;
+  active: boolean;
 
-  @Column({ name: "created_at" })
-  createdAt!: string;
+  @Column("timestamp", { name: "created_at" })
+  createdAt: Date;
 
-  @Column({ name: "updated_at" })
-  updatedAt!: string;
+  @Column("timestamp", { name: "updated_at" })
+  updatedAt: Date;
 
-  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
-  cartItems!: CartItemEntity[];
+  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
+  cartItems: CartItem[];
 
-  @OneToMany(() => OrderItemsEntity, (orderItems) => orderItems.product)
-  orderItems!: OrderItemsEntity[];
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.product)
+  orderItems: OrderItems[];
 
   @ManyToOne(
-    () => ProductCategoryEntity,
+    () => ProductCategory,
     (productCategory) => productCategory.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "category_id", referencedColumnName: "id" }])
-  category!: ProductCategoryEntity;
+  category: ProductCategory;
 
   @ManyToOne(
-    () => ProductDiscountEntity,
+    () => ProductDiscount,
     (productDiscount) => productDiscount.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "discount_id", referencedColumnName: "id" }])
-  discount!: ProductDiscountEntity;
+  discount: ProductDiscount;
 
   @ManyToOne(
-    () => ProductInventoryEntity,
+    () => ProductInventory,
     (productInventory) => productInventory.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "inventory_id", referencedColumnName: "id" }])
-  inventory!: ProductInventoryEntity;
+  inventory: ProductInventory;
 
-  @OneToMany(() => UserDeviceEntity, (userDevice) => userDevice.product)
-  userDevices!: UserDeviceEntity[];
+  @OneToMany(() => UserDevice, (userDevice) => userDevice.product)
+  userDevices: UserDevice[];
 }

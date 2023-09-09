@@ -10,7 +10,11 @@ function UserLayout(props : IUserLayoutProps) {
   return location.pathname  === props.path ? (
     <div>user dashboard</div>
   ) : (
-    <Outlet />
+    <div>
+      user nav
+      <Outlet />
+    </div>
+    
   )
 }
 

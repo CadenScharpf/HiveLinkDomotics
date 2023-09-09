@@ -130,3 +130,36 @@ export interface IUserPayment {
   createdAt: string;
   updatedAt: string;
 }
+
+// Device category
+export interface DeviceCategory {
+  id: number;
+  name: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Supported device types
+export interface Device {
+  id: number;
+  categoryId: number;
+  manufacturer: string;
+  model: string | null;
+  name: string | null;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// User Device
+export interface UserDevice {
+  id: number;
+  userId: number;
+  deviceId: number;
+  productId: number | null;
+  name: string;
+  lastConn: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

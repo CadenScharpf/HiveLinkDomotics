@@ -10,6 +10,9 @@ import { ProductInventoryEntity } from "../../product/ProductInventoryEntity";
 import { ShoppingSessionEntity } from "../../shopping-session/ShoppingSessionEntity";
 import { UserAddressEntity } from "../../user/entities/UserAddressEntity";
 import { UserPaymentEntity } from "../../user/entities/UserPaymentEntity";
+import { DeviceEntity } from "@src/api/device/DeviceEntity";
+import { UserDeviceEntity } from "@src/api/user/entities/UserDeviceEntity";
+import { DeviceCategoryEntity } from "@src/api/device/DeviceCategoryEntity";
 
 export const entities = [
   UserEntity,
@@ -24,6 +27,9 @@ export const entities = [
   ShoppingSessionEntity,
   UserAddressEntity,
   UserPaymentEntity,
+  DeviceEntity,
+  UserDeviceEntity,
+  DeviceCategoryEntity,
 ];
 
 export default entities;

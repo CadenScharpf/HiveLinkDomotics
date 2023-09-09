@@ -5,6 +5,7 @@ import { UserAddressEntity } from "./UserAddressEntity";
 import { UserPaymentEntity } from "./UserPaymentEntity";
 import { IUser } from "hive-link-common/src/DbInterface";
 import { ISessionUser } from "hive-link-common";
+import { UserDeviceEntity } from "./UserDeviceEntity";
 
 @Entity("user", { schema: "hivelink" })
 export class UserEntity implements IUser {
@@ -49,6 +50,9 @@ export class UserEntity implements IUser {
   @OneToMany(() => UserPaymentEntity, (userPayment) => userPayment.user)
   userPayments!: UserPaymentEntity[];
 
+
+  @OneToMany(() => UserDeviceEntity, (userDevice) => userDevice.user)
+  userDevices!: UserDeviceEntity[];
   constructor(user: IUser) {
     Object.assign(this, user);
   }

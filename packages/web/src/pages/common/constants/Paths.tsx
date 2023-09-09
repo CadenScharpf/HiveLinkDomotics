@@ -17,6 +17,7 @@ import AddDevice, { AddPlugDevice, AddSwitchDevice } from "../../user/devices/Ad
 
 export interface IPath {
   Base: string;
+  Title? : string;
   Roles: number[];
   Component: React.ReactElement;
   Subpaths: IPath[];
@@ -47,6 +48,7 @@ const Paths: IPath = {
     },
     {
       Base: "user",
+      Title: "Home",
       Roles: [0, 1],
       Component: <UserLayout path="" />,
       Subpaths: [

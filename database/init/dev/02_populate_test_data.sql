@@ -75,3 +75,24 @@ VALUES
   (1, 1, 2, NOW(), NOW()),
   (1, 2, 3, NOW(), NOW()),
   (2, 3, 1, NOW(), NOW());
+
+-- Insert data into device_category table
+INSERT INTO device_category (name, description, created_at, updated_at)
+VALUES
+  ('plug', 'Smart Plug', NOW(), NOW()),
+  ('switch', 'Smart Switch', NOW(), NOW()),
+  ('light', 'Smart Light', NOW(), NOW());
+
+-- INSERT data into device table
+INSERT INTO device (category_id, manufacturer, model, name, description, created_at, updated_at)
+VALUES
+  (1, 'TP-Link', 'HS100', 'Smart Plug', 'Smart Plug', NOW(), NOW()),
+  (2, 'TP-Link', 'HS200', 'Smart Switch', 'Smart Switch', NOW(), NOW()),
+  (3, 'TP-Link', 'LB100', 'Smart Light', 'Smart Light', NOW(), NOW());
+
+-- Insert data into user_device table
+INSERT INTO user_device (user_id, device_id, product_id, name, last_conn, created_at, updated_at)
+VALUES
+  (1, 1, NULL, 'TP-Link Smart Plug', NULL, NOW(), NOW()),
+  (1, 2, NULL, 'TP-Link Smart Switch', NULL, NOW(), NOW()),
+  (1, 3, NULL, 'TP-Link Smart Light', NULL, NOW(), NOW());

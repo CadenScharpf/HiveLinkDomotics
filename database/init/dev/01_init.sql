@@ -11,6 +11,29 @@ CREATE TABLE cart_item
   PRIMARY KEY (id)
 ) COMMENT 'Shopping Cart Item';
 
+CREATE TABLE device
+(
+  id           INT         NOT NULL AUTO_INCREMENT,
+  category_id  INT         NOT NULL,
+  manufacturer VARCHAR(20) NOT NULL,
+  model        VARCHAR(20) NULL    ,
+  name         varchar(50) NULL    ,
+  description  TEXT        NULL    ,
+  created_at   TIMESTAMP   NOT NULL,
+  updated_at   TIMESTAMP   NOT NULL,
+  PRIMARY KEY (id)
+) COMMENT 'Supported device types';
+
+CREATE TABLE device_category
+(
+  id          INT         NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(50) NOT NULL,
+  description TEXT        NULL    ,
+  created_at  TIMESTAMP   NOT NULL,
+  updated_at  TIMESTAMP   NOT NULL,
+  PRIMARY KEY (id)
+) COMMENT 'Device category';
+
 CREATE TABLE order_details
 (
   id         INT            NOT NULL AUTO_INCREMENT,
@@ -67,7 +90,7 @@ CREATE TABLE product_category
   name        VARCHAR(255) NOT NULL,
   description TEXT         NULL    ,
   created_at  TIMESTAMP    NOT NULL,
-  updated_at TIMESTAMP    NOT NULL,
+  updated_at  TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'Product Category';
 
@@ -104,15 +127,15 @@ CREATE TABLE shopping_session
 
 CREATE TABLE user
 (
-  id          INT          NOT NULL AUTO_INCREMENT,
-  email       VARCHAR(255) NOT NULL,
-  telephone   VARCHAR(20)  NULL    ,
-  first_name  VARCHAR(255) NOT NULL,
-  last_name   VARCHAR(255) NOT NULL,
-  role        INT          NOT NULL,
-  auth_hash   VARCHAR(255) NOT NULL,
-  created_at  TIMESTAMP    NOT NULL,
-  updated_at TIMESTAMP     NOT NULL,
+  id         INT          NOT NULL AUTO_INCREMENT,
+  email      VARCHAR(255) NOT NULL,
+  telephone  VARCHAR(20)  NULL    ,
+  first_name VARCHAR(255) NOT NULL,
+  last_name  VARCHAR(255) NOT NULL,
+  role       INT          NOT NULL,
+  auth_hash  VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP    NOT NULL,
+  updated_at TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User';
 
@@ -131,6 +154,19 @@ CREATE TABLE user_address
   updated_at    TIMESTAMP    NOT NULL,
   PRIMARY KEY (id)
 ) COMMENT 'User Address';
+
+CREATE TABLE user_device
+(
+  id         INT         NOT NULL AUTO_INCREMENT,
+  user_id    INT         NOT NULL,
+  device_id  INT         NOT NULL,
+  product_id INT         NULL    ,
+  name       VARCHAR(50) NOT NULL,
+  last_conn  TIMESTAMP   NULL    ,
+  created_at TIMESTAMP   NOT NULL,
+  updated_at TIMESTAMP   NOT NULL,
+  PRIMARY KEY (id)
+) COMMENT 'User Device';
 
 CREATE TABLE user_payment
 (
@@ -209,3 +245,26 @@ ALTER TABLE cart_item
   ADD CONSTRAINT FK_product_TO_cart_item
     FOREIGN KEY (product_id)
     REFERENCES product (id);
+
+ALTER TABLE user_device
+  ADD CONSTRAINT FK_user_TO_user_device
+    FOREIGN KEY (user_id)
+    REFERENCES user (id);
+
+ALTER TABLE user_device
+  ADD CONSTRAINT FK_product_TO_user_device
+    FOREIGN KEY (product_id)
+    REFERENCES product (id);
+
+ALTER TABLE device
+  ADD CONSTRAINT FK_device_category_TO_device
+    FOREIGN KEY (category_id)
+    REFERENCES device_category (id);
+
+ALTER TABLE user_device
+  ADD CONSTRAINT FK_device_TO_user_device
+    FOREIGN KEY (device_id)
+    REFERENCES device (id);
+
+        
+      

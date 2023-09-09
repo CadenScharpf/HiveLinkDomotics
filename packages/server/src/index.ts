@@ -15,10 +15,10 @@ const SERVER_START_MSG =
 
 dataSource.initialize()
   .then(async () => {
-   /*  entities.map(async (entity) => {
+    entities.map(async (entity) => {
       const table = await dataSource.manager.find(entity);
       console.log(`Loaded ${entity.name}s`, table);
-    }); */
+    });
   })
   .catch((error) => console.log(error));
 
