@@ -6,12 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { UserEntity } from "../api/user/UserEntity";
+import { UserEntity } from "./UserEntity";
 import { IUserPayment } from "hive-link-common";
 
 @Index("FK_user_TO_user_payment", ["userId"], {})
 @Entity("user_payment", { schema: "hivelink" })
-export class UserPayment implements IUserPayment{
+export class UserPaymentEntity implements IUserPayment{
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 

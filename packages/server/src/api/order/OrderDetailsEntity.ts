@@ -7,17 +7,17 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { PaymentDetails } from "./PaymentDetails";
-import { UserAddress } from "./UserAddress";
-import { UserEntity } from "../api/user/UserEntity";
-import { OrderItems } from "./OrderItems";
+import { PaymentDetailsEntity } from "./PaymentDetailsEntity";
+import { UserAddressEntity } from "../user/entities/UserAddressEntity";
+import { UserEntity } from "../user/entities/UserEntity";
+import { OrderItemsEntity } from "./OrderItemsEntity";
 import { IOrderDetails } from "hive-link-common";
 
 @Index("FK_payment_details_TO_order_details", ["paymentId"], {})
 @Index("FK_user_address_TO_order_details", ["addressId"], {})
 @Index("FK_user_TO_order_details", ["userId"], {})
 @Entity("order_details", { schema: "hivelink" })
-export class OrderDetails implements IOrderDetails {
+export class OrderDetailsEntity implements IOrderDetails {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -40,19 +40,19 @@ export class OrderDetails implements IOrderDetails {
   updatedAt!: string;
 
   @ManyToOne(
-    () => PaymentDetails,
+    () => PaymentDetailsEntity,
     (paymentDetails) => paymentDetails.orderDetails,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "payment_id", referencedColumnName: "id" }])
-  payment!: PaymentDetails;
+  payment!: PaymentDetailsEntity;
 
-  @ManyToOne(() => UserAddress, (userAddress) => userAddress.orderDetails, {
+  @ManyToOne(() => UserAddressEntity, (userAddress) => userAddress.orderDetails, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "address_id", referencedColumnName: "id" }])
-  address!: UserAddress;
+  address!: UserAddressEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.orderDetails, {
     onDelete: "NO ACTION",
@@ -61,6 +61,6 @@ export class OrderDetails implements IOrderDetails {
   @JoinColumn([{ name: "user_id", referencedColumnName: "id" }])
   user!: UserEntity;
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.order)
-  orderItems!: OrderItems[];
+  @OneToMany(() => OrderItemsEntity, (orderItems) => orderItems.order)
+  orderItems!: OrderItemsEntity[];
 }

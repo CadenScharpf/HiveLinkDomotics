@@ -7,13 +7,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { OrderDetails } from "./OrderDetails";
-import { UserEntity } from "../api/user/UserEntity";
+import { OrderDetailsEntity } from "../../order/OrderDetailsEntity";
+import { UserEntity } from "./UserEntity";
 import { IUserAddress } from "hive-link-common";
 
 @Index("FK_user_TO_user_address", ["userId"], {})
 @Entity("user_address", { schema: "hivelink" })
-export class UserAddress implements IUserAddress {
+export class UserAddressEntity implements IUserAddress {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -47,8 +47,8 @@ export class UserAddress implements IUserAddress {
   @Column( { name: "updated_at" })
   updatedAt!: string; 
 
-  @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.address)
-  orderDetails!: OrderDetails[];
+  @OneToMany(() => OrderDetailsEntity, (orderDetails) => orderDetails.address)
+  orderDetails!: OrderDetailsEntity[];
 
   @ManyToOne(() => UserEntity, (user) => user.userAddresses, {
     onDelete: "NO ACTION",

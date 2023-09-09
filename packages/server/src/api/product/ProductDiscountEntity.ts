@@ -1,9 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Product } from "./Product";
+import { ProductEntity } from "./ProductEntity";
 import { IProductDiscount } from "hive-link-common";
 
 @Entity("product_discount", { schema: "hivelink" })
-export class ProductDiscount implements IProductDiscount{
+export class ProductDiscountEntity implements IProductDiscount{
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -25,6 +25,6 @@ export class ProductDiscount implements IProductDiscount{
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @OneToMany(() => Product, (product) => product.discount)
-  products!: Product[];
+  @OneToMany(() => ProductEntity, (product) => product.discount)
+  products!: ProductEntity[];
 }

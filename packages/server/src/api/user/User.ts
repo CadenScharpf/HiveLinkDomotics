@@ -1,5 +1,5 @@
 import { INewUser, ISessionUser, IUser, UserRoles } from "hive-link-common";
-import { UserEntity } from "./UserEntity";
+import { UserEntity } from "./entities/UserEntity";
 import { DataSource, Entity, Repository } from "typeorm";
 import { AppDataSource } from "@src/data-source";
 import PwdUtil from "@src/util/PwdUtil";
@@ -16,8 +16,6 @@ export const USER_ERRORS = {
     return `User with email "${email}" already exists`;
   },
 }
-
-
 
 export class User extends UserEntity implements IUser {
   private static repo: Repository<UserEntity> =

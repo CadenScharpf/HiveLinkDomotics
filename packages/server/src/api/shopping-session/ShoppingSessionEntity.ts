@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CartItemEntity } from "./cart-item/CartItemEntity";
-import { UserEntity } from "../user/UserEntity";
+import { CartItemEntity } from "./CartItemEntity";
+import { UserEntity } from "../user/entities/UserEntity";
 import { IShoppingSession } from "hive-link-common";
 
 @Index("FK_user_TO_shopping_session", ["userId"], {})

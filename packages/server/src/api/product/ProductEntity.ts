@@ -7,18 +7,18 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CartItemEntity } from "../api/shopping-session/cart-item/CartItemEntity";
-import { OrderItems } from "./OrderItems";
-import { ProductCategory } from "./ProductCategory";
-import { ProductDiscount } from "./ProductDiscount";
-import { ProductInventory } from "./ProductInventory";
+import { CartItemEntity } from "../shopping-session/CartItemEntity";
+import { OrderItemsEntity } from "../order/OrderItemsEntity";
+import { ProductCategoryEntity } from "./ProductCategoryEntity";
+import { ProductDiscountEntity } from "./ProductDiscountEntity";
+import { ProductInventoryEntity } from "./ProductInventoryEntity";
 import { IProduct } from "hive-link-common";
 
 @Index("FK_product_category_TO_product", ["categoryId"], {})
 @Index("FK_product_discount_TO_product", ["discountId"], {})
 @Index("FK_product_inventory_TO_product", ["inventoryId"], {})
 @Entity("product", { schema: "hivelink" })
-export class Product implements IProduct {
+export class ProductEntity implements IProduct {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -49,36 +49,36 @@ export class Product implements IProduct {
   @Column({ name: "created_at" })
   createdAt!: string;
 
-  @Column( { name: "updated_at" })
+  @Column({ name: "updated_at" })
   updatedAt!: string;
 
   @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
   cartItems!: CartItemEntity[];
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.product)
-  orderItems!: OrderItems[];
+  @OneToMany(() => OrderItemsEntity, (orderItems) => orderItems.product)
+  orderItems!: OrderItemsEntity[];
 
   @ManyToOne(
-    () => ProductCategory,
+    () => ProductCategoryEntity,
     (productCategory) => productCategory.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "category_id", referencedColumnName: "id" }])
-  category!: ProductCategory;
+  category!: ProductCategoryEntity;
 
   @ManyToOne(
-    () => ProductDiscount,
+    () => ProductDiscountEntity,
     (productDiscount) => productDiscount.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "discount_id", referencedColumnName: "id" }])
-  discount!: ProductDiscount;
+  discount!: ProductDiscountEntity;
 
   @ManyToOne(
-    () => ProductInventory,
+    () => ProductInventoryEntity,
     (productInventory) => productInventory.products,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "inventory_id", referencedColumnName: "id" }])
-  inventory!: ProductInventory;
+  inventory!: ProductInventoryEntity;
 }

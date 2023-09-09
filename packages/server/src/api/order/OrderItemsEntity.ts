@@ -6,14 +6,14 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { OrderDetails } from "./OrderDetails";
-import { Product } from "./Product";
+import { OrderDetailsEntity } from "./OrderDetailsEntity";
+import { ProductEntity } from "../product/ProductEntity";
 import { IOrderItems } from "hive-link-common";
 
 @Index("FK_order_details_TO_order_items", ["orderId"], {})
 @Index("FK_product_TO_order_items", ["productId"], {})
 @Entity("order_items", { schema: "hivelink" })
-export class OrderItems implements IOrderItems {
+export class OrderItemsEntity implements IOrderItems {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id!: number;
 
@@ -32,17 +32,17 @@ export class OrderItems implements IOrderItems {
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @ManyToOne(() => OrderDetails, (orderDetails) => orderDetails.orderItems, {
+  @ManyToOne(() => OrderDetailsEntity, (orderDetails) => orderDetails.orderItems, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "order_id", referencedColumnName: "id" }])
-  order!: OrderDetails;
+  order!: OrderDetailsEntity;
 
-  @ManyToOne(() => Product, (product) => product.orderItems, {
+  @ManyToOne(() => ProductEntity, (product) => product.orderItems, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "product_id", referencedColumnName: "id" }])
-  product!: Product;
+  product!: ProductEntity;
 }

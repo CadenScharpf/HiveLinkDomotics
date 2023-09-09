@@ -6,8 +6,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Product } from "../../../entities/Product";
-import { ShoppingSessionEntity } from "../ShoppingSessionEntity";
+import { ProductEntity } from "../product/ProductEntity";
+import { ShoppingSessionEntity } from "./ShoppingSessionEntity";
 import { ICartItem } from "hive-link-common";
 
 @Index("FK_product_TO_cart_item", ["productId"], {})
@@ -32,12 +32,12 @@ export class CartItemEntity implements ICartItem {
   @Column( { name: "updated_at" })
   updatedAt!: string;
 
-  @ManyToOne(() => Product, (product) => product.cartItems, {
+  @ManyToOne(() => ProductEntity, (product) => product.cartItems, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "product_id", referencedColumnName: "id" }])
-  product!: Product;
+  product!: ProductEntity;
 
   @ManyToOne(
     () => ShoppingSessionEntity,

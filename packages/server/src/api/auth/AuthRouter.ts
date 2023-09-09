@@ -5,7 +5,7 @@ import { ExpressValidator } from "express-validator";
 import { User } from "../user/User";
 import { RouteError } from "@src/other/classes";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import { Errors } from "../base-router";
+import  Errors  from "../base-router";
 
 // **** Routes **** //
 

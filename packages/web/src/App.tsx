@@ -17,7 +17,7 @@ import Landing from "./pages/public/Landing";
 import NavBar from "./components/NavBar";
 import { Box, Container } from "@mui/material";
 
-import Paths, { IPath, getPathRoutes } from "./pages/constants/Paths";
+import Paths, { IPath, getPathRoutes } from "./pages/common/constants/Paths";
 
 const layoutParams = {
   navHeight: 64,

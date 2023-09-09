@@ -78,6 +78,6 @@
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   },
-  "include": ["src/**/*.ts", "spec/**/*.ts", "build.ts", "src/api/shopping-session/cart-item/CartItemEntity.ts"],
+  "include": ["src/**/*.ts", "spec/**/*.ts", "build.ts", "src/api/shopping-session/CartItemEntity.ts"],
   "exclude": ["src/public/"]
 }

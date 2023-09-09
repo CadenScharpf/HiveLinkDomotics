@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import AuthService from "../../services/auth.service";
 import { useAuth } from "../../hooks/auth";
 import { UserRoles } from "hive-link-common";
 

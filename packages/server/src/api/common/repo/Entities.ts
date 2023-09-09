@@ -1,29 +1,29 @@
-import { UserEntity } from "../../user/UserEntity";
-import { CartItemEntity } from "../../shopping-session/cart-item/CartItemEntity";
-import { OrderDetails } from "../../../entities/OrderDetails";
-import { OrderItems } from "../../../entities/OrderItems";
-import { PaymentDetails } from "../../../entities/PaymentDetails";
-import { Product } from "../../../entities/Product";
-import { ProductCategory } from "../../../entities/ProductCategory";
-import { ProductDiscount } from "../../../entities/ProductDiscount";
-import { ProductInventory } from "../../../entities/ProductInventory";
+import { UserEntity } from "../../user/entities/UserEntity";
+import { CartItemEntity } from "../../shopping-session/CartItemEntity";
+import { OrderDetailsEntity } from "../../order/OrderDetailsEntity";
+import { OrderItemsEntity } from "../../order/OrderItemsEntity";
+import { PaymentDetailsEntity } from "../../order/PaymentDetailsEntity";
+import { ProductEntity } from "../../product/ProductEntity";
+import { ProductCategoryEntity } from "../../product/ProductCategoryEntity";
+import { ProductDiscountEntity } from "../../product/ProductDiscountEntity";
+import { ProductInventoryEntity } from "../../product/ProductInventoryEntity";
 import { ShoppingSessionEntity } from "../../shopping-session/ShoppingSessionEntity";
-import { UserAddress } from "../../../entities/UserAddress";
-import { UserPayment } from "../../../entities/UserPayment";
+import { UserAddressEntity } from "../../user/entities/UserAddressEntity";
+import { UserPaymentEntity } from "../../user/entities/UserPaymentEntity";
 
 export const entities = [
   UserEntity,
   CartItemEntity,
-  OrderDetails,
-  OrderItems,
-  PaymentDetails,
-  Product,
-  ProductCategory,
-  ProductDiscount,
-  ProductInventory,
+  OrderDetailsEntity,
+  OrderItemsEntity,
+  PaymentDetailsEntity,
+  ProductEntity,
+  ProductCategoryEntity,
+  ProductDiscountEntity,
+  ProductInventoryEntity,
   ShoppingSessionEntity,
-  UserAddress,
-  UserPayment,
+  UserAddressEntity,
+  UserPaymentEntity,
 ];
 
 export default entities;
