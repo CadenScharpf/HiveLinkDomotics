@@ -30,7 +30,7 @@ function UserLayout(props: IUserLayoutProps) {
       <Box sx={styles.userNav}>
         <p></p>
         <Stack direction="row" spacing={1} sx={styles.userNavItems}>
-          <Link to={props.path}> Dashboard </Link>
+          <Link to={props.path}> Account </Link>
           {navPaths.map((path: any) => {
             let linkPath = props.path + "/" + path.Base;
             return (

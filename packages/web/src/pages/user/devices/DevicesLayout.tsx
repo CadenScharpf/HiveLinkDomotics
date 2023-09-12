@@ -18,7 +18,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const auth = useAuth();
   const isBase = location.pathname === props.path;
   const role = auth.user ? auth.user.role : -1;
-  const navPaths = getFilteredSubpaths(":id/devices", role, ["new"]);
+  const navPaths = getFilteredSubpaths(":home_id/devices", role, ["new"]);
   useEffect(() => {}, [location.pathname, auth.user]);
 
   return (
@@ -29,7 +29,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
       </Typography>
         <Stack direction="row" spacing={1}>
           {navPaths.map((path: IPath) => {
-            const linkPath = (props.path + "/" + path.Base).replace(new RegExp(":id", "g"), id ?? "-1");
+            const linkPath = (props.path + "/" + path.Base).replace(new RegExp(":home_id", "g"), id ?? "-1");
             return (
               <Link
                 key={props.path + path.Base + "::nav_item_key"}

@@ -19,6 +19,8 @@ import Switches from "../../user/devices/SmartSwitch/Switches";
 import Lights from "../../user/devices/SmartLight/Lights";
 import { user } from "hive-link-common";
 import HomesLayout from "../../user/homes/HomesLayout";
+import HomeLayout from "../../user/homes/home/HomeLayout";
+import NewHome from "../../user/homes/home/NewHome";
 /* Roles: 
 - -1: public
 -  0: user
@@ -69,61 +71,74 @@ const Paths: IPath = {
           Component: <HomesLayout path="" />,
           Subpaths: [
             {
-              Base: ":id/devices",
-              Title: "My Devices",
+              Base: ":home_id",
+              Title: "Home Dashboard",
               Roles: [0, 1],
-              Component: <DevicesLayout path="" />,
+              Component: <HomeLayout path="" />,
               Subpaths: [
                 {
-                  Base: "new",
+                  Base: "devices",
+                  Title: "My Devices",
                   Roles: [0, 1],
-                  Component: <AddDevice path="" />,
+                  Component: <DevicesLayout path="" />,
                   Subpaths: [
                     {
-                      Base: "plug",
+                      Base: "new",
                       Roles: [0, 1],
-                      Component: <AddPlugDevice path="" />,
+                      Component: <AddDevice path="" />,
+                      Subpaths: [
+                        {
+                          Base: "plug",
+                          Roles: [0, 1],
+                          Component: <AddPlugDevice path="" />,
+                          Subpaths: [],
+                        },
+                        {
+                          Base: "switch",
+                          Roles: [0, 1],
+                          Component: <AddSwitchDevice path="" />,
+                          Subpaths: [],
+                        },
+                        {
+                          Base: "light",
+                          Roles: [0, 1],
+                          Component: <AddLightDevice path="" />,
+                          Subpaths: [],
+                        },
+                      ],
+                    },
+                    {
+                      Base: "plugs",
+                      Roles: [0, 1],
+                      Component: <Plugs path="" />,
                       Subpaths: [],
                     },
                     {
-                      Base: "switch",
+                      Base: "switches",
                       Roles: [0, 1],
-                      Component: <AddSwitchDevice path="" />,
+                      Component: <Switches path="" />,
                       Subpaths: [],
                     },
                     {
-                      Base: "light",
+                      Base: "lights",
                       Roles: [0, 1],
-                      Component: <AddLightDevice path="" />,
+                      Component: <Lights path="" />,
                       Subpaths: [],
-                    },
+                    }
                   ],
                 },
                 {
-                  Base: "plugs",
+                  Base: "routines",
+                  Title: "My Routines",
                   Roles: [0, 1],
-                  Component: <Plugs path="" />,
+                  Component: <Routines path=""></Routines>,
                   Subpaths: [],
-                },
-                {
-                  Base: "switches",
-                  Roles: [0, 1],
-                  Component: <Switches path="" />,
-                  Subpaths: [],
-                },
-                {
-                  Base: "lights",
-                  Roles: [0, 1],
-                  Component: <Lights path="" />,
-                  Subpaths: [],
-                }
-              ],
+                }],
             },
             {
-              Base: ":id/routines",
-              Title: "My Routines",
+              Base: "new",
               Roles: [0, 1],
-              Component: <Routines path=""></Routines>,
+              Component: <NewHome path="" />,
               Subpaths: [],
             }
           ]
