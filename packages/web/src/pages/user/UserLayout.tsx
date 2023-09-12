@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { getFilteredSubpaths } from "../common/constants/Paths";
 import { useAuth } from "../../hooks/auth";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import _ from 'lodash';
 
 interface IUserLayoutProps extends IRouteProps {}
 
 const layout = {
-  navHeight: 70,
+  navHeight: 40,
   color1: "black",
   color1p5: "#535353",
   color2: "white",
@@ -23,6 +24,7 @@ function UserLayout(props: IUserLayoutProps) {
     ["profile"]
   );
 
+  useEffect(() => {}, [location.pathname, auth.user]);
   return (
     <Box sx={styles.container}>
       <Box sx={styles.userNav}>
@@ -34,7 +36,7 @@ function UserLayout(props: IUserLayoutProps) {
             return (
               <Link key={linkPath + "::nav_item_key"} to={linkPath}>
                 {path.Title ||
-                  path.Base.charAt(0).toUpperCase() + path.Base.slice(1)}
+                  _.capitalize(path.Base)}
               </Link>
             );
           })}
@@ -77,7 +79,7 @@ const styles: Record<string, any> = {
     maxWidth: 1500,
     display: "flex",
     justifyContent: "center",
-    border: "1.5px solid black",
+
   },
 };
 
