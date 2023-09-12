@@ -1,0 +1,254 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model cart_item {
+  id               Int              @id @default(autoincrement())
+  session_id       Int
+  product_id       Int
+  quantity         Int
+  created_at       DateTime         @db.Timestamp(0)
+  updated_at       DateTime         @db.Timestamp(0)
+  product          product          @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_TO_cart_item")
+  shopping_session shopping_session @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_shopping_session_TO_cart_item")
+
+  @@index([product_id], map: "FK_product_TO_cart_item")
+  @@index([session_id], map: "FK_shopping_session_TO_cart_item")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model device {
+  id              Int             @id @default(autoincrement())
+  category_id     Int
+  manufacturer    String          @db.VarChar(20)
+  model           String?         @db.VarChar(20)
+  name            String?         @db.VarChar(50)
+  description     String?         @db.Text
+  created_at      DateTime        @db.Timestamp(0)
+  updated_at      DateTime        @db.Timestamp(0)
+  device_category device_category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_device_category_TO_device")
+  user_device     user_device[]
+
+  @@index([category_id], map: "FK_device_category_TO_device")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model device_category {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(50)
+  description String?  @db.Text
+  created_at  DateTime @db.Timestamp(0)
+  updated_at  DateTime @db.Timestamp(0)
+  device      device[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model order_details {
+  id              Int             @id @default(autoincrement())
+  user_id         Int
+  payment_id      Int
+  address_id      Int
+  total           Decimal         @db.Decimal(10, 2)
+  created_at      DateTime        @db.Timestamp(0)
+  updated_at      DateTime        @db.Timestamp(0)
+  payment_details payment_details @relation(fields: [payment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_payment_details_TO_order_details")
+  user            user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_order_details")
+  user_address    user_address    @relation(fields: [address_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_address_TO_order_details")
+  order_items     order_items[]
+
+  @@index([payment_id], map: "FK_payment_details_TO_order_details")
+  @@index([user_id], map: "FK_user_TO_order_details")
+  @@index([address_id], map: "FK_user_address_TO_order_details")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model order_items {
+  id            Int           @id @default(autoincrement())
+  order_id      Int
+  product_id    Int
+  quantity      Int
+  created_at    DateTime      @db.Timestamp(0)
+  updated_at    DateTime      @db.Timestamp(0)
+  order_details order_details @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_order_details_TO_order_items")
+  product       product       @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_TO_order_items")
+
+  @@index([order_id], map: "FK_order_details_TO_order_items")
+  @@index([product_id], map: "FK_product_TO_order_items")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model payment_details {
+  id              Int             @id @default(autoincrement())
+  user_payment_id Int
+  amount          Decimal         @db.Decimal(10, 2)
+  status          String          @db.VarChar(255)
+  created_at      DateTime        @db.Timestamp(0)
+  updated_at      DateTime        @db.Timestamp(0)
+  order_details   order_details[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model product {
+  id                Int               @id @default(autoincrement())
+  category_id       Int
+  discount_id       Int
+  inventory_id      Int
+  name              String            @db.VarChar(255)
+  description       String?           @db.Text
+  sku               String            @db.VarChar(255)
+  price             Decimal           @db.Decimal(10, 2)
+  active            Boolean
+  created_at        DateTime          @db.Timestamp(0)
+  updated_at        DateTime          @db.Timestamp(0)
+  cart_item         cart_item[]
+  order_items       order_items[]
+  product_category  product_category  @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_category_TO_product")
+  product_discount  product_discount  @relation(fields: [discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_discount_TO_product")
+  product_inventory product_inventory @relation(fields: [inventory_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_inventory_TO_product")
+  user_device       user_device[]
+
+  @@index([category_id], map: "FK_product_category_TO_product")
+  @@index([discount_id], map: "FK_product_discount_TO_product")
+  @@index([inventory_id], map: "FK_product_inventory_TO_product")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model product_category {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  description String?   @db.Text
+  created_at  DateTime  @db.Timestamp(0)
+  updated_at  DateTime  @db.Timestamp(0)
+  product     product[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model product_discount {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  description String?   @db.Text
+  percent     Decimal   @db.Decimal(10, 2)
+  active      Boolean
+  created_at  DateTime  @db.Timestamp(0)
+  updated_at  DateTime  @db.Timestamp(0)
+  product     product[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model product_inventory {
+  id         Int       @id @default(autoincrement())
+  quantity   Int
+  created_at DateTime  @db.Timestamp(0)
+  updated_at DateTime  @db.Timestamp(0)
+  product    product[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model shopping_session {
+  id         Int         @id @default(autoincrement())
+  user_id    Int
+  total      Decimal     @db.Decimal(10, 2)
+  created_at DateTime    @db.Timestamp(0)
+  updated_at DateTime    @db.Timestamp(0)
+  cart_item  cart_item[]
+  user       user        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_shopping_session")
+
+  @@index([user_id], map: "FK_user_TO_shopping_session")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  id               Int                @id @default(autoincrement())
+  email            String             @unique(map: "email") @db.VarChar(255)
+  telephone        String?            @db.VarChar(20)
+  first_name       String             @db.VarChar(255)
+  last_name        String             @db.VarChar(255)
+  role             Int
+  auth_hash        String             @db.VarChar(255)
+  created_at       DateTime           @db.Timestamp(0)
+  updated_at       DateTime           @db.Timestamp(0)
+  order_details    order_details[]
+  shopping_session shopping_session[]
+  user_address     user_address[]
+  user_device      user_device[]
+  user_payment     user_payment[]
+  user_home        user_home[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user_address {
+  id            Int             @id @default(autoincrement())
+  user_id       Int
+  address_line1 String          @db.VarChar(255)
+  address_line2 String          @db.VarChar(255)
+  city          String          @db.VarChar(255)
+  postal_code   String          @db.VarChar(255)
+  country       String          @db.VarChar(255)
+  telephone     String          @db.VarChar(20)
+  mobile        String?         @db.VarChar(20)
+  created_at    DateTime        @db.Timestamp(0)
+  updated_at    DateTime        @db.Timestamp(0)
+  order_details order_details[]
+  user          user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_address")
+  user_home     user_home[]
+
+  @@index([user_id], map: "FK_user_TO_user_address")
+}
+
+model user_home {
+  id           Int           @id @default(autoincrement())
+  user_id      Int
+  address_id   Int?
+  name         String        @db.VarChar(50)
+  created_at   DateTime      @db.Timestamp(0)
+  updated_at   DateTime      @db.Timestamp(0)
+  user         user          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_home")
+  user_address user_address? @relation(fields: [address_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_address_TO_user_home")
+  user_device  user_device[]
+
+  @@index([user_id], map: "FK_user_TO_user_home")
+  @@index([address_id], map: "FK_user_address_TO_user_home")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user_device {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  device_id  Int
+  home_id    Int
+  product_id Int?
+  name       String    @db.VarChar(50)
+  last_conn  DateTime? @db.Timestamp(0)
+  created_at DateTime  @db.Timestamp(0)
+  updated_at DateTime  @db.Timestamp(0)
+  device     device    @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_device_TO_user_device")
+  product    product?  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_TO_user_device")
+  user       user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_device")
+  user_home  user_home @relation(fields: [home_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_home_TO_user_device")
+
+  @@index([device_id], map: "FK_device_TO_user_device")
+  @@index([product_id], map: "FK_product_TO_user_device")
+  @@index([user_id], map: "FK_user_TO_user_device")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user_payment {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  payment_type String   @db.VarChar(255)
+  account_no   String   @db.VarChar(255)
+  provider     String   @db.VarChar(255)
+  expiry       DateTime @db.Date
+  created_at   DateTime @db.Timestamp(0)
+  updated_at   DateTime @db.Timestamp(0)
+  user         user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_payment")
+
+  @@index([user_id], map: "FK_user_TO_user_payment")
+}

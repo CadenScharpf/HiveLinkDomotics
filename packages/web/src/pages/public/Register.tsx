@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "yup-phone";
 
-import { IRegisterRes, IUser } from "hive-link-common";
+import { IRegisterRes, user } from "hive-link-common";
 import AuthService from "../../services/auth.service";
 import { INewUser } from "hive-link-common";
 import { useAuth } from "../../hooks/auth";
@@ -16,14 +16,14 @@ const Register: React.FC = () => {
   const [message, setMessage] = useState<string>("");
 
   const initialValues: INewUser = {
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
+    first_name: Yup.string()
       .test(
         "len",
         "The first name must be between 3 and 20 characters.",
@@ -31,7 +31,7 @@ const Register: React.FC = () => {
           val && val.toString().length >= 3 && val.toString().length <= 20
       )
       .required("This field is required!"),
-    lastName: Yup.string()
+    last_name: Yup.string()
       .test(
         "len",
         "The last name must be between 3 and 20 characters.",
@@ -92,29 +92,29 @@ const Register: React.FC = () => {
             {!successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="firstName"> First Name </label>
+                  <label htmlFor="first_name"> First Name </label>
                   <Field
-                    name="firstName"
+                    name="first_name"
                     type="text"
                     className="form-control"
                     val=""
                   />
                   <ErrorMessage
-                    name="firstName"
+                    name="first_name"
                     component="div"
                     className="alert alert-danger"
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="lastName"> Last Name </label>
+                  <label htmlFor="last_name"> Last Name </label>
                   <Field
-                    name="lastName"
+                    name="last_name"
                     type="text"
                     className="form-control"
                     val=""
                   />
                   <ErrorMessage
-                    name="lastName"
+                    name="last_name"
                     component="div"
                     className="alert alert-danger"
                   />

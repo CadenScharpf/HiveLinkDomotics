@@ -13,7 +13,7 @@ import { useAuth } from "../hooks/auth";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import Paths, { IPath } from "../pages/common/constants/Paths";
-import { IUser } from "hive-link-common";
+import { user } from "hive-link-common";
 import _ from "lodash";
 import MenuIcon from '@mui/icons-material/Menu'; 
 
@@ -68,7 +68,7 @@ function NavBar(props: INavBarProps) {
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
         {auth.user ? (
           <>
-            <Link to={"/user/profile"}>{auth.user.firstName}</Link>
+            <Link to={"/user/profile"}>{auth.user.first_name}</Link>
             <button
               onClick={() => {
                 auth.logout();

@@ -20,6 +20,15 @@
                 "kind": "build",
                 "isDefault": false
             }
+        },
+        {
+            "label": "generate prisma init migration",
+            "type": "shell",
+            "command": "cd packages/common && npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > ${workspaceFolder}/database/init/dev/01_init.sql" ,
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
         }
     ]
 }

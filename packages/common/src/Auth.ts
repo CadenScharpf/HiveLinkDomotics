@@ -1,10 +1,10 @@
-import { IUser } from "./DbInterface";
+import { user } from "@prisma/client";
 import { INewUser, ISessionUser } from "./User";
 
 // **** Request / Response Types **** //
 
-export interface ILoginReq {
-  email: IUser['email'];
+export interface ILoginReq extends Partial<user> {
+  email: user['email'];
   password: string;
 }
 

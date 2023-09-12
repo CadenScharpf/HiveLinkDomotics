@@ -17,7 +17,7 @@ import Routines from "../../user/routines/Routines";
 import Plugs from "../../user/devices/SmartPlug/Plugs";
 import Switches from "../../user/devices/SmartSwitch/Switches";
 import Lights from "../../user/devices/SmartLight/Lights";
-import { IUser } from "hive-link-common";
+import { user } from "hive-link-common";
 /* Roles: 
 - -1: public
 -  0: user
@@ -154,7 +154,7 @@ function getPathObjectAcc(base: string, path: IPath): IPath | null {
 * @param role: the role of the user
 * @param exclude: the paths to exclude from the returned list
 */
-export function getFilteredSubpaths(base: string, role: IUser["role"], exclude: string[]): IPath[] {
+export function getFilteredSubpaths(base: string, role: user["role"], exclude: string[]): IPath[] {
   const path = getPathObject(base);
   if (!path) {
     return [];

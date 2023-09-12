@@ -29,7 +29,16 @@ VALUES
 INSERT INTO user_address (user_id, address_line1, address_line2, city, postal_code, country, telephone, mobile, created_at, updated_at)
 VALUES
   (1, '123 Main St', 'Apt 101', 'New York', '10001', 'USA', '555-123-4567', '555-987-6543', NOW(), NOW()),
+  (1, '789 Broadway', '', 'San Diego', '10002', 'USA', '555-123-4567', '555-987-6543', NOW(), NOW()),
   (2, '456 Elm St', '', 'Los Angeles', '90002', 'USA', '555-987-6543', '555-123-4567', NOW(), NOW());
+
+-- Insert data into user_home table
+INSERT INTO user_home (user_id, address_id, name, created_at, updated_at)
+VALUES
+  (1, 1, 'City Loft', NOW(), NOW()),
+  (1, 2, 'Beach House', NOW(), NOW()),
+  (2, 3, 'Elm St.', NOW(), NOW()),
+  (2, null, 'Rental @ 3234 S Ravenswood', NOW(), NOW());
 
 -- Insert data into user_payment table
 INSERT INTO user_payment (user_id, payment_type, account_no, provider, expiry, created_at, updated_at)
@@ -91,8 +100,22 @@ VALUES
   (3, 'TP-Link', 'LB100', 'Smart Light', 'Smart Light', NOW(), NOW());
 
 -- Insert data into user_device table
-INSERT INTO user_device (user_id, device_id, product_id, name, last_conn, created_at, updated_at)
+INSERT INTO user_device (user_id, device_id, home_id, product_id, name, last_conn, created_at, updated_at)
 VALUES
-  (1, 1, NULL, 'TP-Link Smart Plug', NULL, NOW(), NOW()),
-  (1, 2, NULL, 'TP-Link Smart Switch', NULL, NOW(), NOW()),
-  (1, 3, NULL, 'TP-Link Smart Light', NULL, NOW(), NOW());
+  -- user 1 home 1
+  (1, 1, 1, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
+  (1, 2, 1, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
+  (1, 3, 1, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
+  -- user 1 home 2 
+  (1, 1, 2, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
+  (1, 2, 2, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
+  (1, 3, 2, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
+  -- user 2 home 3
+  (2, 1, 3, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
+  (2, 2, 3, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
+  (2, 3, 3, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
+  -- user 2 home 4
+  (2, 1, 4, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
+  (2, 2, 4, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
+  (2, 3, 4, NULL, 'Living Room Smart Light', NULL, NOW(), NOW());
+
