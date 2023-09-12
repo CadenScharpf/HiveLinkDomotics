@@ -1,6 +1,7 @@
 import {
   Box,
   Collapse,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -14,8 +15,13 @@ import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import Paths, { IPath } from "../pages/common/constants/Paths";
 import { IUser } from "hive-link-common";
 import _ from "lodash";
+import MenuIcon from '@mui/icons-material/Menu'; 
 
-function NavBar() {
+
+interface INavBarProps {
+  toggleSideBar: () => void;
+}
+function NavBar(props: INavBarProps) {
   const navigate = useNavigate();
   const auth = useAuth();
 
@@ -24,6 +30,8 @@ function NavBar() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
+      height: '100%',
+      width: '100%',
     },
     stack: {
       display: "flex",
@@ -45,11 +53,17 @@ function NavBar() {
   return (
     <Box sx={{ ...styles.nav }}>
       <Stack direction={"row"} spacing={1} sx={{ ...styles.stack }}>
+      <IconButton
+        sx={{ }}
+        onClick={props.toggleSideBar}
+      >
+        <MenuIcon />
+      </IconButton>
         <CleaningServicesIcon sx={{ fontSize: "3rem" }} />
-        <h3>HL</h3>
+        <h3>HL Domotics</h3>
       </Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
-        {getNavItems(userPaths, "/")}
+        {/* {getNavItems(userPaths, "/")} */}
       </Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
         {auth.user ? (

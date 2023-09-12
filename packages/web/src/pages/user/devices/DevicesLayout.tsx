@@ -1,35 +1,30 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import { IPath, getFilteredSubpaths } from "../../common/constants/Paths";
-import { Box, IconButton, Stack, SxProps, Tooltip, Typography } from "@mui/material";
-
+import { Box, IconButton, Stack, SxProps, Tooltip } from "@mui/material";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 
 function DevicesLayout(props: IRouteProps) {
+  const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-  const navigate = useNavigate();
+  const isBase = location.pathname === props.path;
+  const role = auth.user ? auth.user.role : -1;
 
-  var isBase = location.pathname === props.path;
-
-  useEffect(() => {
-    isBase = location.pathname === props.path;
-  }, [location.pathname]);
-  const navPaths = getFilteredSubpaths(
-    "devices",
-    auth.user ? auth.user.role : -1,
-    ["new"]
-  );
-
+  useEffect(() => {}, [location.pathname, auth.user]);
+  const navPaths = getFilteredSubpaths("devices", role, ["new"]);
   return (
     <Box sx={styles.container}>
       <Box sx={styles.nav}>
         <Tooltip title={isBase ? "Global Filters" : "All Devices"}>
-          {props.path === location.pathname ? (
-            <FilterListIcon />
+          {isBase ? (
+            <IconButton onClick={() => navigate(props.path)}>
+              <FilterListIcon />
+            </IconButton>
           ) : (
             <IconButton onClick={() => navigate(props.path)}>
               <FilterListOffIcon />
@@ -49,9 +44,15 @@ function DevicesLayout(props: IRouteProps) {
             );
           })}
         </Stack>
-        <p>dsfsadf</p>
+        <Stack direction="row" spacing={1}>
+          <Tooltip title={"Add Device"}>
+            <IconButton onClick={() => navigate(props.path + "/new")}>
+              <AddToQueueIcon />
+            </IconButton>
+          </Tooltip>
+        </Stack>
       </Box>
-      {location.pathname === props.path ? (
+      {isBase ? (
         <div>Devices</div>
       ) : (
         <div>
@@ -66,9 +67,8 @@ function DevicesLayout(props: IRouteProps) {
 const styles: Record<string, SxProps> = {
   container: {
     width: "100%",
-    maxWidth: 1500,
     height: "100%",
-    background: " 	#71797E",
+    background: "#71797E",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

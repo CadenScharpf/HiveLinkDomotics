@@ -9,6 +9,7 @@ import ProtectedRoute from "../../../components/ProtectedRoute";
 import Products from "../../public/Products";
 import DevicesLayout from "../../user/devices/DevicesLayout";
 import AddDevice, {
+  AddLightDevice,
   AddPlugDevice,
   AddSwitchDevice,
 } from "../../user/devices/AddDevice";
@@ -50,7 +51,7 @@ const Paths: IPath = {
     },
     {
       Base: "user",
-      Title: "My Account",
+      Title: "Hive-Link App",
       Roles: [0, 1],
       Component: <UserLayout path="" />,
       Subpaths: [
@@ -80,6 +81,12 @@ const Paths: IPath = {
                   Base: "switch",
                   Roles: [0, 1],
                   Component: <AddSwitchDevice path="" />,
+                  Subpaths: [],
+                },
+                {
+                  Base: "light",
+                  Roles: [0, 1],
+                  Component: <AddLightDevice path="" />,
                   Subpaths: [],
                 },
               ],

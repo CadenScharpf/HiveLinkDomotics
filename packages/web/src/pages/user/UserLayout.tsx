@@ -8,7 +8,10 @@ import { Box, Container, Stack, Typography } from "@mui/material";
 interface IUserLayoutProps extends IRouteProps {}
 
 const layout = {
-  navHeight: 50,
+  navHeight: 70,
+  color1: "black",
+  color1p5: "#535353",
+  color2: "white",
 };
 
 function UserLayout(props: IUserLayoutProps) {
@@ -22,18 +25,22 @@ function UserLayout(props: IUserLayoutProps) {
 
   return (
     <Box sx={styles.container}>
-      <Stack direction="row" spacing={1} sx={styles.userNavItems}>
-        <Link to={props.path}> Dashboard </Link>
-        {navPaths.map((path: any) => {
-          let linkPath = props.path + "/" + path.Base;
-          return (
-            <Link key={linkPath + "::nav_item_key"} to={linkPath}>
-              {path.Title ||
-                path.Base.charAt(0).toUpperCase() + path.Base.slice(1)}
-            </Link>
-          );
-        })}
-      </Stack>
+      <Box sx={styles.userNav}>
+        <p></p>
+        <Stack direction="row" spacing={1} sx={styles.userNavItems}>
+          <Link to={props.path}> Dashboard </Link>
+          {navPaths.map((path: any) => {
+            let linkPath = props.path + "/" + path.Base;
+            return (
+              <Link key={linkPath + "::nav_item_key"} to={linkPath}>
+                {path.Title ||
+                  path.Base.charAt(0).toUpperCase() + path.Base.slice(1)}
+              </Link>
+            );
+          })}
+        </Stack>
+        <p></p>
+      </Box>
       <Box sx={styles.userContent}>
         {location.pathname === props.path ? (
           <div>user dashboard</div>
@@ -53,15 +60,25 @@ const styles: Record<string, any> = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    background: "grey",
+    paddingBottom: 5,
   },
+  userNav: {
+    width: "100vw",
+    height: layout.navHeight,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
+  },
+  userNavItems: { alignItems: "center" },
   userContent: {
     height: `calc(100% - ${layout.navHeight}px)`,
     width: "100%",
+    maxWidth: 1500,
     display: "flex",
     justifyContent: "center",
+    border: "1.5px solid black",
   },
-  userNavItems: { height: layout.navHeight, alignItems: "center" },
 };
 
 export default UserLayout;
