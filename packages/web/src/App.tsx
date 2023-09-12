@@ -1,23 +1,12 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-
-import AuthService from "./services/auth.service";
-import { IUser } from "hive-link-common";
-
-import Login from "./pages/public/Login";
-import Register from "./pages/public/Register";
-import Profile from "./pages/user/Profile";
-import EventBus, { EventMap } from "./common/EventBus";
 import { useAuth } from "./hooks/auth";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Landing from "./pages/public/Landing";
 import NavBar from "./components/NavBar";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 
-import Paths, { IPath, getPathRoutes } from "./pages/common/constants/Paths";
+import Paths, { getPathRoutes } from "./pages/common/constants/Paths";
 
 const layoutParams = {
   navHeight: 64,

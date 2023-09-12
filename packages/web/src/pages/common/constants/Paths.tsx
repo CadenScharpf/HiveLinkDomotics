@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import Login from "../../public/Login";
 import Profile from "../../user/Profile";
 import Landing from "../../public/Landing";
@@ -8,7 +8,15 @@ import { Route } from "react-router-dom";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 import Products from "../../public/Products";
 import DevicesLayout from "../../user/devices/DevicesLayout";
-import AddDevice, { AddPlugDevice, AddSwitchDevice } from "../../user/devices/AddDevice";
+import AddDevice, {
+  AddPlugDevice,
+  AddSwitchDevice,
+} from "../../user/devices/AddDevice";
+import Routines from "../../user/routines/Routines";
+import Plugs from "../../user/devices/SmartPlug/Plugs";
+import Switches from "../../user/devices/SmartSwitch/Switches";
+import Lights from "../../user/devices/SmartLight/Lights";
+import { IUser } from "hive-link-common";
 /* Roles: 
 - -1: public
 -  0: user
@@ -17,7 +25,7 @@ import AddDevice, { AddPlugDevice, AddSwitchDevice } from "../../user/devices/Ad
 
 export interface IPath {
   Base: string;
-  Title? : string;
+  Title?: string;
   Roles: number[];
   Component: React.ReactElement;
   Subpaths: IPath[];
@@ -41,14 +49,8 @@ const Paths: IPath = {
       Subpaths: [],
     },
     {
-      Base: "products",
-      Roles: [],
-      Component: <Products path="" /> ,
-      Subpaths: [],
-    },
-    {
       Base: "user",
-      Title: "Home",
+      Title: "My Account",
       Roles: [0, 1],
       Component: <UserLayout path="" />,
       Subpaths: [
@@ -61,34 +63,99 @@ const Paths: IPath = {
         {
           Base: "devices",
           Roles: [0, 1],
-          Component: <DevicesLayout path=""/>,
+          Component: <DevicesLayout path="" />,
           Subpaths: [
             {
-              Base: "add",
+              Base: "new",
               Roles: [0, 1],
-              Component: <AddDevice path=""/>,
+              Component: <AddDevice path="" />,
               Subpaths: [
                 {
                   Base: "plug",
                   Roles: [0, 1],
-                  Component: <AddPlugDevice path=""/>,
+                  Component: <AddPlugDevice path="" />,
                   Subpaths: [],
                 },
                 {
                   Base: "switch",
                   Roles: [0, 1],
-                  Component: <AddSwitchDevice path=""/>,
-                  Subpaths: []
-                }
-              ]
+                  Component: <AddSwitchDevice path="" />,
+                  Subpaths: [],
+                },
+              ],
+            },
+            {
+              Base: "plugs",
+              Roles: [0, 1],
+              Component: <Plugs path="" />,
+              Subpaths: [],
+            },
+            {
+              Base: "switches",
+              Roles: [0, 1],
+              Component: <Switches path="" />,
+              Subpaths: [],
+            },
+            {
+              Base: "lights",
+              Roles: [0, 1],
+              Component: <Lights path="" />,
+              Subpaths: [],
             }
           ],
-        }
+        },
+        {
+          Base: "routines",
+          Roles: [0, 1],
+          Component: <Routines path=""></Routines>,
+          Subpaths: [],
+        },
       ],
+    },
+    {
+      Base: "products",
+      Roles: [],
+      Component: <Products path="" />,
+      Subpaths: [],
     },
   ],
 };
+export function getAbsPath(base: string): string {
+  const path = getPathObject(base);
+  return path? path.Base : "";
+}
+export function getPathObject(base: string): IPath | null {
+  return getPathObjectAcc(base, Paths);
+}
+function getPathObjectAcc(base: string, path: IPath): IPath | null {
+  if (path.Base === base) {
+    return path;
+  }
 
+  for (const subpath of path.Subpaths) {
+    const res = getPathObjectAcc(base, subpath);
+    if (res) {
+      return res; 
+    }
+  }
+  return null; // Return null if the path is not found
+}
+
+/*
+* Returns the subpaths of a path that are accessible to a user with a given role
+* @param base: the base path to get the subpaths of
+* @param role: the role of the user
+* @param exclude: the paths to exclude from the returned list
+*/
+export function getFilteredSubpaths(base: string, role: IUser["role"], exclude: string[]): IPath[] {
+  const path = getPathObject(base);
+  if (!path) {
+    return [];
+  }
+  return path.Subpaths.filter((path: IPath) => {
+    return ( path.Roles.length===0 || path.Roles.includes(role)) && !exclude.includes(path.Base);
+  });
+}
 export const getPathRoutes = (
   path: IPath,
   parentRoute: string,
@@ -100,13 +167,10 @@ export const getPathRoutes = (
       path={path.Base}
       key={absPath + " route"}
       element={
-        protect ? (
+         (
           <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
             {React.cloneElement(path.Component, { path: absPath })}
           </ProtectedRoute>
-        ) : (
-          React.cloneElement(path.Component, { path: absPath })
-
         )
       }
     >

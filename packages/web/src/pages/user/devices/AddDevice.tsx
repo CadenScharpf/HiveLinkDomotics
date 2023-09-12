@@ -1,8 +1,8 @@
 import React from 'react'
-import { IPageProps } from '../../common/types/IPageProps'
+import { IRouteProps } from '../../common/types/IRouteProps'
 import { Outlet, useLocation } from 'react-router-dom';
 
-interface IAddDeviceProps extends IPageProps {
+interface IAddDeviceProps extends IRouteProps {
 }
 
 function AddDevice(props: IAddDeviceProps) {

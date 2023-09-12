@@ -1,7 +1,7 @@
 import React from 'react'
-import { IPageProps } from '../common/types/IPageProps'
+import { IRouteProps } from '../common/types/IRouteProps'
 
-interface IProductsPageProps extends IPageProps { 
+interface IProductsPageProps extends IRouteProps { 
 
 }
 
