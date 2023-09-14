@@ -2,24 +2,31 @@
  * Express router paths go here.
  */
 
-import { Immutable } from '@src/other/types';
-
+import { Immutable } from "@src/other/types";
 
 const Paths = {
-  Base: '/api',
+  Base: "/api",
   Auth: {
-    Base: '/auth',
-    Me: '/me',
-    Login: '/login',
-    Logout: '/logout',
-    Register: '/register',
+    Base: "/auth",
+    Me: "/me",
+    Login: "/login",
+    Logout: "/logout",
+    Register: "/register",
   },
-  Users: {
-    Base: '/users',
-    GetOne: '/:id',
-    Add: '/add',
-    Update: '/update',
-    Delete: '/delete/:id',
+  User: {
+    Base: "/user",
+    Homes: {
+      Base: "/homes",
+      Home: {
+        Base: "/:homeId",
+        Devices: {
+          Base: "/devices",
+          Device: {
+            Base: "/:deviceId",
+          },
+        },
+      },
+    },
   },
 };
 

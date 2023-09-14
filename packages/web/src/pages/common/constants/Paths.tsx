@@ -71,7 +71,7 @@ const Paths: IPath = {
           Component: <HomesLayout path="" />,
           Subpaths: [
             {
-              Base: ":homeId",
+              Base: ":userHomeId",
               Title: "Home Dashboard",
               Roles: [0, 1],
               Component: <HomeLayout path="" />,

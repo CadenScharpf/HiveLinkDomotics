@@ -7,13 +7,16 @@ import jetValidator from "jet-validator";
 export const userRouter = Router();
 const validate = jetValidator();
 
-// Get all users
-userRouter.get(
-  '/',
-  adminMw,
-  UserController.getAll,
-);
+// Fprward routes
+userRouter.use(Paths.User.Homes.Base, userRouter)
 
+// Get all users
+userRouter.get('/', adminMw, UserController.getAll);
+
+
+
+
+/* 
 userRouter.get(
   Paths.Users.GetOne,
   //userMw, //!< TODO: Implement userMw
@@ -42,4 +45,4 @@ userRouter.delete(
   validate(['id', 'number', 'params']),
   adminMw,
   UserController.delete,
-);
+); */

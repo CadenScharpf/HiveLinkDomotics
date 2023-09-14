@@ -12,8 +12,8 @@ import { PrismaClient } from 'hive-link-common';
 const SERVER_START_MSG =
   "Express server started on port: " + EnvVars.Port.toString();
 
-  //dbTest();
- 
+//dbTest();
+
 server.listen(EnvVars.Port, () => logger.info(SERVER_START_MSG));
 
 async function dbTest() {
@@ -33,4 +33,5 @@ prisma.shopping_session.findMany().then((res) => console.log(res)).catch((error)
 prisma.user_address.findMany().then((res) => console.log(res)).catch((error) => console.log(error))
 prisma.user_device.findMany().then((res) => console.log(res)).catch((error) => console.log(error))
 prisma.user_payment.findMany().then((res) => console.log(res)).catch((error) => console.log(error))
+prisma.user_home.findMany().then((res) => console.log(res)).catch((error) => console.log(error))
 }
