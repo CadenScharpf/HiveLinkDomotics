@@ -3,9 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { useAuth } from './hooks/auth';
-import NavBar from './components/NavBar';
+import NavBar from './components/nav/NavBar';
 import { Box, IconButton } from '@mui/material';
-import SideBar from './components/SideBar';
+import SideBar from './components/nav/SideBar';
 
 
 import Paths, { getPathRoutes } from './pages/common/constants/Paths';
@@ -42,7 +42,7 @@ const App: React.FC = () => {
         {/* Pass the open state and onClose callback to the SideBar */}
         <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
 
-        <Box sx={{ height: '100%' }} component="section">
+        <Box sx={{ height: '100%', width: "100%" }} component="section">
           <Routes>
             <Route index element={Paths.Component} />
             {Paths.Subpaths.map((path) => getPathRoutes(path, '/', true))}

@@ -18,4 +18,5 @@ export {
   user_address,
   user_device,
   user_payment,
+  user_home
 } from "@prisma/client";

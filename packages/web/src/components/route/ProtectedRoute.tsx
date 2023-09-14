@@ -1,6 +1,6 @@
 import { UserRoles } from "hive-link-common";
 import React, { useEffect } from "react";
-import { useAuth } from "../hooks/auth";
+import { useAuth } from "../../hooks/auth";
 import { Navigate } from "react-router-dom";
 
 interface IProtectedRouteProps {

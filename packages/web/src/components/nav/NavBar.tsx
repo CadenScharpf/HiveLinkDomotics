@@ -9,10 +9,10 @@ import {
   SxProps,
 } from "@mui/material";
 import React from "react";
-import { useAuth } from "../hooks/auth";
+import { useAuth } from "../../hooks/auth";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
-import Paths, { IPath, getFilteredSubpaths } from "../pages/common/constants/Paths";
+import Paths, { IPath, getFilteredSubpaths } from "../../pages/common/constants/Paths";
 import { user } from "hive-link-common";
 import _ from "lodash";
 import MenuIcon from '@mui/icons-material/Menu'; 

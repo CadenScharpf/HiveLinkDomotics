@@ -5,7 +5,7 @@ import Landing from "../../public/Landing";
 import Register from "../../public/Register";
 import UserLayout from "../../user/UserLayout";
 import { Route } from "react-router-dom";
-import ProtectedRoute from "../../../components/ProtectedRoute";
+import ProtectedRoute from "../../../components/route/ProtectedRoute";
 import Products from "../../public/Products";
 import DevicesLayout from "../../user/devices/DevicesLayout";
 import AddDevice, {
@@ -71,14 +71,14 @@ const Paths: IPath = {
           Component: <HomesLayout path="" />,
           Subpaths: [
             {
-              Base: ":home_id",
+              Base: ":homeId",
               Title: "Home Dashboard",
               Roles: [0, 1],
               Component: <HomeLayout path="" />,
               Subpaths: [
                 {
                   Base: "devices",
-                  Title: "My Devices",
+                  Title: "Devices",
                   Roles: [0, 1],
                   Component: <DevicesLayout path="" />,
                   Subpaths: [
@@ -129,7 +129,7 @@ const Paths: IPath = {
                 },
                 {
                   Base: "routines",
-                  Title: "My Routines",
+                  Title: "Routines",
                   Roles: [0, 1],
                   Component: <Routines path=""></Routines>,
                   Subpaths: [],
@@ -211,5 +211,13 @@ export const getPathRoutes = (
     </Route>
   );
 };
+
+export function templatePath(path: string, params: Record<string, string>): string {
+  let newPath = path;
+  for (const [key, value] of Object.entries(params)) {
+    newPath = newPath.replace(`:${key}`, value);
+  }
+  return newPath;
+}
 
 export default Paths;

@@ -27,7 +27,7 @@ function UserLayout(props: IUserLayoutProps) {
   useEffect(() => {}, [location.pathname, auth.user]);
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.userNav}>
+      {/* <Box id="userNav" sx={styles.userNav}>
         <p></p>
         <Stack direction="row" spacing={1} sx={styles.userNavItems}>
           <Link to={props.path}> Account </Link>
@@ -42,7 +42,7 @@ function UserLayout(props: IUserLayoutProps) {
           })}
         </Stack>
         <p></p>
-      </Box>
+      </Box> */}
       <Box sx={styles.userContent}>
         {location.pathname === props.path ? (
           <div>user dashboard</div>
@@ -65,7 +65,7 @@ const styles: Record<string, any> = {
     paddingBottom: 5,
   },
   userNav: {
-    width: "100vw",
+    width: "100%",
     height: layout.navHeight,
     display: "flex",
     justifyContent: "space-between",
@@ -76,7 +76,7 @@ const styles: Record<string, any> = {
   userContent: {
     height: `calc(100% - ${layout.navHeight}px)`,
     width: "100%",
-    maxWidth: 1500,
+    maxWidth: 2000,
     display: "flex",
     justifyContent: "center",
 
