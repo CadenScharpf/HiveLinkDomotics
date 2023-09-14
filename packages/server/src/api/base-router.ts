@@ -13,7 +13,7 @@ const apiRouter = Router();
 apiRouter.use(Paths.Auth.Base, authRouter);
 
 // Add UserRouter
-apiRouter.use(Paths.Users.Base, userRouter);
+apiRouter.use(Paths.User.Base, userRouter);
 
 // **** Export default **** //
 

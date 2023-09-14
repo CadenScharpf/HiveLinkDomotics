@@ -1,4 +1,3 @@
-import { IRoute } from "express";
 import React, { useContext } from "react";
 import { IRouteProps } from "../../../common/types/IRouteProps";
 import { HomeContext } from "../HomesLayout";
@@ -10,33 +9,30 @@ import {
   useParams,
 } from "react-router-dom";
 import { useAuth } from "../../../../hooks/auth";
-import { getFilteredSubpaths } from "../../../common/constants/Paths";
-import { Box, IconButton, Stack, Tooltip } from "@mui/material";
+import { getFilteredSubpaths, templatePath } from "../../../common/constants/Paths";
+import { Box, Stack} from "@mui/material";
 import _ from "lodash";
 
 function HomeLayout(props: IRouteProps) {
   const location = useLocation();
   const auth = useAuth();
   const isBase = location.pathname === props.path;
-  const navigate = useNavigate();
-  const { homeId } = useParams();
+  const { userHomeId } = useParams();
+  const homeContext = useContext(HomeContext);
+  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId });
 
   const navPaths = getFilteredSubpaths(
-    ":homeId",
+    ":userHomeId",
     auth.user ? auth.user.role : -1,
     []
   );
-  const homeContext = useContext(HomeContext);
   return (
     <Box sx={styles.container}>
       <Box sx={{ ...styles.userNav, display: isBase ? "flex" : "flex" }}>
        
         <Stack direction="row" spacing={1} sx={styles.userNavItems}>
           {navPaths.map((path: any) => {
-            let linkPath = (props.path + "/" + path.Base).replace(
-              new RegExp("/:homeId", "g"),
-              homeId ? `/${homeId}` : ""
-            );
+            let linkPath = templatePath(props.path + "/" + path.Base, {userHomeId: homeContext.userHomeId});
             return (
               <Link key={linkPath + "::nav_item_key"} to={linkPath}>
                 {path.Title || _.capitalize(path.Base)}
@@ -45,26 +41,12 @@ function HomeLayout(props: IRouteProps) {
           })}
         </Stack>
         <Stack direction="row" spacing={1} sx={styles.userNavItems}>
-          <Tooltip title={"All Homes"}>
-            <IconButton
-              onClick={() => {
-                navigate(props.path);
-              }}
-            ></IconButton>
-          </Tooltip>
-          <Tooltip title={"Add Home"}>
-            <IconButton
-              onClick={() => {
-                navigate(props.path + "/new");
-              }}
-            ></IconButton>
-          </Tooltip>
         </Stack>
       </Box>
       <Box sx={styles.userContent}>
-        {homeId && location.pathname.endsWith(homeId)? (
+        {userHomeId && location.pathname.endsWith(userHomeId)? (
         <div>
-          <h5>Home {homeId} dashboard</h5>
+          <h5>Home {userHomeId} dashboard</h5>
         </div>
         ): (
         <Outlet />)}

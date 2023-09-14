@@ -9,25 +9,25 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import HomesDashboard from "./Homes";
 
-export const HomeContext = createContext({ homeId: "-1" });
+export const HomeContext = createContext({ userHomeId: "-1" });
 
 function HomesLayout(props: IRouteProps) {
   const location = useLocation();
   const auth = useAuth();
   const isBase = location.pathname === props.path;
   const navigate = useNavigate();
-  const { homeId } = useParams();
+  const { userHomeId } = useParams();
   
   const navPaths = getFilteredSubpaths(
     "homes",
     auth.user ? auth.user.role : -1,
-    [":homeId", "new"]
+    [":userHomeId", "new"]
   );
   return (
     <Box sx={styles.container}>
       <Box id="homes-nav" sx={{ ...styles.nav, display: isBase ? "flex" : "flex" }}>
         <Box>
-          {homeId && (<h5>Home id: {homeId}</h5>)}
+          {userHomeId && (<h5>Home id: {userHomeId}</h5>)}
         </Box>
         
         <Stack direction="row" spacing={1} sx={styles.navItems}>
@@ -47,7 +47,7 @@ function HomesLayout(props: IRouteProps) {
         {isBase ? (
           <HomesDashboard path={props.path} />
         ) : (
-            <HomeContext.Provider value={{ homeId: homeId?? "-1" }}>
+            <HomeContext.Provider value={{ userHomeId: userHomeId?? "-1" }}>
               <Outlet />
             </HomeContext.Provider>
         )}

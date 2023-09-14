@@ -11,8 +11,8 @@ function AddDevice(props: IAddDeviceProps) {
     const basePath = props.path;
     const homeContext = useContext(HomeContext)
     var isBase = location.pathname === basePath.replace(
-        new RegExp("/:homeId", "g"),
-        homeContext.homeId ? `/${homeContext.homeId}` : ""
+        new RegExp("/:userHomeId", "g"),
+        homeContext.userHomeId ? `/${homeContext.userHomeId}` : ""
       );
 
 

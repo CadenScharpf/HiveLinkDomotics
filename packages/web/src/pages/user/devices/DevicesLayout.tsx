@@ -33,7 +33,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
   const homeContext = useContext(HomeContext);
-  const path = templatePath(props.path, { homeId: homeContext.homeId });
+  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId });
   var isBase = location.pathname === path;
   const role = auth.user ? auth.user.role : -1;
   const navPaths = getFilteredSubpaths("devices", role, ["new"]);
