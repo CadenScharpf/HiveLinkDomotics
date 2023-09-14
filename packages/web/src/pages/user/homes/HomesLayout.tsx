@@ -7,7 +7,7 @@ import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import _ from "lodash";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
-import HomesDashboard from "./Homes";
+import Homes from "./Homes";
 
 export const HomeContext = createContext({ userHomeId: "-1" });
 
@@ -45,7 +45,7 @@ function HomesLayout(props: IRouteProps) {
       </Box>
       <Box sx={styles.userContent}>
         {isBase ? (
-          <HomesDashboard path={props.path} />
+          <Homes path={props.path} />
         ) : (
             <HomeContext.Provider value={{ userHomeId: userHomeId?? "-1" }}>
               <Outlet />

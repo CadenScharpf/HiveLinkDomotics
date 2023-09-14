@@ -153,10 +153,8 @@ const Paths: IPath = {
     },
   ],
 };
-export function getAbsPath(base: string): string {
-  const path = getPathObject(base);
-  return path? path.Base : "";
-}
+
+
 export function getPathObject(base: string): IPath | null {
   return getPathObjectAcc(base, Paths);
 }

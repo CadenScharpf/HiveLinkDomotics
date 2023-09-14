@@ -18,14 +18,15 @@ export function isSessionUser(user: any): user is ISessionUser {
 }
 
 interface IAuthContext {
-    user: ISessionUser | null;
+    user: User | null;
     error: string | null;
     loading: boolean;
     login: (username: string, password: string) => Promise<void>;
     logout: () => void;
     register: (newUser: INewUser) => Promise<void>;
-    autoSignIn: () => Promise<ISessionUser>;
+    autoSignIn: () => Promise<User>;
 }
+
 const authContext = createContext<IAuthContext | null>(null);
 
 export const useAuth = () => {

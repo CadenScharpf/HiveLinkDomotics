@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ISessionUser, user_home, user_payment } from "hive-link-common";
 
 export default class User implements ISessionUser {
@@ -16,10 +17,8 @@ export default class User implements ISessionUser {
         this.role = user.role;
     }
 
-    getHomes: () => user_home[] = () => {
-        
+    getHomes: () => Promise<user_home[]> = async () => {
         return [];
+        axios.get(`/api`)
     }
-
-
 }

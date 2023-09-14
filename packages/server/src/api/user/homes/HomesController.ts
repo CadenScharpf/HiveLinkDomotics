@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 // Update the getAll function with explicit types for request and response
 async function getAll(_: Request, res: Response) {
     const sUser = await SessionUtil.getSessionData<ISessionUser>(_).then((usr) => usr as ISessionUser);
-    const homes = await prisma.user.findUnique({ where: { id: sUser.id}, include: { user_home: true } });
-    return res.status(HttpStatusCodes.OK).json({ homes });
+    const user = await prisma.user.findUnique({ where: { id: sUser.id}, include: { user_home: true } });
+    return res.status(HttpStatusCodes.OK).json({ homes: user });
 }
 
 export default { getAll } as const;
