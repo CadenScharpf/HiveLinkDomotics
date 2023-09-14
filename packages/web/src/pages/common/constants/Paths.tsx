@@ -220,4 +220,5 @@ export function templatePath(path: string, params: Record<string, string>): stri
   return newPath;
 }
 
+
 export default Paths;

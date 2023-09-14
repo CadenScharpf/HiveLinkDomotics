@@ -12,12 +12,9 @@ import {
   UserRoles,
 } from "hive-link-common";
 import { INewUser } from "hive-link-common";
-import { Router } from "express";
-import Paths from "../common/config/Paths";
 import { RouteError } from "@src/other/classes";
 import { USER_ERRORS } from "../user/UserController";
 import PwdUtil from "@src/util/PwdUtil";
-import { tick } from "@src/util/misc";
 
 // **** Functions **** //
 

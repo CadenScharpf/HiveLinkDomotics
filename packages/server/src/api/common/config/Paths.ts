@@ -23,7 +23,6 @@ const Paths = {
   },
 };
 
-
 // **** Export **** //
 
 export type TPaths = Immutable<typeof Paths>;
