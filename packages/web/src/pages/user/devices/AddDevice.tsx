@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { IRouteProps } from '../../common/types/IRouteProps'
 import { Outlet, useLocation } from 'react-router-dom';
+import { HomeContext } from '../homes/HomesLayout';
 
 interface IAddDeviceProps extends IRouteProps {
 }
@@ -8,13 +9,16 @@ interface IAddDeviceProps extends IRouteProps {
 function AddDevice(props: IAddDeviceProps) {
     const location = useLocation();
     const basePath = props.path;
-    var isBase = location.pathname === basePath
-    useEffect(() => {isBase = location.pathname === basePath}, [location.pathname])
+    const homeContext = useContext(HomeContext)
+    var isBase = location.pathname === basePath.replace(
+        new RegExp("/:homeId", "g"),
+        homeContext.homeId ? `/${homeContext.homeId}` : ""
+      );
 
 
     return isBase? (
         <div>Add Device Page</div>
-        ) : (<Outlet />)
+        ) : (<><Outlet /></>)
 
 }
 

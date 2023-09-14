@@ -3,6 +3,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 import AuthService from "../services/auth.service";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import User from "../models/User";
 
 
 export function isSessionUser(user: any): user is ISessionUser {
@@ -10,7 +11,8 @@ export function isSessionUser(user: any): user is ISessionUser {
       user &&
       typeof user.id === 'number' &&
       typeof user.email === 'string' &&
-      typeof user.name === 'string' &&
+      typeof user.first_name === 'string' &&
+      typeof user.last_name === 'string' &&
       typeof user.role === 'number' 
   );
 }
@@ -50,7 +52,7 @@ function useProvideAuth(): IAuthContext{
     try {
       setLoading(true);
       const sessionUser = await AuthService.login(username, password);
-      setUser(sessionUser);
+      setUser(new User(sessionUser));
     } catch (err) {
       console.error(err);
       // You can handle the error here or rethrow it if needed.
@@ -70,7 +72,7 @@ function useProvideAuth(): IAuthContext{
   
     try {
       const sessionUser = await AuthService.register(newUser);
-      setUser(sessionUser);
+      setUser(new User(sessionUser));
       setError(null); // Clear any previous errors
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -87,7 +89,7 @@ function useProvideAuth(): IAuthContext{
   function autoSignIn() {
     setLoading(true);
     return AuthService.autoSignIn().then((sessionUser) => {
-      sessionUser && setUser(sessionUser);
+      sessionUser && setUser(new User(sessionUser));
       return sessionUser;
     }).finally(() => setLoading(false));
 

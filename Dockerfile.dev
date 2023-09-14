@@ -26,6 +26,7 @@ ENV MYSQL_ROOT_PASSWORD=docker
 ENV MYSQL_DATABASE=hivelink
 
 FROM common AS server
+RUN apt-get update -y && apt-get install -y openssl
 COPY --from=deps /app/packages/server/node_modules/ /app/packages/server/node_modules
 WORKDIR /app/packages/server
 CMD [ "pnpm", "dev" ]

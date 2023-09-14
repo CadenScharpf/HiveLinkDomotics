@@ -1,59 +1,80 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
-import { IPath, getFilteredSubpaths } from "../../common/constants/Paths";
-import { Box, IconButton, Stack, SxProps, Tooltip } from "@mui/material";
+import {
+  IPath,
+  getFilteredSubpaths,
+  templatePath,
+} from "../../common/constants/Paths";
+import {
+  Box,
+  IconButton,
+  Stack,
+  SxProps,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
+import { HomeContext } from "../homes/HomesLayout";
+import _ from "lodash";
 
-function DevicesLayout(props: IRouteProps) {
+interface IDevicesLayoutProps extends IRouteProps {}
+
+function DevicesLayout(props: IDevicesLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-  const isBase = location.pathname === props.path;
+  const homeContext = useContext(HomeContext);
+  const path = templatePath(props.path, { homeId: homeContext.homeId });
+  var isBase = location.pathname === path;
   const role = auth.user ? auth.user.role : -1;
+  const navPaths = getFilteredSubpaths("devices", role, ["new"]);
 
   useEffect(() => {}, [location.pathname, auth.user]);
-  const navPaths = getFilteredSubpaths("devices", role, ["new"]);
+
   return (
     <Box sx={styles.container}>
       <Box sx={styles.nav}>
-        <Tooltip title={isBase ? "Global Filters" : "All Devices"}>
-          {isBase ? (
-            <IconButton onClick={() => navigate(props.path)}>
-              <FilterListIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => navigate(props.path)}>
-              <FilterListOffIcon />
-            </IconButton>
-          )}
-        </Tooltip>
+        <Typography variant="h6">Devices</Typography>
         <Stack direction="row" spacing={1}>
-          {navPaths.map((path: IPath) => {
+          {navPaths.map((_path: IPath) => {
+            const linkPath = (path + "/" + _path.Base + "/");
             return (
-              <Link
-                key={props.path + path.Base + "::nav_item_key"}
-                to={props.path + "/" + path.Base}
-              >
-                {path.Title ||
-                  path.Base.charAt(0).toUpperCase() + path.Base.slice(1)}
+              <Link key={linkPath + "::nav_item_key"} to={linkPath}>
+                {_path.Title || _.capitalize(_path.Base)}
               </Link>
             );
           })}
         </Stack>
         <Stack direction="row" spacing={1}>
+          <Tooltip title={isBase ? "Global Filters" : "All Devices"}>
+            {isBase ? (
+              <IconButton onClick={() => navigate(path)}>
+                <FilterListOffIcon />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => navigate(path)}>
+                <FilterListIcon />
+              </IconButton>
+            )}
+          </Tooltip>
           <Tooltip title={"Add Device"}>
-            <IconButton onClick={() => navigate(props.path + "/new")}>
+            <IconButton onClick={() => navigate(path + "/new")}>
               <AddToQueueIcon />
             </IconButton>
           </Tooltip>
         </Stack>
       </Box>
       {isBase ? (
-        <div>Devices</div>
+        <div>All Devices</div>
       ) : (
         <div>
           <Outlet />

@@ -2,21 +2,21 @@ import { Router } from "express";
 import Paths from "../common/config/Paths";
 import AuthController from "./AuthController";
 import { ExpressValidator } from "express-validator";
-import { User } from "../user/User";
 import { RouteError } from "@src/other/classes";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import  Errors  from "../base-router";
+import Errors from "../base-router";
+import { PrismaClient } from "hive-link-common";
+
+const prisma = new PrismaClient();
 
 // **** Routes **** //
 
 // Validators
 const { body } = new ExpressValidator({
   isEmailNotInUse: async (email: string) => {
-    const user = await User.findByEmail(email);
-    if (user) {
-      return false;
-    }
-    return true;
+    return (await prisma.user.findUnique({ where: { email: email } }))
+      ? false
+      : true;
   },
 });
 
@@ -49,17 +49,11 @@ authRouter.post(
   //validate('email', 'password'),
   body("email").isEmail(),
   body("password").isString(),
-  AuthController.login,
+  AuthController.login
 );
 
 // Get current user
-authRouter.get(
-  Paths.Auth.Me,
-  AuthController.me,
-);
+authRouter.get(Paths.Auth.Me, AuthController.me);
 
 // Logout user
-authRouter.get(
-  Paths.Auth.Logout,
-  AuthController.logout,
-);
+authRouter.get(Paths.Auth.Logout, AuthController.logout);

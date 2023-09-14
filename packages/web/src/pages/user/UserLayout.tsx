@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { getFilteredSubpaths } from "../common/constants/Paths";
 import { useAuth } from "../../hooks/auth";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import _ from 'lodash';
 
 interface IUserLayoutProps extends IRouteProps {}
 
 const layout = {
-  navHeight: 70,
+  navHeight: 40,
   color1: "black",
   color1p5: "#535353",
   color2: "white",
@@ -23,24 +24,25 @@ function UserLayout(props: IUserLayoutProps) {
     ["profile"]
   );
 
+  useEffect(() => {}, [location.pathname, auth.user]);
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.userNav}>
+      {/* <Box id="userNav" sx={styles.userNav}>
         <p></p>
         <Stack direction="row" spacing={1} sx={styles.userNavItems}>
-          <Link to={props.path}> Dashboard </Link>
+          <Link to={props.path}> Account </Link>
           {navPaths.map((path: any) => {
             let linkPath = props.path + "/" + path.Base;
             return (
               <Link key={linkPath + "::nav_item_key"} to={linkPath}>
                 {path.Title ||
-                  path.Base.charAt(0).toUpperCase() + path.Base.slice(1)}
+                  _.capitalize(path.Base)}
               </Link>
             );
           })}
         </Stack>
         <p></p>
-      </Box>
+      </Box> */}
       <Box sx={styles.userContent}>
         {location.pathname === props.path ? (
           <div>user dashboard</div>
@@ -63,7 +65,7 @@ const styles: Record<string, any> = {
     paddingBottom: 5,
   },
   userNav: {
-    width: "100vw",
+    width: "100%",
     height: layout.navHeight,
     display: "flex",
     justifyContent: "space-between",
@@ -74,10 +76,10 @@ const styles: Record<string, any> = {
   userContent: {
     height: `calc(100% - ${layout.navHeight}px)`,
     width: "100%",
-    maxWidth: 1500,
+    maxWidth: 2000,
     display: "flex",
     justifyContent: "center",
-    border: "1.5px solid black",
+
   },
 };
 

@@ -5,7 +5,7 @@ import Landing from "../../public/Landing";
 import Register from "../../public/Register";
 import UserLayout from "../../user/UserLayout";
 import { Route } from "react-router-dom";
-import ProtectedRoute from "../../../components/ProtectedRoute";
+import ProtectedRoute from "../../../components/route/ProtectedRoute";
 import Products from "../../public/Products";
 import DevicesLayout from "../../user/devices/DevicesLayout";
 import AddDevice, {
@@ -17,7 +17,10 @@ import Routines from "../../user/routines/Routines";
 import Plugs from "../../user/devices/SmartPlug/Plugs";
 import Switches from "../../user/devices/SmartSwitch/Switches";
 import Lights from "../../user/devices/SmartLight/Lights";
-import { IUser } from "hive-link-common";
+import { user } from "hive-link-common";
+import HomesLayout from "../../user/homes/HomesLayout";
+import HomeLayout from "../../user/homes/home/HomeLayout";
+import NewHome from "../../user/homes/home/NewHome";
 /* Roles: 
 - -1: public
 -  0: user
@@ -62,61 +65,84 @@ const Paths: IPath = {
           Subpaths: [],
         },
         {
-          Base: "devices",
+          Base: "homes",
+          Title: "My Homes",
           Roles: [0, 1],
-          Component: <DevicesLayout path="" />,
+          Component: <HomesLayout path="" />,
           Subpaths: [
+            {
+              Base: ":homeId",
+              Title: "Home Dashboard",
+              Roles: [0, 1],
+              Component: <HomeLayout path="" />,
+              Subpaths: [
+                {
+                  Base: "devices",
+                  Title: "Devices",
+                  Roles: [0, 1],
+                  Component: <DevicesLayout path="" />,
+                  Subpaths: [
+                    {
+                      Base: "new",
+                      Roles: [0, 1],
+                      Component: <AddDevice path="" />,
+                      Subpaths: [
+                        {
+                          Base: "plug",
+                          Roles: [0, 1],
+                          Component: <AddPlugDevice path="" />,
+                          Subpaths: [],
+                        },
+                        {
+                          Base: "switch",
+                          Roles: [0, 1],
+                          Component: <AddSwitchDevice path="" />,
+                          Subpaths: [],
+                        },
+                        {
+                          Base: "light",
+                          Roles: [0, 1],
+                          Component: <AddLightDevice path="" />,
+                          Subpaths: [],
+                        },
+                      ],
+                    },
+                    {
+                      Base: "plugs",
+                      Roles: [0, 1],
+                      Component: <Plugs path="" />,
+                      Subpaths: [],
+                    },
+                    {
+                      Base: "switches",
+                      Roles: [0, 1],
+                      Component: <Switches path="" />,
+                      Subpaths: [],
+                    },
+                    {
+                      Base: "lights",
+                      Roles: [0, 1],
+                      Component: <Lights path="" />,
+                      Subpaths: [],
+                    }
+                  ],
+                },
+                {
+                  Base: "routines",
+                  Title: "Routines",
+                  Roles: [0, 1],
+                  Component: <Routines path=""></Routines>,
+                  Subpaths: [],
+                }],
+            },
             {
               Base: "new",
               Roles: [0, 1],
-              Component: <AddDevice path="" />,
-              Subpaths: [
-                {
-                  Base: "plug",
-                  Roles: [0, 1],
-                  Component: <AddPlugDevice path="" />,
-                  Subpaths: [],
-                },
-                {
-                  Base: "switch",
-                  Roles: [0, 1],
-                  Component: <AddSwitchDevice path="" />,
-                  Subpaths: [],
-                },
-                {
-                  Base: "light",
-                  Roles: [0, 1],
-                  Component: <AddLightDevice path="" />,
-                  Subpaths: [],
-                },
-              ],
-            },
-            {
-              Base: "plugs",
-              Roles: [0, 1],
-              Component: <Plugs path="" />,
-              Subpaths: [],
-            },
-            {
-              Base: "switches",
-              Roles: [0, 1],
-              Component: <Switches path="" />,
-              Subpaths: [],
-            },
-            {
-              Base: "lights",
-              Roles: [0, 1],
-              Component: <Lights path="" />,
+              Component: <NewHome path="" />,
               Subpaths: [],
             }
-          ],
-        },
-        {
-          Base: "routines",
-          Roles: [0, 1],
-          Component: <Routines path=""></Routines>,
-          Subpaths: [],
-        },
+          ]
+        }
       ],
     },
     {
@@ -154,7 +180,7 @@ function getPathObjectAcc(base: string, path: IPath): IPath | null {
 * @param role: the role of the user
 * @param exclude: the paths to exclude from the returned list
 */
-export function getFilteredSubpaths(base: string, role: IUser["role"], exclude: string[]): IPath[] {
+export function getFilteredSubpaths(base: string, role: user["role"], exclude: string[]): IPath[] {
   const path = getPathObject(base);
   if (!path) {
     return [];
@@ -185,5 +211,13 @@ export const getPathRoutes = (
     </Route>
   );
 };
+
+export function templatePath(path: string, params: Record<string, string>): string {
+  let newPath = path;
+  for (const [key, value] of Object.entries(params)) {
+    newPath = newPath.replace(`:${key}`, value);
+  }
+  return newPath;
+}
 
 export default Paths;

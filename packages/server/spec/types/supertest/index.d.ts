@@ -1,4 +1,4 @@
-import { IUser } from 'hive-link-common';
+import { user } from 'hive-link-common';
 import 'supertest';
 
 
@@ -8,7 +8,7 @@ declare module 'supertest' {
     headers: Record<string, string[]>;
     body: {
       error: string;
-      users: IUser[];
+      users: user[];
     };
   }
 }

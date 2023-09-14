@@ -9,11 +9,11 @@ import {
   SxProps,
 } from "@mui/material";
 import React from "react";
-import { useAuth } from "../hooks/auth";
+import { useAuth } from "../../hooks/auth";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
-import Paths, { IPath } from "../pages/common/constants/Paths";
-import { IUser } from "hive-link-common";
+import Paths, { IPath, getFilteredSubpaths } from "../../pages/common/constants/Paths";
+import { user } from "hive-link-common";
 import _ from "lodash";
 import MenuIcon from '@mui/icons-material/Menu'; 
 
@@ -40,15 +40,11 @@ function NavBar(props: INavBarProps) {
     },
   };
 
-  const userPaths = Paths.Subpaths.filter((path: IPath) => {
-    const exclude = ["login", "register"];
-    const role = auth.user ? auth.user.role : -1;
-
-    return (
-      (path.Roles.includes(role) || path.Roles.length === 0) &&
-      !exclude.includes(path.Base)
-    );
-  });
+  const navPaths = getFilteredSubpaths(
+    "user",
+    auth.user ? auth.user.role : -1,
+    ["profile"]
+  );
 
   return (
     <Box sx={{ ...styles.nav }}>
@@ -63,12 +59,13 @@ function NavBar(props: INavBarProps) {
         <h3>HL Domotics</h3>
       </Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
-        {/* {getNavItems(userPaths, "/")} */}
+         
       </Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
         {auth.user ? (
           <>
-            <Link to={"/user/profile"}>{auth.user.firstName}</Link>
+            {getNavItems(navPaths, "/user/")} 
+            <Link to={"/user/profile"}>{_.capitalize(auth.user.first_name)}</Link> 
             <button
               onClick={() => {
                 auth.logout();

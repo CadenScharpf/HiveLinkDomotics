@@ -8,13 +8,14 @@ import {
   IRegisterReq,
   ILoginRes,
   IRegisterRes,
+  PrismaClient,
+  UserRoles,
 } from "hive-link-common";
 import { INewUser } from "hive-link-common";
 import { Router } from "express";
 import Paths from "../common/config/Paths";
-import { User } from "../user/User";
 import { RouteError } from "@src/other/classes";
-import { USER_ERRORS } from "../user/User"; 
+import { USER_ERRORS } from "../user/UserController";
 import PwdUtil from "@src/util/PwdUtil";
 import { tick } from "@src/util/misc";
 
@@ -32,12 +33,16 @@ import { tick } from "@src/util/misc";
  * @throws {RouteError} If the user data is not a User or SessionUser.
  **/
 async function me(req: IReq, res: IRes) {
-  const sessionUser: ISessionUser | undefined | string = await SessionUtil.getSessionData<ISessionUser>(req);
-  if (typeof sessionUser !== 'string' && sessionUser) {
+  const sessionUser: ISessionUser | undefined | string =
+    await SessionUtil.getSessionData<ISessionUser>(req);
+  if (typeof sessionUser !== "string" && sessionUser) {
     return res.json({ user: sessionUser as ISessionUser });
   } else {
-    res.clearCookie('hive-link-token');
-    const errorMessage = typeof sessionUser === 'string' ? 'Session data retrieval failed' : 'User data not found';
+    res.clearCookie("hive-link-token");
+    const errorMessage =
+      typeof sessionUser === "string"
+        ? "Session data retrieval failed"
+        : "User data not found";
     return res.status(400).json({ error: errorMessage });
   }
 }
@@ -55,8 +60,8 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findByEmail(email);
-
+    const prisma = new PrismaClient();
+    const user = await prisma.user.findUnique({ where: { email: email } });
     if (!user) {
       throw new RouteError(
         HttpStatusCodes.NOT_FOUND,
@@ -64,20 +69,30 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
       );
     }
 
-    const hash = user.authHash || "";
+    const hash = user.auth_hash || "";
     const pwdPassed = await PwdUtil.compare(password, hash);
 
     if (!pwdPassed) {
-      res.status(HttpStatusCodes.UNAUTHORIZED).json({ error: USER_ERRORS.Unauth });
+      res
+        .status(HttpStatusCodes.UNAUTHORIZED)
+        .json({ error: USER_ERRORS.Unauth });
       return;
     }
 
-    const sessionUser: ISessionUser = User.toSessionUser(user);
+    const sessionUser: ISessionUser = {
+      id: user.id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role,
+    };
     await SessionUtil.addSessionData(res, sessionUser);
     res.json({ user: sessionUser });
   } catch (err) {
     console.error(err);
-    res.status(err.status || HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+    res
+      .status(err.status || HttpStatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: err.message });
   }
 }
 /**
@@ -90,8 +105,10 @@ async function login(req: IReq<ILoginReq>, res: IRes<ILoginRes>) {
  * @throws {RouteError} If the user data is not an INewUser.
  */
 async function register(req: IReq<IRegisterReq>, res: IRes<IRegisterRes>) {
+  const newUser: INewUser = req.body.user;
   try {
-    const existingUser = await User.findByEmail(req.body.user.email);
+    const prisma = new PrismaClient();
+    const existingUser = await prisma.user.findUnique({ where: { email: newUser.email } });
 
     if (existingUser) {
       throw new RouteError(
@@ -99,21 +116,41 @@ async function register(req: IReq<IRegisterReq>, res: IRes<IRegisterRes>) {
         `User with email "${req.body.user.email}" already exists`
       );
     }
-
-    const user = await User.create(req.body.user);
+    const createdAt = new Date()
+    const user = await prisma.user.create({
+      data: {
+        email: newUser.email,
+        first_name: newUser.first_name,
+        last_name: newUser.last_name,
+        auth_hash: await PwdUtil.getHash(newUser.password),
+        role: UserRoles.Standard,
+        created_at: createdAt,
+        updated_at: createdAt,
+      },
+    });
 
     if (user) {
-      const sessionUser = User.toSessionUser(user);
+      const sessionUser:ISessionUser = {
+        id: user.id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        role: user.role,
+      };
       await SessionUtil.addSessionData(res, sessionUser);
       res.status(HttpStatusCodes.OK).json({ user: sessionUser });
     } else {
       // If registration fails, send an error response
-      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Registration failed" });
+      res
+        .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Registration failed" });
     }
   } catch (err) {
     // Handle exceptions and send an appropriate error response
     console.error(err);
-    res.status(err.status || HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+    res
+      .status(err.status || HttpStatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: err.message });
   }
 }
 
