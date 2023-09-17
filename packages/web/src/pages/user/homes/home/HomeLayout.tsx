@@ -9,49 +9,96 @@ import {
   useParams,
 } from "react-router-dom";
 import { useAuth } from "../../../../hooks/auth";
-import { getFilteredSubpaths, templatePath } from "../../../common/constants/Paths";
-import { Box, Stack} from "@mui/material";
+import {
+  getFilteredSubpaths,
+  templatePath,
+} from "../../../common/constants/Paths";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
+import { user_home } from "hive-link-common";
 
 function HomeLayout(props: IRouteProps) {
+  const [homeInfo, setHomeInfo] = React.useState<user_home>();
+  const activeNavIndex = React.useRef(0);
+  const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-  const isBase = location.pathname === props.path;
   const { userHomeId } = useParams();
   const homeContext = useContext(HomeContext);
-  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId });
+  const isBase = location.pathname === props.path;
+  
 
+  const pathWithParams = templatePath(props.path, {
+    userHomeId: homeContext.userHomeId.toString(),
+  });
   const navPaths = getFilteredSubpaths(
     ":userHomeId",
     auth.user ? auth.user.role : -1,
     []
   );
-  return (
-    <Box sx={styles.container}>
-      <Box sx={{ ...styles.userNav, display: isBase ? "flex" : "flex" }}>
-       
-        <Stack direction="row" spacing={1} sx={styles.userNavItems}>
+
+  React.useEffect(() => {
+    if (auth.user) {
+      auth.user
+        .getHome(homeContext.userHomeId)
+        .then((home) => {
+          setHomeInfo(home);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [auth.user, homeContext.userHomeId]);
+
+  return homeInfo ? (
+    <>
+      <Box
+        sx={{
+          ...styles.nav,
+          display: location.pathname === props.path ? "flex" : "flex",
+        }}
+      >
+        <Stack direction="row" spacing={1} sx={styles.navItems}>
+          <Tooltip title={"Home Dashboard"}>
+            <Button
+              onClick={() => {
+                navigate(pathWithParams);
+              }}
+              variant="text"
+            >
+              <Typography variant="h5">{homeInfo.name}</Typography>
+            </Button>
+          </Tooltip>
+
           {navPaths.map((path: any) => {
-            let linkPath = templatePath(props.path + "/" + path.Base, {userHomeId: homeContext.userHomeId});
             return (
-              <Link key={linkPath + "::nav_item_key"} to={linkPath}>
+              <Button
+                key={`${pathWithParams}/${path.Base}::nav_item_key`}
+                variant="text"
+                onClick={() => navigate(`${pathWithParams}/${path.Base}`)}
+              >
                 {path.Title || _.capitalize(path.Base)}
-              </Link>
-            ); 
+              </Button>
+            );
           })}
         </Stack>
-        <Stack direction="row" spacing={1} sx={styles.userNavItems}>
-        </Stack>
+
+        <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
+
+        <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
       <Box sx={styles.userContent}>
-        {userHomeId && location.pathname.endsWith(userHomeId)? (
-        <div>
-          <h5>Home {userHomeId} dashboard</h5>
-        </div>
-        ): (
-        <Outlet />)}
+        {userHomeId && location.pathname.endsWith(userHomeId) ? (
+          <div>
+            <h5>Home {userHomeId} dashboard</h5>
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </Box>
-    </Box>
+    </>
+  ) : (
+    <></>
   );
 }
 
@@ -71,24 +118,22 @@ const styles: Record<string, any> = {
     alignItems: "center",
     paddingBottom: 0,
   },
-  userNav: {
+  nav: {
     width: "100%",
     height: layout.navHeight,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    borderTop: '1.5px solid black', 
-    borderBottom: '1.5px solid black' 
+    alignItems: "center",
+    borderTop: "1.5px solid black",
+    borderBottom: "1.5px solid black",
     //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
   },
-  userNavItems: { alignItems: "center" },
+  navItems: { alignItems: "center" },
   userContent: {
     height: `calc(100% - ${layout.navHeight}px)`,
     width: "100%",
     display: "flex",
     justifyContent: "center",
-    
-
   },
 };
 

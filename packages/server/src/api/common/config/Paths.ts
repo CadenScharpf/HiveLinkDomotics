@@ -17,15 +17,67 @@ const Paths = {
     Base: "/user",
     Homes: {
       Base: "/homes",
+      New: "/new",
       Home: {
-        Base: "/:homeId",
+        Base: "/:userHomeId",
         Devices: {
           Base: "/devices",
           Device: {
-            Base: "/:deviceId",
+            Base: "/:userDeviceId",
           },
         },
       },
+    },
+    Addresses: {
+      Base: "/addresses",
+      Address: {
+        Base: "/:addressId",
+      },
+    },
+    Orders: {
+      Base: "/orders",
+      Order: {
+        Base: "/:orderId",
+      },
+    },
+    Payments: {
+      Base: "/payments",
+      Payment: {
+        Base: "/:paymentId",
+      },
+    },
+    Cart: {
+      Base: "/cart",
+    },
+  },
+  Products: {
+    Base: "/products",
+    Product: {
+      Base: "/:productId",
+    },
+    Categories: {
+      Base: "/categories",
+      Category: {
+        Base: "/:categoryId",
+      },
+    },
+    Discounts: {
+      Base: "/discounts",
+      Discount: {
+        Base: "/:discountId",
+      },
+    },
+    Inventories: {
+      Base: "/inventories",
+      Inventory: {
+        Base: "/:inventoryId",
+      },
+    },
+  },
+  Devices: {
+    Base: "/devices",
+    Device: {
+      Base: "/:deviceId",
     },
   },
 };

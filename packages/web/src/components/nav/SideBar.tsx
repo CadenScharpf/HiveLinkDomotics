@@ -3,7 +3,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { IPath, getFilteredSubpaths } from "../../pages/common/constants/Paths";
+import { IPathConfig, getFilteredSubpaths } from "../../pages/common/constants/Paths";
 import { useAuth } from "../../hooks/auth";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ const SideBar: React.FC<ISideBarProps> = ({ open, onClose }) => {
     
 
       <List>
-        {baseRoutes.map((path: IPath) => {
+        {baseRoutes.map((path: IPathConfig) => {
           let linkPath = path.Base;
           return (
             <ListItem

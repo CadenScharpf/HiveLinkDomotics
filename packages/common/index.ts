@@ -1,6 +1,6 @@
-export * from "./src/Types/User";
+export * from "./src/user/IUser";
 //export * from './src/DbInterface'; //{IProductReq, IProductRes, IProductCategoryReq, IProductCategoryRes, IProductDiscountReq, IProductDiscountRes, IProductInventoryReq, IProductInventoryRes, IShoppingSessionReq, IShoppingSessionRes} from './src/Products';
-export * from "./src/Types/Auth";
+export * from "./src/auth/IAuth";
 export {
   PrismaClient,
   user,
@@ -20,3 +20,6 @@ export {
   user_payment,
   user_home
 } from "@prisma/client";
+
+export * from "./src/user/IUserHome";
+export * from "./src/user/IUserAddress";

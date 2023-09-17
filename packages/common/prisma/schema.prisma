@@ -42,7 +42,7 @@ model device {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model device_category {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(50)
+  name        String   @db.VarChar(20)
   description String?  @db.Text
   created_at  DateTime @db.Timestamp(0)
   updated_at  DateTime @db.Timestamp(0)
@@ -88,7 +88,7 @@ model payment_details {
   id              Int             @id @default(autoincrement())
   user_payment_id Int
   amount          Decimal         @db.Decimal(10, 2)
-  status          String          @db.VarChar(255)
+  status          String          @db.VarChar(10)
   created_at      DateTime        @db.Timestamp(0)
   updated_at      DateTime        @db.Timestamp(0)
   order_details   order_details[]
@@ -100,9 +100,9 @@ model product {
   category_id       Int
   discount_id       Int
   inventory_id      Int
-  name              String            @db.VarChar(255)
+  name              String            @db.VarChar(50)
   description       String?           @db.Text
-  sku               String            @db.VarChar(255)
+  sku               String            @db.VarChar(50)
   price             Decimal           @db.Decimal(10, 2)
   active            Boolean
   created_at        DateTime          @db.Timestamp(0)
@@ -122,7 +122,7 @@ model product {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model product_category {
   id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(255)
+  name        String    @db.VarChar(20)
   description String?   @db.Text
   created_at  DateTime  @db.Timestamp(0)
   updated_at  DateTime  @db.Timestamp(0)
@@ -132,7 +132,7 @@ model product_category {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model product_discount {
   id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(255)
+  name        String    @db.VarChar(20)
   description String?   @db.Text
   percent     Decimal   @db.Decimal(10, 2)
   active      Boolean
@@ -187,7 +187,7 @@ model user_address {
   id            Int             @id @default(autoincrement())
   user_id       Int
   address_line1 String          @db.VarChar(255)
-  address_line2 String          @db.VarChar(255)
+  address_line2 String?         @db.VarChar(255)
   city          String          @db.VarChar(255)
   postal_code   String          @db.VarChar(255)
   country       String          @db.VarChar(255)
@@ -242,9 +242,9 @@ model user_device {
 model user_payment {
   id           Int      @id @default(autoincrement())
   user_id      Int
-  payment_type String   @db.VarChar(255)
-  account_no   String   @db.VarChar(255)
-  provider     String   @db.VarChar(255)
+  payment_type String   @db.VarChar(20)
+  account_no   String   @db.VarChar(50)
+  provider     String   @db.VarChar(50)
   expiry       DateTime @db.Date
   created_at   DateTime @db.Timestamp(0)
   updated_at   DateTime @db.Timestamp(0)

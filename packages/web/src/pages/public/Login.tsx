@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
-import AuthService from "../../services/auth.service";
 import { Box } from "@mui/material";
 import { useAuth } from "../../hooks/auth";
 

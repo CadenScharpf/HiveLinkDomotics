@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import {
-  IPath,
+  IPathConfig,
   getFilteredSubpaths,
   templatePath,
 } from "../../common/constants/Paths";
@@ -33,7 +33,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
   const homeContext = useContext(HomeContext);
-  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId });
+  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId.toString() });
   var isBase = location.pathname === path;
   const role = auth.user ? auth.user.role : -1;
   const navPaths = getFilteredSubpaths("devices", role, ["new"]);
@@ -45,7 +45,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
       <Box sx={styles.nav}>
         <Typography variant="h6">Devices</Typography>
         <Stack direction="row" spacing={1}>
-          {navPaths.map((_path: IPath) => {
+          {navPaths.map((_path: IPathConfig) => {
             const linkPath = (path + "/" + _path.Base + "/");
             return (
               <Link key={linkPath + "::nav_item_key"} to={linkPath}>

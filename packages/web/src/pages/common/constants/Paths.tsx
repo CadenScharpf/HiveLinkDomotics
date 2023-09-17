@@ -1,12 +1,15 @@
-import React, { useImperativeHandle } from "react";
-import Login from "../../public/Login";
-import Profile from "../../user/Profile";
-import Landing from "../../public/Landing";
-import Register from "../../public/Register";
-import UserLayout from "../../user/UserLayout";
+import React from "react";
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../../../components/route/ProtectedRoute";
-import Products from "../../public/Products";
+import { user } from "hive-link-common";
+import Landing from "../../public/Landing";
+import Login from "../../public/Login";
+import Register from "../../public/Register";
+import UserLayout from "../../user/UserLayout";
+import Profile from "../../user/Profile";
+import HomesLayout from "../../user/homes/HomesLayout";
+import HomeLayout from "../../user/homes/home/HomeLayout";
+import NewHome from "../../user/homes/NewHome";
 import DevicesLayout from "../../user/devices/DevicesLayout";
 import AddDevice, {
   AddLightDevice,
@@ -17,92 +20,89 @@ import Routines from "../../user/routines/Routines";
 import Plugs from "../../user/devices/SmartPlug/Plugs";
 import Switches from "../../user/devices/SmartSwitch/Switches";
 import Lights from "../../user/devices/SmartLight/Lights";
-import { user } from "hive-link-common";
-import HomesLayout from "../../user/homes/HomesLayout";
-import HomeLayout from "../../user/homes/home/HomeLayout";
-import NewHome from "../../user/homes/home/NewHome";
-/* Roles: 
-- -1: public
--  0: user
--  1: admin 
-*/
+import Products from "../../public/Products";
 
-export interface IPath {
+export interface IPathConfig {
   Base: string;
   Title?: string;
   Roles: number[];
-  Component: React.ReactElement;
+  Component: React.ComponentType<{ path: string }>;
+  Subpaths: IPathConfig[];
+}
+
+export interface IPath extends IPathConfig {
+  Location: string;
   Subpaths: IPath[];
 }
 
-const Paths: IPath = {
+const pathConfig: IPathConfig = {
   Base: "/",
   Roles: [],
-  Component: <Landing />, // should redirect to user dashboard if logged in
+  Component: Landing, // Use the component type, not an instance
   Subpaths: [
     {
       Base: "login",
       Roles: [],
-      Component: <Login />,
+      Component: Login, // Use the component type, not an instance
       Subpaths: [],
     },
     {
       Base: "register",
       Roles: [],
-      Component: <Register />,
+      Component: Register, // Use the component type, not an instance
       Subpaths: [],
     },
     {
       Base: "user",
       Title: "Hive-Link App",
       Roles: [0, 1],
-      Component: <UserLayout path="" />,
+      Component: UserLayout,
       Subpaths: [
         {
           Base: "profile",
           Roles: [0, 1],
-          Component: <Profile />,
+          Component: Profile,
           Subpaths: [],
         },
         {
           Base: "homes",
           Title: "My Homes",
           Roles: [0, 1],
-          Component: <HomesLayout path="" />,
+          Component: HomesLayout,
           Subpaths: [
             {
               Base: ":userHomeId",
               Title: "Home Dashboard",
               Roles: [0, 1],
-              Component: <HomeLayout path="" />,
+              Component: HomeLayout,
               Subpaths: [
                 {
                   Base: "devices",
                   Title: "Devices",
                   Roles: [0, 1],
-                  Component: <DevicesLayout path="" />,
+                  Component: DevicesLayout,
                   Subpaths: [
                     {
                       Base: "new",
                       Roles: [0, 1],
-                      Component: <AddDevice path="" />,
+                      Component: AddDevice,
                       Subpaths: [
                         {
                           Base: "plug",
                           Roles: [0, 1],
-                          Component: <AddPlugDevice path="" />,
+                          Component: AddPlugDevice,
                           Subpaths: [],
                         },
                         {
                           Base: "switch",
                           Roles: [0, 1],
-                          Component: <AddSwitchDevice path="" />,
+                          Component: AddSwitchDevice,
                           Subpaths: [],
                         },
                         {
                           Base: "light",
                           Roles: [0, 1],
-                          Component: <AddLightDevice path="" />,
+                          Component: AddLightDevice,
                           Subpaths: [],
                         },
                       ],
@@ -110,50 +110,68 @@ const Paths: IPath = {
                     {
                       Base: "plugs",
                       Roles: [0, 1],
-                      Component: <Plugs path="" />,
+                      Component: Plugs,
                       Subpaths: [],
                     },
                     {
                       Base: "switches",
                       Roles: [0, 1],
-                      Component: <Switches path="" />,
+                      Component: Switches,
                       Subpaths: [],
                     },
                     {
                       Base: "lights",
                       Roles: [0, 1],
-                      Component: <Lights path="" />,
+                      Component: Lights,
                       Subpaths: [],
-                    }
+                    },
                   ],
                 },
                 {
                   Base: "routines",
                   Title: "Routines",
                   Roles: [0, 1],
-                  Component: <Routines path=""></Routines>,
+                  Component: Routines,
                   Subpaths: [],
-                }],
+                },
+              ],
             },
             {
               Base: "new",
               Roles: [0, 1],
-              Component: <NewHome path="" />,
+              Component: NewHome,
               Subpaths: [],
-            }
-          ]
-        }
+            },
+          ],
+        },
       ],
     },
     {
       Base: "products",
       Roles: [],
-      Component: <Products path="" />,
+      Component: Products,
       Subpaths: [],
     },
   ],
 };
 
+const Paths = exportPaths(pathConfig, "");
+
+//Utility Functions
+
+function exportPaths(pathConfig: IPathConfig, parentLoc: string): IPath {
+  const path: IPath = {
+    Base: pathConfig.Base,
+    Location: parentLoc + pathConfig.Base,
+    Roles: pathConfig.Roles,
+    Component: pathConfig.Component,
+    Subpaths: []
+  }
+  path.Subpaths = pathConfig.Subpaths.map((subPath) => {
+    return exportPaths(subPath,path.Location)
+  })
+  return path;
+}
 
 export function getPathObject(base: string): IPath | null {
   return getPathObjectAcc(base, Paths);
@@ -187,22 +205,23 @@ export function getFilteredSubpaths(base: string, role: user["role"], exclude: s
     return ( path.Roles.length===0 || path.Roles.includes(role)) && !exclude.includes(path.Base);
   });
 }
+
 export const getPathRoutes = (
   path: IPath,
   parentRoute: string,
   protect?: boolean
 ): React.ReactElement => {
   const absPath = parentRoute + path.Base;
+  const Component = path.Component; // Get the component type
   return (
     <Route
       path={path.Base}
       key={absPath + " route"}
       element={
-         (
-          <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
-            {React.cloneElement(path.Component, { path: absPath })}
-          </ProtectedRoute>
-        )
+        <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
+          {/* Instantiate the component here */}
+          <Component path={absPath} />
+        </ProtectedRoute>
       }
     >
       {path.Subpaths.map((subpath) => getPathRoutes(subpath, absPath + "/"))}
@@ -218,5 +237,4 @@ export function templatePath(path: string, params: Record<string, string>): stri
   return newPath;
 }
 
-
-export default Paths;
+export default Paths as IPath;

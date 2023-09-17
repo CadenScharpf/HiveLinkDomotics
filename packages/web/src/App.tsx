@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import { useAuth } from './hooks/auth';
-import NavBar from './components/nav/NavBar';
-import { Box, IconButton } from '@mui/material';
-import SideBar from './components/nav/SideBar';
+import React, { createContext, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import { useAuth } from "./hooks/auth";
+import NavBar from "./components/nav/NavBar";
+import { Box, IconButton } from "@mui/material";
+import SideBar from "./components/nav/SideBar";
 
-
-import Paths, { getPathRoutes } from './pages/common/constants/Paths';
+import pathConfig, { getPathRoutes } from "./pages/common/constants/Paths";
 
 const layoutParams = {
   navHeight: 64,
 };
+export const LayoutContext = createContext({ ...layoutParams });
 
 const layout = {
-  color1: 'tomato',
-  color2: 'white',
+  color1: "tomato",
+  color2: "white",
 };
 
 const App: React.FC = () => {
@@ -28,29 +28,35 @@ const App: React.FC = () => {
   };
 
   return (
-    <Box sx={{}}>
-      <Box sx={{ height: layoutParams.navHeight }} component="nav">
-        <NavBar toggleSideBar={toggleSideBar}/>
-      </Box>
-      <Box
-        style={{
-          display: 'flex',
-          height: `calc(100vh - ${layoutParams.navHeight}px)`,
-          width: '100%',
-        }}
-      >
-        {/* Pass the open state and onClose callback to the SideBar */}
-        <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
-
-        <Box sx={{ height: '100%', width: "100%" }} component="section">
+    <LayoutContext.Provider value={layoutParams}>
+      <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
+        <NavBar toggleSideBar={toggleSideBar} />
+      <Box sx={styles.appBody} component="main" id="appBody">
+        <Box sx={styles.section} component="section">
           <Routes>
-            <Route index element={Paths.Component} />
-            {Paths.Subpaths.map((path) => getPathRoutes(path, '/', true))}
+            <Route index element={<pathConfig.Component path="/" />} />{" "}
+            {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
           </Routes>
         </Box>
       </Box>
-    </Box>
+    </LayoutContext.Provider>
   );
 };
 
+const styles: Record<string, any> = {
+  appBody: {
+    display: "flex",
+    justifyContent: "center",
+    height: `calc(100vh - ${layoutParams.navHeight}px)`,
+    width: "100%",
+
+  },
+  section: {
+     height: "100%", 
+     width: "100%",
+      maxWidth: 2000,
+      border: '1.5px solid black'
+
+  }
+};
 export default App;

@@ -15,8 +15,8 @@
             "port": 9229, // Must match the port used in the nodemon.json configuration
             "sourceMaps": true,
             //"outFiles": ["${workspaceFolder}/out"],
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app/packages/server",
+            "localRoot": "${workspaceFolder}/src",
+            "remoteRoot": "/app/packages/server/src",
           }
           
 

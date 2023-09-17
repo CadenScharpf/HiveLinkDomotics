@@ -5,28 +5,28 @@ import Cookies from "js-cookie";
 
 const API_URL = "/api/auth/";
 
-const register = (newUser: INewUser) => {
-  return axios.post(API_URL + "register", {
-    user: newUser,
-  }).then((response: AxiosResponse<IRegisterRes>) => {
+const register = async (newUser: INewUser) => {
+  try {
+    const response = await axios.post(API_URL + "register", {
+      user: newUser,
+    });
     let user: ISessionUser = response.data.user;
-      localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
     return user;
-  }).catch((err) => {
+  } catch (err) {
     throw err;
-  });
+  }
 };
 
-const login = (email: string, password: string) => {
-  return axios
+const login = async (email: string, password: string) => {
+  const response = await axios
     .post(API_URL + "login", {
       email,
       password,
-    }).then((response: AxiosResponse<ILoginRes>) => {
-      let user: ISessionUser = response.data.user;
-        localStorage.setItem("user", JSON.stringify(user));
-      return user; 
     });
+  let user: ISessionUser = response.data.user;
+  localStorage.setItem("user", JSON.stringify(user));
+  return user;
 };
 
 const logout = () => {

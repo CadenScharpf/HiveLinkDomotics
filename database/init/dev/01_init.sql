@@ -167,7 +167,7 @@ CREATE TABLE `user_address` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `address_line1` VARCHAR(255) NOT NULL,
-    `address_line2` VARCHAR(255) NOT NULL,
+    `address_line2` VARCHAR(255) NULL,
     `city` VARCHAR(255) NOT NULL,
     `postal_code` VARCHAR(255) NOT NULL,
     `country` VARCHAR(255) NOT NULL,

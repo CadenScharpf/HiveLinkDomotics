@@ -1,5 +1,5 @@
 import { user } from "@prisma/client";
-import { INewUser, ISessionUser } from "./User";
+import { INewUser, ISessionUser } from "../user/IUser";
 
 // **** Request / Response Types **** //
 
