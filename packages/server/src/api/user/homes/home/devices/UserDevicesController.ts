@@ -18,7 +18,9 @@ export const UserDevicesController = {
       where: { id: parseInt(req.params.userHomeId) },
       include: {
         user_device: {
-          include: { device: true, product: true },
+          include: { device: {
+            include: { device_category: true }
+          }, product: true },
         },
       },
     });

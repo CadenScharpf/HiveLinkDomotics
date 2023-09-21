@@ -1,5 +1,5 @@
 import React from 'react'
-import { IRouteProps } from '../../../common/types/IRouteProps'
+import { IRouteProps } from '../../../../../../common/types/IRouteProps'
 
 function Switches(props: IRouteProps) {
   return (

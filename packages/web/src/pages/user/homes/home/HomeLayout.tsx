@@ -81,6 +81,11 @@ function HomeLayout(props: IRouteProps) {
               </Button>
             );
           })}
+        {/*   {navPaths.map((path: any) => {
+            return (
+                <></>
+            );
+          })} */}
         </Stack>
 
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>

@@ -32,12 +32,10 @@ const App: React.FC = () => {
       <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
         <NavBar toggleSideBar={toggleSideBar} />
       <Box sx={styles.appBody} component="main" id="appBody">
-        <Box sx={styles.section} component="section">
           <Routes>
             <Route index element={<pathConfig.Component path="/" />} />{" "}
             {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
           </Routes>
-        </Box>
       </Box>
     </LayoutContext.Provider>
   );
@@ -49,14 +47,7 @@ const styles: Record<string, any> = {
     justifyContent: "center",
     height: `calc(100vh - ${layoutParams.navHeight}px)`,
     width: "100%",
-
   },
-  section: {
-     height: "100%", 
-     width: "100%",
-      maxWidth: 2000,
-      border: '1.5px solid black'
 
-  }
 };
 export default App;

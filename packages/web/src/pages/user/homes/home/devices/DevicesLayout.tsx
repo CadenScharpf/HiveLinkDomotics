@@ -1,20 +1,16 @@
-import { useContext, useEffect } from "react";
-import { IRouteProps } from "../../common/types/IRouteProps";
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { useAuth } from "../../../hooks/auth";
+import { useContext, useEffect, useState } from "react";
+import { IRouteProps } from "../../../../common/types/IRouteProps";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../../hooks/auth";
 import {
   IPathConfig,
   getFilteredSubpaths,
   templatePath,
-} from "../../common/constants/Paths";
+} from "../../../../common/constants/Paths";
 import {
   Box,
   IconButton,
+  LinearProgress,
   Stack,
   SxProps,
   Tooltip,
@@ -23,8 +19,11 @@ import {
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
-import { HomeContext } from "../homes/HomesLayout";
-import _ from "lodash";
+import { HomeContext } from "../../HomesLayout";
+import _, { set } from "lodash";
+import { user_device } from "hive-link-common";
+import DevicesDashboard from "./DevicesDashboard";
+
 
 interface IDevicesLayoutProps extends IRouteProps {}
 
@@ -33,20 +32,34 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
   const homeContext = useContext(HomeContext);
-  const path = templatePath(props.path, { userHomeId: homeContext.userHomeId.toString() });
+  const path = templatePath(props.path, {
+    userHomeId: homeContext.userHomeId.toString(),
+  });
   var isBase = location.pathname === path;
   const role = auth.user ? auth.user.role : -1;
   const navPaths = getFilteredSubpaths("devices", role, ["new"]);
+  const [devices, setDevices] = useState<user_device[]>();
 
   useEffect(() => {}, [location.pathname, auth.user]);
 
-  return (
+  useEffect(() => {
+    auth.user
+      ?.getDevices(homeContext.userHomeId)
+      .then((_devices) => {
+        setDevices(_devices);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [auth.user, homeContext.userHomeId]);
+
+  return  (
     <Box sx={styles.container}>
-      <Box sx={styles.nav}>
+      {devices ? (<><Box sx={styles.nav}>
         <Typography variant="h6">Devices</Typography>
         <Stack direction="row" spacing={1}>
           {navPaths.map((_path: IPathConfig) => {
-            const linkPath = (path + "/" + _path.Base + "/");
+            const linkPath = path + "/" + _path.Base + "/";
             return (
               <Link key={linkPath + "::nav_item_key"} to={linkPath}>
                 {_path.Title || _.capitalize(_path.Base)}
@@ -74,14 +87,15 @@ function DevicesLayout(props: IDevicesLayoutProps) {
         </Stack>
       </Box>
       {isBase ? (
-        <div>All Devices</div>
+        <DevicesDashboard devices={devices} />
       ) : (
         <div>
           <Outlet />
         </div>
-      )}
+      )}</>) : (<><LinearProgress color="primary" sx={{width: '100%'}} /></>)}
+      
     </Box>
-  );
+  ) 
 }
 
 // Devices Component Styles

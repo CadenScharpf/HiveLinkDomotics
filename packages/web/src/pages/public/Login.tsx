@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useAuth } from "../../hooks/auth";
 
 type Props = {}
@@ -51,8 +51,8 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <Box sx={{width: '75%', maxWidth: '1000px'}}>
-      <div className="card card-container" style={{border: '1px solid black', padding: 20}}>
+    <Box sx={{height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div className="card card-container" style={{border: '1px solid black', padding: 20, width: '75%', maxWidth: '1000px'}}>
         <h1>Login</h1>
         <img
           style={{margin: 'auto'}}
@@ -104,6 +104,13 @@ const Login: React.FC<Props> = () => {
             )}
           </Form>
         </Formik>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+          <Typography variant="body1" >
+
+            Don't have an account?  
+            <a href="/register"style={{paddingLeft: 5}}>Register here!</a>
+          </Typography>
+        </Box>
       </div>
     </Box>
   );

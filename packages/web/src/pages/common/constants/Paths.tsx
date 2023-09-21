@@ -10,16 +10,16 @@ import Profile from "../../user/Profile";
 import HomesLayout from "../../user/homes/HomesLayout";
 import HomeLayout from "../../user/homes/home/HomeLayout";
 import NewHome from "../../user/homes/NewHome";
-import DevicesLayout from "../../user/devices/DevicesLayout";
+import DevicesLayout from "../../user/homes/home/devices/DevicesLayout";
 import AddDevice, {
   AddLightDevice,
   AddPlugDevice,
   AddSwitchDevice,
-} from "../../user/devices/AddDevice";
+} from "../../user/homes/home/devices/AddDevice";
 import Routines from "../../user/routines/Routines";
-import Plugs from "../../user/devices/SmartPlug/Plugs";
-import Switches from "../../user/devices/SmartSwitch/Switches";
-import Lights from "../../user/devices/SmartLight/Lights";
+import Plugs from "../../user/homes/home/devices/device/SmartPlug/Plugs";
+import Switches from "../../user/homes/home/devices/device/SmartSwitch/Switches";
+import Lights from "../../user/homes/home/devices/device/SmartLight/Lights";
 import Products from "../../public/Products";
 
 export interface IPathConfig {

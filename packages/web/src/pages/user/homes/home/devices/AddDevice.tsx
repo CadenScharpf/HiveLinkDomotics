@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import { IRouteProps } from '../../common/types/IRouteProps'
+import { IRouteProps } from '../../../../common/types/IRouteProps'
 import { Outlet, useLocation } from 'react-router-dom';
-import { HomeContext } from '../homes/HomesLayout';
+import { HomeContext } from '../../HomesLayout';
 
 interface IAddDeviceProps extends IRouteProps {
 }

@@ -22,7 +22,7 @@ function UserLayout(props: IUserLayoutProps) {
 
   useEffect(() => {}, [location.pathname, auth.user]);
   return (
-    <>
+    <Box id="user-content" sx={styles.userContent}>
      {/*  <UserNav path={props.path} /> */}
 
         {location.pathname === props.path ? (
@@ -30,7 +30,7 @@ function UserLayout(props: IUserLayoutProps) {
         ) : (
           <Outlet />
         )}
-    </>
+    </Box>
   );
 }
 
@@ -60,12 +60,20 @@ function UserNav(props: { path: string }) {
 
 // UserLayout Component Styles
 const styles: Record<string, any> = {
+  userContent: {
+    width: "100%",
+    height: '100%',
+    maxWidth: 2000,
+    border: '1.5px solid black'
+
+  },
   userNav: {
     width: "100%",
     height: `${layout.navHeight}px`,
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
+    
   },
   userNavItems: { alignItems: "center" },
 };
