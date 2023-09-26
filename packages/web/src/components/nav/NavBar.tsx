@@ -9,6 +9,7 @@ import {
   Stack,
   SxProps,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import React, { useContext } from "react";
 import { useAuth } from "../../hooks/auth";
@@ -26,6 +27,7 @@ import HolidayVillageIcon from "@mui/icons-material/HolidayVillage";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { pink } from "@mui/material/colors";
+import HiveIcon from '@mui/icons-material/Hive';
 
 interface INavBarProps {
   toggleSideBar: () => void;
@@ -42,6 +44,11 @@ function NavBar(props: INavBarProps) {
       alignItems: "center",
       height: `${layoutContext.navHeight}px`,
       width: "100%",
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      color: 'grey',
+      zIndex: 1000,
     },
     stack: {
       display: "flex",
@@ -59,11 +66,11 @@ function NavBar(props: INavBarProps) {
   return (
     <Box sx={{ ...styles.nav }}>
       <Stack direction={"row"} spacing={1} sx={{ ...styles.stack }}>
-        <IconButton sx={{}} onClick={props.toggleSideBar}>
-          <MenuIcon />
+        <IconButton sx={{color: 'grey'}} onClick={props.toggleSideBar}>
+          <MenuIcon sx={{fontSize: '2rem'}}/>
         </IconButton>
-        <CleaningServicesIcon sx={{ fontSize: "3rem" }} />
-        <h3>HL Domotics</h3>
+        <HiveIcon sx={{ fontSize: "3rem", color: '#E9AB17'}} />
+        <Typography variant="h4">HiveLink Domotics</Typography>
       </Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}></Stack>
       <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
@@ -76,16 +83,17 @@ function NavBar(props: INavBarProps) {
                   navigate("/user/homes");
                 }}
               >
-                <HolidayVillageIcon />
+                <HolidayVillageIcon  sx={{color: 'grey'}}/>
               </IconButton>
             </Tooltip>
             <Tooltip title={_.capitalize(auth.user.first_name)}>
             <IconButton
+             sx={{color: 'grey'}}
               onClick={() => {
                 navigate("/user/profile");
               }}
             >
-              <AccountBoxIcon />
+              <AccountBoxIcon sx={{color: 'grey'}}/>
             </IconButton>
             </Tooltip>
             <IconButton

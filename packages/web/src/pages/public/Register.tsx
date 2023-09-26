@@ -8,6 +8,7 @@ import AuthService from "../../services/auth.service";
 import { INewUser } from "hive-link-common";
 import { useAuth } from "../../hooks/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 
 const Register: React.FC = () => {
   let navigate: NavigateFunction = useNavigate();
@@ -76,9 +77,27 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
+    <Box
+      sx={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
+    >
+      <div
+        className="card card-container"
+        style={{
+          border: "1px solid black",
+          padding: 20,
+          width: "95%",
+          maxWidth: "750px",
+        }}
+      >
+        <h1>Register</h1>
         <img
+          style={{ margin: "auto" }}
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
@@ -179,8 +198,16 @@ const Register: React.FC = () => {
             )}
           </Form>
         </Formik>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography variant="body1">
+            Already have an account?
+            <a href="/login" style={{ paddingLeft: 5 }}>
+              Sign in!
+            </a>
+          </Typography>
+        </Box>
       </div>
-    </div>
+    </Box>
   );
 };
 

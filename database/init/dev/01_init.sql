@@ -30,7 +30,7 @@ CREATE TABLE `device` (
 -- CreateTable
 CREATE TABLE `device_category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(20) NOT NULL,
     `description` TEXT NULL,
     `created_at` TIMESTAMP(0) NOT NULL,
     `updated_at` TIMESTAMP(0) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `payment_details` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_payment_id` INTEGER NOT NULL,
     `amount` DECIMAL(10, 2) NOT NULL,
-    `status` VARCHAR(255) NOT NULL,
+    `status` VARCHAR(10) NOT NULL,
     `created_at` TIMESTAMP(0) NOT NULL,
     `updated_at` TIMESTAMP(0) NOT NULL,
 
@@ -86,9 +86,9 @@ CREATE TABLE `product` (
     `category_id` INTEGER NOT NULL,
     `discount_id` INTEGER NOT NULL,
     `inventory_id` INTEGER NOT NULL,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(50) NOT NULL,
     `description` TEXT NULL,
-    `sku` VARCHAR(255) NOT NULL,
+    `sku` VARCHAR(50) NOT NULL,
     `price` DECIMAL(10, 2) NOT NULL,
     `active` BOOLEAN NOT NULL,
     `created_at` TIMESTAMP(0) NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `product` (
 -- CreateTable
 CREATE TABLE `product_category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(20) NOT NULL,
     `description` TEXT NULL,
     `created_at` TIMESTAMP(0) NOT NULL,
     `updated_at` TIMESTAMP(0) NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE `product_category` (
 -- CreateTable
 CREATE TABLE `product_discount` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(20) NOT NULL,
     `description` TEXT NULL,
     `percent` DECIMAL(10, 2) NOT NULL,
     `active` BOOLEAN NOT NULL,
@@ -216,9 +216,9 @@ CREATE TABLE `user_device` (
 CREATE TABLE `user_payment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
-    `payment_type` VARCHAR(255) NOT NULL,
-    `account_no` VARCHAR(255) NOT NULL,
-    `provider` VARCHAR(255) NOT NULL,
+    `payment_type` VARCHAR(20) NOT NULL,
+    `account_no` VARCHAR(50) NOT NULL,
+    `provider` VARCHAR(50) NOT NULL,
     `expiry` DATE NOT NULL,
     `created_at` TIMESTAMP(0) NOT NULL,
     `updated_at` TIMESTAMP(0) NOT NULL,

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { IPath, getFilteredSubpaths } from "../common/constants/Paths";
 import { useAuth } from "../../hooks/auth";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
+import { LayoutContext } from "../../App";
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -19,10 +20,11 @@ const layout = {
 function UserLayout(props: IUserLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
+  const layoutContext = useContext(LayoutContext);
 
   useEffect(() => {}, [location.pathname, auth.user]);
   return (
-    <Box id="user-content" sx={styles.userContent}>
+    <Box id="user-content" sx={{...styles.userContent, marginTop: `${layoutContext.navHeight}px`,}}>
      {/*  <UserNav path={props.path} /> */}
 
         {location.pathname === props.path ? (
@@ -64,8 +66,8 @@ const styles: Record<string, any> = {
     width: "100%",
     height: '100%',
     maxWidth: 2000,
-    border: '1.5px solid black'
-
+    border: '1.5px solid black',
+    
   },
   userNav: {
     width: "100%",

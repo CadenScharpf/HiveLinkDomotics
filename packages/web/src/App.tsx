@@ -10,7 +10,7 @@ import SideBar from "./components/nav/SideBar";
 import pathConfig, { getPathRoutes } from "./pages/common/constants/Paths";
 
 const layoutParams = {
-  navHeight: 64,
+  navHeight: 80,
 };
 export const LayoutContext = createContext({ ...layoutParams });
 
@@ -30,12 +30,12 @@ const App: React.FC = () => {
   return (
     <LayoutContext.Provider value={layoutParams}>
       <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
-        <NavBar toggleSideBar={toggleSideBar} />
+      <NavBar toggleSideBar={toggleSideBar} />
       <Box sx={styles.appBody} component="main" id="appBody">
-          <Routes>
-            <Route index element={<pathConfig.Component path="/" />} />{" "}
-            {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
-          </Routes>
+        <Routes>
+          <Route index element={<pathConfig.Component path="/" />} />{" "}
+          {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
+        </Routes>
       </Box>
     </LayoutContext.Provider>
   );
@@ -45,9 +45,9 @@ const styles: Record<string, any> = {
   appBody: {
     display: "flex",
     justifyContent: "center",
+    
     height: `calc(100vh - ${layoutParams.navHeight}px)`,
     width: "100%",
   },
-
 };
 export default App;

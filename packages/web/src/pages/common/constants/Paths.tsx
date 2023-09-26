@@ -2,7 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../../../components/route/ProtectedRoute";
 import { user } from "hive-link-common";
-import Landing from "../../public/Landing";
+import Landing from "../../public/landing/Landing";
 import Login from "../../public/Login";
 import Register from "../../public/Register";
 import UserLayout from "../../user/UserLayout";

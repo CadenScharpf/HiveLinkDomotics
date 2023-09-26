@@ -51,8 +51,8 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <Box sx={{height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <div className="card card-container" style={{border: '1px solid black', padding: 20, width: '75%', maxWidth: '1000px'}}>
+    <Box sx={{height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-start'}}>
+      <div className="card card-container" style={{border: '1px solid black', padding: 20, width: '95%', maxWidth: '750px'}}>
         <h1>Login</h1>
         <img
           style={{margin: 'auto'}}
