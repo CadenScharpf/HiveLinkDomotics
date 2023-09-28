@@ -18,8 +18,10 @@ export {
   user_address,
   user_device,
   user_payment,
-  user_home
+  user_home,
+  user_room
 } from "@prisma/client";
 
 export * from "./src/user/IUserHome";
 export * from "./src/user/IUserAddress";
+export * from "./src/user/IUserRoom";
