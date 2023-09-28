@@ -9,7 +9,7 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import Homes from "./Homes";
 
-export const HomeContext = createContext({ userHomeId: -1 });
+export const HomesContext = createContext({ userHomeId: -1 });
 
 function HomesLayout(props: IRouteProps) {
   const location = useLocation();
@@ -44,9 +44,9 @@ function HomesLayout(props: IRouteProps) {
         {isBase ? (
           <Homes path={props.path} />
         ) : (
-            <HomeContext.Provider value={{ userHomeId: homeId}}>
+            <HomesContext.Provider value={{ userHomeId: homeId}}>
               <Outlet />
-            </HomeContext.Provider>
+            </HomesContext.Provider>
         )}
       </Box>
     </Box>

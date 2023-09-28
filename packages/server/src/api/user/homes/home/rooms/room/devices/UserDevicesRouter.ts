@@ -5,6 +5,6 @@ import { UserDeviceRouter } from './device/UserDeviceRouter';
 
 export const UserDevicesRouter = Router({ mergeParams: true });
 
-UserDevicesRouter.use(Paths.User.Homes.Home.Devices.Device.Base, UserDeviceRouter)
+UserDevicesRouter.use(Paths.User.Homes.Home.Rooms.Room.Devices.Device.Base, UserDeviceRouter)
 
 UserDevicesRouter.get('/', UserDevicesController.getAll);

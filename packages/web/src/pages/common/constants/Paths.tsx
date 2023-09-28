@@ -21,6 +21,8 @@ import Plugs from "../../user/homes/home/devices/device/SmartPlug/Plugs";
 import Switches from "../../user/homes/home/devices/device/SmartSwitch/Switches";
 import Lights from "../../user/homes/home/devices/device/SmartLight/Lights";
 import Products from "../../public/Products";
+import RoomsLayout from "../../user/homes/home/rooms/RoomsLayout";
+import RoomLayout from "../../user/homes/home/rooms/room/RoomLayout";
 
 export interface IPathConfig {
   Base: string;
@@ -77,54 +79,70 @@ const pathConfig: IPathConfig = {
               Component: HomeLayout,
               Subpaths: [
                 {
-                  Base: "devices",
-                  Title: "Devices",
+                  Base: 'rooms',
+                  Title: "Rooms",
                   Roles: [0, 1],
-                  Component: DevicesLayout,
+                  Component: RoomsLayout,
                   Subpaths: [
-                    {
-                      Base: "new",
-                      Roles: [0, 1],
-                      Component: AddDevice,
-                      Subpaths: [
-                        {
-                          Base: "plug",
-                          Roles: [0, 1],
-                          Component: AddPlugDevice,
-                          Subpaths: [],
-                        },
-                        {
-                          Base: "switch",
-                          Roles: [0, 1],
-                          Component: AddSwitchDevice,
-                          Subpaths: [],
-                        },
-                        {
-                          Base: "light",
-                          Roles: [0, 1],
-                          Component: AddLightDevice,
-                          Subpaths: [],
-                        },
-                      ],
-                    },
-                    {
-                      Base: "plugs",
-                      Roles: [0, 1],
-                      Component: Plugs,
-                      Subpaths: [],
-                    },
-                    {
-                      Base: "switches",
-                      Roles: [0, 1],
-                      Component: Switches,
-                      Subpaths: [],
-                    },
-                    {
-                      Base: "lights",
-                      Roles: [0, 1],
-                      Component: Lights,
-                      Subpaths: [],
-                    },
+                   {
+                    Base: ":roomId",
+                    Title: "Room",
+                    Roles: [0, 1],
+                    Component: RoomLayout,
+                    Subpaths: [
+                      {
+                        Base: "devices",
+                        Title: "Devices",
+                        Roles: [0, 1],
+                        Component: DevicesLayout,
+                        Subpaths: [
+                          {
+                            Base: "new",
+                            Roles: [0, 1],
+                            Component: AddDevice,
+                            Subpaths: [
+                              {
+                                Base: "plug",
+                                Roles: [0, 1],
+                                Component: AddPlugDevice,
+                                Subpaths: [],
+                              },
+                              {
+                                Base: "switch",
+                                Roles: [0, 1],
+                                Component: AddSwitchDevice,
+                                Subpaths: [],
+                              },
+                              {
+                                Base: "light",
+                                Roles: [0, 1],
+                                Component: AddLightDevice,
+                                Subpaths: [],
+                              },
+                            ],
+                          },
+                          {
+                            Base: "plugs",
+                            Roles: [0, 1],
+                            Component: Plugs,
+                            Subpaths: [],
+                          },
+                          {
+                            Base: "switches",
+                            Roles: [0, 1],
+                            Component: Switches,
+                            Subpaths: [],
+                          },
+                          {
+                            Base: "lights",
+                            Roles: [0, 1],
+                            Component: Lights,
+                            Subpaths: [],
+                          },
+                        ],
+                      },
+                    ],
+                   }
                   ],
                 },
                 {

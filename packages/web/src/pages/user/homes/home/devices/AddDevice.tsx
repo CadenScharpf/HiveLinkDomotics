@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { IRouteProps } from '../../../../common/types/IRouteProps'
 import { Outlet, useLocation } from 'react-router-dom';
-import { HomeContext } from '../../HomesLayout';
+import { HomesContext } from '../../HomesLayout';
 
 interface IAddDeviceProps extends IRouteProps {
 }
@@ -9,7 +9,7 @@ interface IAddDeviceProps extends IRouteProps {
 function AddDevice(props: IAddDeviceProps) {
     const location = useLocation();
     const basePath = props.path;
-    const homeContext = useContext(HomeContext)
+    const homeContext = useContext(HomesContext)
     var isBase = location.pathname === basePath.replace(
         new RegExp("/:userHomeId", "g"),
         homeContext.userHomeId ? `/${homeContext.userHomeId}` : ""

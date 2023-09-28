@@ -180,6 +180,7 @@ model user {
   user_device      user_device[]
   user_payment     user_payment[]
   user_home        user_home[]
+  user_room        user_room[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -211,10 +212,25 @@ model user_home {
   updated_at   DateTime      @db.Timestamp(0)
   user         user          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_home")
   user_address user_address? @relation(fields: [address_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_address_TO_user_home")
-  user_device  user_device[]
+  user_room    user_room[]
 
   @@index([user_id], map: "FK_user_TO_user_home")
   @@index([address_id], map: "FK_user_address_TO_user_home")
+}
+
+model user_room {
+  id          Int           @id @default(autoincrement())
+  user_id     Int
+  home_id     Int
+  name        String        @db.VarChar(50)
+  created_at  DateTime      @db.Timestamp(0)
+  updated_at  DateTime      @db.Timestamp(0)
+  user        user          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_room")
+  user_home   user_home     @relation(fields: [home_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_home_TO_user_room")
+  user_device user_device[]
+
+  @@index([user_id], map: "FK_user_TO_user_room")
+  @@index([home_id], map: "FK_user_home_TO_user_room")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -222,7 +238,7 @@ model user_device {
   id         Int       @id @default(autoincrement())
   user_id    Int
   device_id  Int
-  home_id    Int
+  room_id    Int
   product_id Int?
   name       String    @db.VarChar(50)
   last_conn  DateTime? @db.Timestamp(0)
@@ -231,11 +247,12 @@ model user_device {
   device     device    @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_device_TO_user_device")
   product    product?  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_product_TO_user_device")
   user       user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_user_device")
-  user_home  user_home @relation(fields: [home_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_home_TO_user_device")
+  user_room  user_room @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_room_TO_user_device")
 
   @@index([device_id], map: "FK_device_TO_user_device")
   @@index([product_id], map: "FK_product_TO_user_device")
   @@index([user_id], map: "FK_user_TO_user_device")
+  @@index([room_id], map: "FK_user_room_TO_user_device")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments

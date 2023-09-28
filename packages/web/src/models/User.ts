@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  IHomeDetails,
   INewAddress,
   INewHome,
   ISessionUser,
@@ -24,7 +25,7 @@ export default class User implements ISessionUser {
     this.role = user.role;
   }
 
-  getHome: (homeId: number) => Promise<user_home> = async (homeId: number) => {
+  getHome: (homeId: number) => Promise<IHomeDetails> = async (homeId: number) => {
     try {
       const res = await axios.get(`/api/user/homes/${homeId}`);
       return res.data.home;
@@ -79,4 +80,5 @@ export default class User implements ISessionUser {
       throw err;
     }
   }
+
 }
