@@ -195,11 +195,25 @@ CREATE TABLE `user_home` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `user_room` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `home_id` INTEGER NOT NULL,
+    `name` VARCHAR(50) NOT NULL,
+    `created_at` TIMESTAMP(0) NOT NULL,
+    `updated_at` TIMESTAMP(0) NOT NULL,
+
+    INDEX `FK_user_TO_user_room`(`user_id`),
+    INDEX `FK_user_home_TO_user_room`(`home_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `user_device` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `device_id` INTEGER NOT NULL,
-    `home_id` INTEGER NOT NULL,
+    `room_id` INTEGER NOT NULL,
     `product_id` INTEGER NULL,
     `name` VARCHAR(50) NOT NULL,
     `last_conn` TIMESTAMP(0) NULL,
@@ -209,6 +223,7 @@ CREATE TABLE `user_device` (
     INDEX `FK_device_TO_user_device`(`device_id`),
     INDEX `FK_product_TO_user_device`(`product_id`),
     INDEX `FK_user_TO_user_device`(`user_id`),
+    INDEX `FK_user_room_TO_user_device`(`room_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -273,6 +288,12 @@ ALTER TABLE `user_home` ADD CONSTRAINT `FK_user_TO_user_home` FOREIGN KEY (`user
 ALTER TABLE `user_home` ADD CONSTRAINT `FK_user_address_TO_user_home` FOREIGN KEY (`address_id`) REFERENCES `user_address`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
+ALTER TABLE `user_room` ADD CONSTRAINT `FK_user_TO_user_room` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `user_room` ADD CONSTRAINT `FK_user_home_TO_user_room` FOREIGN KEY (`home_id`) REFERENCES `user_home`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
 ALTER TABLE `user_device` ADD CONSTRAINT `FK_device_TO_user_device` FOREIGN KEY (`device_id`) REFERENCES `device`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
@@ -282,7 +303,7 @@ ALTER TABLE `user_device` ADD CONSTRAINT `FK_product_TO_user_device` FOREIGN KEY
 ALTER TABLE `user_device` ADD CONSTRAINT `FK_user_TO_user_device` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `user_device` ADD CONSTRAINT `FK_user_home_TO_user_device` FOREIGN KEY (`home_id`) REFERENCES `user_home`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `user_device` ADD CONSTRAINT `FK_user_room_TO_user_device` FOREIGN KEY (`room_id`) REFERENCES `user_room`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `user_payment` ADD CONSTRAINT `FK_user_TO_user_payment` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

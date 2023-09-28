@@ -35,10 +35,15 @@ VALUES
 -- Insert data into user_home table
 INSERT INTO user_home (user_id, address_id, name, created_at, updated_at)
 VALUES
-  (1, 1, 'City Loft', NOW(), NOW()),
-  (1, 2, 'Beach House', NOW(), NOW()),
-  (2, 3, 'Elm St.', NOW(), NOW()),
-  (2, null, 'Rental @ 3234 S Ravenswood', NOW(), NOW());
+  (1, 1, 'City Loft', NOW(), NOW());
+
+-- Insert data into user_room table
+INSERT INTO user_room (user_id, home_id, name, created_at, updated_at)
+VALUES
+  (1, 1, 'Living Room', NOW(), NOW()),
+  (1, 1, 'Bedroom', NOW(), NOW()),
+  (1, 1, 'Kitchen', NOW(), NOW());
+  
 
 -- Insert data into user_payment table
 INSERT INTO user_payment (user_id, payment_type, account_no, provider, expiry, created_at, updated_at)
@@ -49,9 +54,7 @@ VALUES
 -- Insert data into product table
 INSERT INTO product (category_id, discount_id, inventory_id, name, description, sku, price, active, created_at, updated_at)
 VALUES
-  (1, 1, 1, 'Smartphone', 'High-end smartphone', 'SKU123', 599.99, 1, NOW(), NOW()),
-  (2, 2, 2, 'T-Shirt', 'Cotton t-shirt', 'SKU456', 19.99, 1, NOW(), NOW()),
-  (3, 3, 3, 'Book - Example Book', 'An example book', 'SKU789', 9.99, 1, NOW(), NOW());
+  (1, 1, 1, 'TP-Link Smart Plug', 'Wifi Smart Plug', 'SKU123', 599.99, 1, NOW(), NOW());
 
 -- Insert data into shopping_session table
 INSERT INTO shopping_session (user_id, total, created_at, updated_at)
@@ -62,10 +65,8 @@ VALUES
 -- Insert data into cart_item table
 INSERT INTO cart_item (session_id, product_id, quantity, created_at, updated_at)
 VALUES
-  (1, 1, 2, NOW(), NOW()),
-  (1, 2, 3, NOW(), NOW()),
-  (2, 3, 1, NOW(), NOW());
-
+  (1, 1, 2, NOW(), NOW());
+  
 -- Insert data into payment_details table
 INSERT INTO payment_details (user_payment_id, amount, status, created_at, updated_at)
 VALUES
@@ -81,9 +82,7 @@ VALUES
 -- Insert data into order_items table
 INSERT INTO order_items (order_id, product_id, quantity, created_at, updated_at)
 VALUES
-  (1, 1, 2, NOW(), NOW()),
-  (1, 2, 3, NOW(), NOW()),
-  (2, 3, 1, NOW(), NOW());
+  (1, 1, 2, NOW(), NOW());
 
 -- Insert data into device_category table
 INSERT INTO device_category (name, description, created_at, updated_at)
@@ -100,22 +99,6 @@ VALUES
   (3, 'TP-Link', 'LB100', 'Smart Light', 'Smart Light', NOW(), NOW());
 
 -- Insert data into user_device table
-INSERT INTO user_device (user_id, device_id, home_id, product_id, name, last_conn, created_at, updated_at)
+INSERT INTO user_device (user_id, device_id, room_id, product_id, name, last_conn, created_at, updated_at)
 VALUES
-  -- user 1 home 1
-  (1, 1, 1, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
-  (1, 2, 1, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
-  (1, 3, 1, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
-  -- user 1 home 2 
-  (1, 1, 2, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
-  (1, 2, 2, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
-  (1, 3, 2, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
-  -- user 2 home 3
-  (2, 1, 3, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
-  (2, 2, 3, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
-  (2, 3, 3, NULL, 'Living Room Smart Light', NULL, NOW(), NOW()),
-  -- user 2 home 4
-  (2, 1, 4, NULL, 'Living Room Smart Plug', NULL, NOW(), NOW()),
-  (2, 2, 4, NULL, 'Living Room Smart Switch', NULL, NOW(), NOW()),
-  (2, 3, 4, NULL, 'Living Room Smart Light', NULL, NOW(), NOW());
-
+  (1, 1, 1, 1, 'Corner Lamp', NULL, NOW(), NOW());
