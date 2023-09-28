@@ -19,7 +19,7 @@ import {
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
-import { HomeContext } from "../../HomesLayout";
+import { HomesContext } from "../../HomesLayout";
 import _, { set } from "lodash";
 import { user_device } from "hive-link-common";
 import DevicesDashboard from "./DevicesDashboard";
@@ -31,7 +31,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-  const homeContext = useContext(HomeContext);
+  const homeContext = useContext(HomesContext);
   const path = templatePath(props.path, {
     userHomeId: homeContext.userHomeId.toString(),
   });

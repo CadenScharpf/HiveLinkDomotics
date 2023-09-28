@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { IRouteProps } from "../../../common/types/IRouteProps";
-import { HomeContext } from "../HomesLayout";
+import { HomesContext } from "../HomesLayout";
 import {
   Link,
   Outlet,
@@ -9,22 +9,25 @@ import {
   useParams,
 } from "react-router-dom";
 import { useAuth } from "../../../../hooks/auth";
-import {
+import Paths, {
   getFilteredSubpaths,
   templatePath,
 } from "../../../common/constants/Paths";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
-import { user_home } from "hive-link-common";
+import { IHomeDetails, user_home } from "hive-link-common";
+import Home from "../../../../models/Home";
+
+export const HomeContext = React.createContext<{home: Home | null}>({ home: null });
 
 function HomeLayout(props: IRouteProps) {
-  const [homeInfo, setHomeInfo] = React.useState<user_home>();
+  const [homeInfo, setHomeInfo] = React.useState<IHomeDetails>();
   const activeNavIndex = React.useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
-  const homeContext = useContext(HomeContext);
+  const homeContext = useContext(HomesContext);
   const isBase = location.pathname === props.path;
   
 
@@ -93,12 +96,14 @@ function HomeLayout(props: IRouteProps) {
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
       <Box sx={styles.userContent}>
-        {userHomeId && location.pathname.endsWith(userHomeId) ? (
+        {userHomeId && location.pathname.endsWith( "homes/" + userHomeId) ? (
           <div>
             <h5>Home {userHomeId} dashboard</h5>
           </div>
         ) : (
+          <HomeContext.Provider value={{ home: new Home(homeInfo) }}>
           <Outlet />
+          </HomeContext.Provider>
         )}
       </Box>
     </>

@@ -20,12 +20,19 @@ const Paths = {
       New: "/new",
       Home: {
         Base: "/:userHomeId",
-        Devices: {
-          Base: "/devices",
-          Device: {
-            Base: "/:userDeviceId",
+        Rooms: {
+          Base: "/rooms",
+          Room: {
+            Base: "/:userRoomId",
+            Devices: {
+              Base: "/devices",
+              New: "/new",
+              Device: {
+                Base: "/:userDeviceId",
+              },
+            },
           },
-        },
+        }
       },
     },
     Addresses: {
