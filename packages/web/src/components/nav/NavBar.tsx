@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext } from "react";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../common/hooks/auth";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import pathConfig, {

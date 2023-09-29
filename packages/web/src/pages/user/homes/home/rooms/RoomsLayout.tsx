@@ -3,10 +3,12 @@ import { IRouteProps } from "../../../../common/types/IRouteProps";
 import { HomesContext } from "../../HomesLayout";
 import { templatePath } from "../../../../common/constants/Paths";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import Rooms from "./Rooms";
+import Rooms from "./RoomsPage";
 import { Box, Stack } from "@mui/material";
 import { HomeContext } from "../HomeLayout";
+
 export const RoomContext = React.createContext({ roomId: -1 });
+
 function RoomsLayout(props: IRouteProps) {
   const homesContext = useContext(HomesContext);
   const homeContext = useContext(HomeContext);

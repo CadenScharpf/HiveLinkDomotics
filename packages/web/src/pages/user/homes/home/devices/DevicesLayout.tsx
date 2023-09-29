@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { IRouteProps } from "../../../../common/types/IRouteProps";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../../../hooks/auth";
+import { useAuth } from "../../../../../common/hooks/auth";
 import {
   IPathConfig,
   getFilteredSubpaths,

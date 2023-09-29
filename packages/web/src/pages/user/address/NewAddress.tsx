@@ -2,7 +2,7 @@ import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { AddressSchema, INewAddress } from "hive-link-common";
 import React from "react";
-import { useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../common/hooks/auth";
 import { set } from "lodash";
 
 function NewAddress() {

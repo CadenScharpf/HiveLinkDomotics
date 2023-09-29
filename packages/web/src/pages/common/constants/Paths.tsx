@@ -1,15 +1,15 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Link, Params, Route, RouteMatch } from "react-router-dom";
 import ProtectedRoute from "../../../components/route/ProtectedRoute";
-import { user } from "hive-link-common";
+import { user, user_home } from "hive-link-common";
 import Landing from "../../public/landing/Landing";
 import Login from "../../public/Login";
 import Register from "../../public/Register";
 import UserLayout from "../../user/UserLayout";
-import Profile from "../../user/Profile";
+import ProfilePage from "../../user/ProfilePage";
 import HomesLayout from "../../user/homes/HomesLayout";
 import HomeLayout from "../../user/homes/home/HomeLayout";
-import NewHome from "../../user/homes/NewHome";
+import NewHomePage from "../../user/homes/NewHomePage";
 import DevicesLayout from "../../user/homes/home/devices/DevicesLayout";
 import AddDevice, {
   AddLightDevice,
@@ -23,17 +23,22 @@ import Lights from "../../user/homes/home/devices/device/SmartLight/Lights";
 import Products from "../../public/Products";
 import RoomsLayout from "../../user/homes/home/rooms/RoomsLayout";
 import RoomLayout from "../../user/homes/home/rooms/room/RoomLayout";
+import axios from "axios";
+import { homedir } from "os";
+import Home from "../../user/homes/home/Home";
 
 export interface IPathConfig {
   Base: string;
   Title?: string;
   Roles: number[];
   Component: React.ComponentType<{ path: string }>;
+  loader?: (params: Params) => Promise<any>;
   Subpaths: IPathConfig[];
 }
 
 export interface IPath extends IPathConfig {
   Location: string;
+  loader: (params: Params) => Promise<any>;
   Subpaths: IPath[];
 }
 
@@ -63,7 +68,7 @@ const pathConfig: IPathConfig = {
         {
           Base: "profile",
           Roles: [0, 1],
-          Component: Profile,
+          Component: ProfilePage,
           Subpaths: [],
         },
         {
@@ -77,72 +82,74 @@ const pathConfig: IPathConfig = {
               Title: "Home Dashboard",
               Roles: [0, 1],
               Component: HomeLayout,
+              loader: async (params: Params) =>
+                params.userHomeId ? Home.getHome(params.userHomeId) : null,
               Subpaths: [
                 {
-                  Base: 'rooms',
+                  Base: "rooms",
                   Title: "Rooms",
                   Roles: [0, 1],
                   Component: RoomsLayout,
                   Subpaths: [
-                   {
-                    Base: ":roomId",
-                    Title: "Room",
-                    Roles: [0, 1],
-                    Component: RoomLayout,
-                    Subpaths: [
-                      {
-                        Base: "devices",
-                        Title: "Devices",
-                        Roles: [0, 1],
-                        Component: DevicesLayout,
-                        Subpaths: [
-                          {
-                            Base: "new",
-                            Roles: [0, 1],
-                            Component: AddDevice,
-                            Subpaths: [
-                              {
-                                Base: "plug",
-                                Roles: [0, 1],
-                                Component: AddPlugDevice,
-                                Subpaths: [],
-                              },
-                              {
-                                Base: "switch",
-                                Roles: [0, 1],
-                                Component: AddSwitchDevice,
-                                Subpaths: [],
-                              },
-                              {
-                                Base: "light",
-                                Roles: [0, 1],
-                                Component: AddLightDevice,
-                                Subpaths: [],
-                              },
-                            ],
-                          },
-                          {
-                            Base: "plugs",
-                            Roles: [0, 1],
-                            Component: Plugs,
-                            Subpaths: [],
-                          },
-                          {
-                            Base: "switches",
-                            Roles: [0, 1],
-                            Component: Switches,
-                            Subpaths: [],
-                          },
-                          {
-                            Base: "lights",
-                            Roles: [0, 1],
-                            Component: Lights,
-                            Subpaths: [],
-                          },
-                        ],
-                      },
-                    ],
-                   }
+                    {
+                      Base: ":roomId",
+                      Title: "Room",
+                      Roles: [0, 1],
+                      Component: RoomLayout,
+                      Subpaths: [
+                        {
+                          Base: "devices",
+                          Title: "Devices",
+                          Roles: [0, 1],
+                          Component: DevicesLayout,
+                          Subpaths: [
+                            {
+                              Base: "new",
+                              Roles: [0, 1],
+                              Component: AddDevice,
+                              Subpaths: [
+                                {
+                                  Base: "plug",
+                                  Roles: [0, 1],
+                                  Component: AddPlugDevice,
+                                  Subpaths: [],
+                                },
+                                {
+                                  Base: "switch",
+                                  Roles: [0, 1],
+                                  Component: AddSwitchDevice,
+                                  Subpaths: [],
+                                },
+                                {
+                                  Base: "light",
+                                  Roles: [0, 1],
+                                  Component: AddLightDevice,
+                                  Subpaths: [],
+                                },
+                              ],
+                            },
+                            {
+                              Base: "plugs",
+                              Roles: [0, 1],
+                              Component: Plugs,
+                              Subpaths: [],
+                            },
+                            {
+                              Base: "switches",
+                              Roles: [0, 1],
+                              Component: Switches,
+                              Subpaths: [],
+                            },
+                            {
+                              Base: "lights",
+                              Roles: [0, 1],
+                              Component: Lights,
+                              Subpaths: [],
+                            },
+                          ],
+                        },
+                      ],
+                    },
                   ],
                 },
                 {
@@ -157,7 +164,7 @@ const pathConfig: IPathConfig = {
             {
               Base: "new",
               Roles: [0, 1],
-              Component: NewHome,
+              Component: NewHomePage,
               Subpaths: [],
             },
           ],
@@ -183,11 +190,16 @@ function exportPaths(pathConfig: IPathConfig, parentLoc: string): IPath {
     Location: parentLoc + pathConfig.Base,
     Roles: pathConfig.Roles,
     Component: pathConfig.Component,
-    Subpaths: []
-  }
+    loader: pathConfig.loader
+      ? pathConfig.loader
+      : async (params: Params) => {
+          return null;
+        },
+    Subpaths: [],
+  };
   path.Subpaths = pathConfig.Subpaths.map((subPath) => {
-    return exportPaths(subPath,path.Location)
-  })
+    return exportPaths(subPath, path.Location);
+  });
   return path;
 }
 
@@ -202,25 +214,32 @@ function getPathObjectAcc(base: string, path: IPath): IPath | null {
   for (const subpath of path.Subpaths) {
     const res = getPathObjectAcc(base, subpath);
     if (res) {
-      return res; 
+      return res;
     }
   }
   return null; // Return null if the path is not found
 }
 
 /*
-* Returns the subpaths of a path that are accessible to a user with a given role
-* @param base: the base path to get the subpaths of
-* @param role: the role of the user
-* @param exclude: the paths to exclude from the returned list
-*/
-export function getFilteredSubpaths(base: string, role: user["role"], exclude: string[]): IPath[] {
+ * Returns the subpaths of a path that are accessible to a user with a given role
+ * @param base: the base path to get the subpaths of
+ * @param role: the role of the user
+ * @param exclude: the paths to exclude from the returned list
+ */
+export function getFilteredSubpaths(
+  base: string,
+  role: user["role"],
+  exclude: string[]
+): IPath[] {
   const path = getPathObject(base);
   if (!path) {
     return [];
   }
   return path.Subpaths.filter((path: IPath) => {
-    return ( path.Roles.length===0 || path.Roles.includes(role)) && !exclude.includes(path.Base);
+    return (
+      (path.Roles.length === 0 || path.Roles.includes(role)) &&
+      !exclude.includes(path.Base)
+    );
   });
 }
 
@@ -235,6 +254,7 @@ export const getPathRoutes = (
     <Route
       path={path.Base}
       key={absPath + " route"}
+      loader={({ params }) => path.loader(params)}
       element={
         <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
           {/* Instantiate the component here */}
@@ -247,7 +267,10 @@ export const getPathRoutes = (
   );
 };
 
-export function templatePath(path: string, params: Record<string, string>): string {
+export function templatePath(
+  path: string,
+  params: Record<string, string>
+): string {
   let newPath = path;
   for (const [key, value] of Object.entries(params)) {
     newPath = newPath.replace(`:${key}`, value);

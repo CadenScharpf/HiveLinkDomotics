@@ -1,17 +1,34 @@
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import HiveIcon from "@mui/icons-material/Hive";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import GradeIcon from "@mui/icons-material/Grade";
 
 import BetterBuisnessIcon from "./bbb.png";
 import HomeAdvisorIcon from "./HomeAdvisor.png";
+import { IRouteProps } from "../../common/types/IRouteProps";
+import NavBar from "../../../components/nav/NavBar";
+import SideBar from "../../../components/nav/SideBar";
 
 
-function Landing() {
+function Landing(props: IRouteProps) {
+  const { path } = props;
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false); // State to control the sidebar
+
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  };
+  
   return (
+    <>
+    <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
+    <NavBar toggleSideBar={toggleSideBar} />
+    {location.pathname === props.path? (
     <Box sx={{ width: "100%", height: "100%" }}>
+      {path}
+      {location.pathname}
       <Box
         component="section"
         sx={{ width: "100%", height: "100vh", overflow: "scroll" }}
@@ -98,7 +115,10 @@ function Landing() {
           </Stack>
       </Box>
     </Box>
-  );
+  ) : (<Outlet />)}
+    </>
+
+  )
 }
 
 const config = {

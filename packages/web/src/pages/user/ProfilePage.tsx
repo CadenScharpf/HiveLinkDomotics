@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../common/hooks/auth";
 import { UserRoles } from "hive-link-common";
 
-const Profile: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const auth = useAuth();
-  
+
 
   return  auth.user? (
     <div className="container">
@@ -28,4 +28,4 @@ const Profile: React.FC = () => {
   ): (<div></div>);
 };
 
-export default Profile;
+export default ProfilePage;

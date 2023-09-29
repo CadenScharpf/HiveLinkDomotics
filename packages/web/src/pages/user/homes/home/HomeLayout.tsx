@@ -4,11 +4,12 @@ import { HomesContext } from "../HomesLayout";
 import {
   Link,
   Outlet,
+  useLoaderData,
   useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { useAuth } from "../../../../hooks/auth";
+import { useAuth } from "../../../../common/hooks/auth";
 import Paths, {
   getFilteredSubpaths,
   templatePath,
@@ -16,7 +17,7 @@ import Paths, {
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
 import { IHomeDetails, user_home } from "hive-link-common";
-import Home from "../../../../models/Home";
+import Home from "./Home";
 
 export const HomeContext = React.createContext<{home: Home | null}>({ home: null });
 
@@ -27,12 +28,12 @@ function HomeLayout(props: IRouteProps) {
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
-  const homeContext = useContext(HomesContext);
-  const isBase = location.pathname === props.path;
+  const _homeContext = useContext(HomesContext);
+  const home = useLoaderData() as Home;
   
 
   const pathWithParams = templatePath(props.path, {
-    userHomeId: homeContext.userHomeId.toString(),
+    userHomeId: home.id.toString(),
   });
   const navPaths = getFilteredSubpaths(
     ":userHomeId",
@@ -41,19 +42,17 @@ function HomeLayout(props: IRouteProps) {
   );
 
   React.useEffect(() => {
-    if (auth.user) {
-      auth.user
-        .getHome(homeContext.userHomeId)
+      Home
+        .getHome(_homeContext.userHomeId)
         .then((home) => {
           setHomeInfo(home);
         })
         .catch((err) => {
           console.log(err);
         });
-    }
-  }, [auth.user, homeContext.userHomeId]);
+  }, [auth.user, _homeContext.userHomeId]);
 
-  return homeInfo ? (
+  return  (
     <>
       <Box
         sx={{
@@ -69,7 +68,7 @@ function HomeLayout(props: IRouteProps) {
               }}
               variant="text"
             >
-              <Typography variant="h5">{homeInfo.name}</Typography>
+              <Typography variant="h5">{home.name}</Typography>
             </Button>
           </Tooltip>
 
@@ -101,15 +100,18 @@ function HomeLayout(props: IRouteProps) {
             <h5>Home {userHomeId} dashboard</h5>
           </div>
         ) : (
-          <HomeContext.Provider value={{ home: new Home(homeInfo) }}>
+          <HomeContext.Provider value={{ home: new Home(home) }}>
           <Outlet />
           </HomeContext.Provider>
         )}
       </Box>
     </>
-  ) : (
-    <></>
-  );
+  ) ;
+}
+
+export const useHome = () => {
+  const homeContext = useContext(HomeContext);
+  return homeContext.home;
 }
 
 const layout = {

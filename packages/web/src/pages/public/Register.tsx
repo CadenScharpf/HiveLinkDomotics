@@ -6,7 +6,7 @@ import "yup-phone";
 import { IRegisterRes, user } from "hive-link-common";
 import AuthService from "../../services/auth.service";
 import { INewUser } from "hive-link-common";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../common/hooks/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 

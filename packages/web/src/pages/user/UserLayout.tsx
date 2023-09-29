@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, RouteMatch, useLocation, useMatches } from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { IPath, getFilteredSubpaths } from "../common/constants/Paths";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../common/hooks/auth";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
@@ -16,22 +16,32 @@ const layout = {
   color2: "white",
 };
 
-
 function UserLayout(props: IUserLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
   const layoutContext = useContext(LayoutContext);
+  const matches = useMatches();
+  
+
 
   useEffect(() => {}, [location.pathname, auth.user]);
   return (
-    <Box id="user-content" sx={{...styles.userContent, marginTop: `${layoutContext.navHeight}px`,}}>
-     {/*  <UserNav path={props.path} /> */}
+    <Box id="user-layout" sx={{ ...styles.userLayout }}>
+
+      <Box
+        id="user-content"
+        sx={{
+          ...styles.userContent,
+        }}
+      >
+        <UserNav path={props.path} />
 
         {location.pathname === props.path ? (
           <div>user dashboard</div>
         ) : (
           <Outlet />
         )}
+      </Box>
     </Box>
   );
 }
@@ -62,12 +72,13 @@ function UserNav(props: { path: string }) {
 
 // UserLayout Component Styles
 const styles: Record<string, any> = {
-  userContent: {
+  userLayout: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
     width: "100%",
-    height: '100%',
-    maxWidth: 2000,
-    border: '1.5px solid black',
-    
+    height: "100%",
   },
   userNav: {
     width: "100%",
@@ -75,7 +86,12 @@ const styles: Record<string, any> = {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
-    
+  },
+  userContent: {
+    width: "100%",
+    height: `calc(100% - ${layout.navHeight}px)`,
+    maxWidth: 2000,
+    border: "1.5px solid black",
   },
   userNavItems: { alignItems: "center" },
 };

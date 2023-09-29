@@ -1,13 +1,13 @@
 import React, { createContext, useContext } from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../common/hooks/auth";
 import { getFilteredSubpaths } from "../../common/constants/Paths";
 import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import _ from "lodash";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
-import Homes from "./Homes";
+import HomesPage from "./HomesPage";
 
 export const HomesContext = createContext({ userHomeId: -1 });
 
@@ -42,7 +42,7 @@ function HomesLayout(props: IRouteProps) {
       </Box>
       <Box sx={{...styles.userContent, height: `calc(100% - ${isBase? layout.navHeight: 0}px)`,}}>
         {isBase ? (
-          <Homes path={props.path} />
+          <HomesPage path={props.path} />
         ) : (
             <HomesContext.Provider value={{ userHomeId: homeId}}>
               <Outlet />

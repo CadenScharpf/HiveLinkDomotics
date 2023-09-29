@@ -3,7 +3,7 @@ import { RoomContext } from '../RoomsLayout'
 import { IRoomDetails } from 'hive-link-common';
 import { LinearProgress } from '@mui/material';
 import { HomeContext } from '../../HomeLayout';
-import { Room } from '../../../../../../models/Room';
+import { Room } from './Room';
 
 function RoomLayout() {
   const roomContext = useContext(RoomContext)
@@ -25,7 +25,7 @@ function RoomLayout() {
 
   return roomInfo? (
     <div>
-      <h1>{roomInfo.name}</h1>
+      <h1>{roomInfo.name} Dashboard</h1>
     </div>
   ) : (<><LinearProgress color="primary" sx={{width: '100%'}} /></>)
 }
