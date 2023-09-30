@@ -8,7 +8,7 @@ import {
   user_device,
   user_home,
 } from "hive-link-common";
-import Paths from "../pages/common/constants/Paths";
+import Paths from "../common/constants/Paths";
 
 export default class User implements ISessionUser {
   id: ISessionUser["id"];
@@ -25,7 +25,7 @@ export default class User implements ISessionUser {
     this.role = user.role;
   }
 
-  getHome: (homeId: number) => Promise<IHomeDetails> = async (homeId: number) => {
+  static getHome: (homeId: number) => Promise<IHomeDetails> = async (homeId: number) => {
     try {
       const res = await axios.get(`/api/user/homes/${homeId}`);
       return res.data.home;

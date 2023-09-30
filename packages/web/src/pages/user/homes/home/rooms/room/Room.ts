@@ -1,5 +1,7 @@
 import { IRoomDetails } from "hive-link-common";
 import { IUserDeviceDetails } from "hive-link-common/src/user/IUserDevice";
+import Paths, { templatePath } from "../../../../../common/constants/Paths";
+import axios from "axios";
 
 export class Room implements IRoomDetails {
   id: IRoomDetails["id"];
@@ -19,4 +21,14 @@ export class Room implements IRoomDetails {
     this.user_device = room.user_device?? [];
     this.user_id = room.user_id;
   }
+
+  static getRoom: (roomId: number | string, userHomeId:  | string) => Promise<IRoomDetails> = async (roomId: number | string, userHomeId:  | string) => {
+    try {
+      const res = await axios.get(`/api/user/homes/${userHomeId}/rooms/${roomId}`);
+      return new Room(res.data.room);
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }

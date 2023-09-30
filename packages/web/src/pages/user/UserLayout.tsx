@@ -1,11 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  RouteMatch,
+  useLocation,
+  useMatches,
+} from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { IPath, getFilteredSubpaths } from "../common/constants/Paths";
-import { useAuth } from "../../hooks/auth";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { useAuth } from "../../common/hooks/auth";
+import { Box, Breadcrumbs, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext"; 
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -16,22 +23,44 @@ const layout = {
   color2: "white",
 };
 
-
 function UserLayout(props: IUserLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
-  const layoutContext = useContext(LayoutContext);
+  const matches = useMatches();
 
-  useEffect(() => {}, [location.pathname, auth.user]);
   return (
-    <Box id="user-content" sx={{...styles.userContent, marginTop: `${layoutContext.navHeight}px`,}}>
-     {/*  <UserNav path={props.path} /> */}
+    <Box id="user-layout" sx={{ ...styles.userLayout }}>
+      <Box
+        id="user-content"
+        sx={{
+          ...styles.userContent,
+        }}
+      >
+        <Box id="userNav" sx={styles.userNav}>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+            {matches
+              .filter((match: any) => Boolean(match.handle?.crumb))
+              .map((match: any) => {
+                return (
+                  <Box
+                    component={Link}
+                    key={match.pathname + "::bread-crumb"}
+                    to={match.pathname}
+                    sx={styles.breadCrumb}
+                  >
+                    {match.handle?.crumb(match.data)}
+                  </Box>
+                );
+              })}
+          </Breadcrumbs>
+        </Box>
 
         {location.pathname === props.path ? (
           <div>user dashboard</div>
         ) : (
           <Outlet />
         )}
+      </Box>
     </Box>
   );
 }
@@ -62,20 +91,29 @@ function UserNav(props: { path: string }) {
 
 // UserLayout Component Styles
 const styles: Record<string, any> = {
-  userContent: {
+  userLayout: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
     width: "100%",
-    height: '100%',
-    maxWidth: 2000,
-    border: '1.5px solid black',
-    
+    height: "100%",
   },
   userNav: {
     width: "100%",
     height: `${layout.navHeight}px`,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    
+    justifyContent: "space-between",
+    alignItems: "center",
+    px: "8px",
+    py: "6px",
+  },
+  breadCrumb: { textDecoration: "none" },
+  userContent: {
+    width: "100%",
+    height: `calc(100% - ${layout.navHeight}px)`,
+    maxWidth: 2000,
+    border: "1.5px solid black",
   },
   userNavItems: { alignItems: "center" },
 };

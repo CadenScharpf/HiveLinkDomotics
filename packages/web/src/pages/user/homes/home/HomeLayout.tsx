@@ -1,38 +1,32 @@
 import React, { useContext } from "react";
 import { IRouteProps } from "../../../common/types/IRouteProps";
-import { HomesContext } from "../HomesLayout";
 import {
   Link,
   Outlet,
+  useLoaderData,
   useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { useAuth } from "../../../../hooks/auth";
+import { useAuth } from "../../../../common/hooks/auth";
 import Paths, {
   getFilteredSubpaths,
   templatePath,
 } from "../../../common/constants/Paths";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
-import { IHomeDetails, user_home } from "hive-link-common";
-import Home from "../../../../models/Home";
+import Home, { HomeProvider } from "./Home";
 
-export const HomeContext = React.createContext<{home: Home | null}>({ home: null });
 
 function HomeLayout(props: IRouteProps) {
-  const [homeInfo, setHomeInfo] = React.useState<IHomeDetails>();
-  const activeNavIndex = React.useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
-  const homeContext = useContext(HomesContext);
-  const isBase = location.pathname === props.path;
-  
+  const home = useLoaderData() as Home;
 
   const pathWithParams = templatePath(props.path, {
-    userHomeId: homeContext.userHomeId.toString(),
+    userHomeId: home.id.toString(),
   });
   const navPaths = getFilteredSubpaths(
     ":userHomeId",
@@ -40,20 +34,8 @@ function HomeLayout(props: IRouteProps) {
     []
   );
 
-  React.useEffect(() => {
-    if (auth.user) {
-      auth.user
-        .getHome(homeContext.userHomeId)
-        .then((home) => {
-          setHomeInfo(home);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [auth.user, homeContext.userHomeId]);
 
-  return homeInfo ? (
+  return (
     <>
       <Box
         sx={{
@@ -69,7 +51,7 @@ function HomeLayout(props: IRouteProps) {
               }}
               variant="text"
             >
-              <Typography variant="h5">{homeInfo.name}</Typography>
+              <Typography variant="h5">{home.name}</Typography>
             </Button>
           </Tooltip>
 
@@ -84,7 +66,7 @@ function HomeLayout(props: IRouteProps) {
               </Button>
             );
           })}
-        {/*   {navPaths.map((path: any) => {
+          {/*   {navPaths.map((path: any) => {
             return (
                 <></>
             );
@@ -96,21 +78,21 @@ function HomeLayout(props: IRouteProps) {
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
       <Box sx={styles.userContent}>
-        {userHomeId && location.pathname.endsWith( "homes/" + userHomeId) ? (
+        {userHomeId && location.pathname.endsWith("homes/" + userHomeId) ? (
           <div>
             <h5>Home {userHomeId} dashboard</h5>
           </div>
         ) : (
-          <HomeContext.Provider value={{ home: new Home(homeInfo) }}>
-          <Outlet />
-          </HomeContext.Provider>
+            <HomeProvider home={home}>
+              <Outlet />
+            </HomeProvider>
         )}
       </Box>
     </>
-  ) : (
-    <></>
   );
 }
+
+
 
 const layout = {
   navHeight: 40,
@@ -134,7 +116,7 @@ const styles: Record<string, any> = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    borderTop: "1.5px solid black",
+    borderTop: "none",
     borderBottom: "1.5px solid black",
     //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
   },

@@ -4,7 +4,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { IPathConfig, getFilteredSubpaths } from "../../pages/common/constants/Paths";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../common/hooks/auth";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, styled } from "@mui/material";

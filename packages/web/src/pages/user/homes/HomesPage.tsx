@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
-import { useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../common/hooks/auth";
 import { user_home } from "hive-link-common";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 
-function Homes(props: IRouteProps) {
+function HomesPage(props: IRouteProps) {
   const auth = useAuth();
   const [homes, setHomes] = React.useState<user_home[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,4 +82,4 @@ const HomePreview = (props: { home: user_home; route: string }) => {
   );
 };
 
-export default Homes;
+export default HomesPage;

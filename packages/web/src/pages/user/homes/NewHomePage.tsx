@@ -13,10 +13,10 @@ import axios from "axios";
 import { set } from "lodash";
 import { useNavigate } from "react-router-dom";
 import NewAddress from "../address/NewAddress";
-import { useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../common/hooks/auth";
 import AddIcon from "@mui/icons-material/Add";
 
-function NewHome(props: IRouteProps) {
+function NewHomePage(props: IRouteProps) {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>("");
   const [addresses, setAddresses] = React.useState<user_address[]>();
@@ -157,4 +157,4 @@ function NewHome(props: IRouteProps) {
   );
 }
 
-export default NewHome;
+export default NewHomePage;

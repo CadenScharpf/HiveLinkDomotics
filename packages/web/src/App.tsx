@@ -1,11 +1,16 @@
 import React, { createContext, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { useAuth } from "./hooks/auth";
+import { useAuth } from "./common/hooks/auth";
 import NavBar from "./components/nav/NavBar";
 import { Box, IconButton } from "@mui/material";
-import SideBar from "./components/nav/SideBar";
 
 import pathConfig, { getPathRoutes } from "./pages/common/constants/Paths";
 
@@ -27,15 +32,18 @@ const App: React.FC = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<pathConfig.Component path="/" />} >
+        {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
+      </Route>
+    )
+  );
+
   return (
     <LayoutContext.Provider value={layoutParams}>
-      <SideBar open={isSideBarOpen} onClose={toggleSideBar} />
-      <NavBar toggleSideBar={toggleSideBar} />
       <Box sx={styles.appBody} component="main" id="appBody">
-        <Routes>
-          <Route index element={<pathConfig.Component path="/" />} />{" "}
-          {pathConfig.Subpaths.map((path) => getPathRoutes(path, "/", true))}
-        </Routes>
+        <RouterProvider router={router} />
       </Box>
     </LayoutContext.Provider>
   );
@@ -45,7 +53,7 @@ const styles: Record<string, any> = {
   appBody: {
     display: "flex",
     justifyContent: "center",
-    
+    marginTop: `${layoutParams.navHeight}px`,
     height: `calc(100vh - ${layoutParams.navHeight}px)`,
     width: "100%",
   },

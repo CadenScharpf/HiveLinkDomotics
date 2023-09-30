@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
 import { IRouteProps } from "../../../../common/types/IRouteProps";
-import { HomesContext } from "../../HomesLayout";
 import { templatePath } from "../../../../common/constants/Paths";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import Rooms from "./Rooms";
 import { Box, Stack } from "@mui/material";
-import { HomeContext } from "../HomeLayout";
+import { useHomeData } from "../Home";
+import { user_room } from "hive-link-common";
+
 export const RoomContext = React.createContext({ roomId: -1 });
+
 function RoomsLayout(props: IRouteProps) {
-  const homesContext = useContext(HomesContext);
-  const homeContext = useContext(HomeContext);
+  const homeContext = useHomeData();
   const basePath = templatePath(props.path, {
-    userHomeId: homesContext.userHomeId.toString(),
+    userHomeId: homeContext? homeContext.id.toString() : "-1",
   });
   const location = useLocation();
   const { roomId } = useParams();
@@ -21,7 +21,7 @@ function RoomsLayout(props: IRouteProps) {
     //<Rooms/>
     <Box sx={{ width: "100%", height: "100%" }}>
       <Stack direction="row" spacing={3}>
-        {homeContext.home?.user_room?.map((room) => (
+        {homeContext && homeContext.user_room?.map((room: user_room) => (
           <Box
             onClick={() => {
               navigate(basePath + "/" + room.id);

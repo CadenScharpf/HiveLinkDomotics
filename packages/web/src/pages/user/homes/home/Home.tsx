@@ -1,5 +1,27 @@
 import axios from "axios";
 import { IHomeDetails, IRoomDetails, user_room } from "hive-link-common";
+import React, { useContext, useState } from "react";
+
+const HomeContext = React.createContext<Home | null>(null);
+
+export function HomeProvider({ children, home }: { children: React.ReactNode; home: Home }) {
+  const [homeData, setHomeData] = useState<Home>(home);
+
+  return (
+    <HomeContext.Provider value={homeData}>
+      {children}
+    </HomeContext.Provider>
+  );
+}
+
+export function useHomeData() {
+  const homeContext = useContext(HomeContext);
+  if (!homeContext) {
+    throw new Error("useHomeData must be used within a HomeProvider");
+  }
+  return homeContext;
+}
+
 
 export default class Home implements IHomeDetails {
   id: IHomeDetails["id"];
@@ -26,8 +48,17 @@ export default class Home implements IHomeDetails {
     this.created_at = home.created_at;
     this.updated_at = home.updated_at;
   }
+
+  static getHome: (homeId: number | string) => Promise<IHomeDetails> = async (homeId: number | string) => {
+    try {
+      const res = await axios.get(`/api/user/homes/${homeId}`);
+      return new Home(res.data.home);
+    } catch (err) {
+      throw err;
+    }
+  };
   
-  getRoom: (roomId: number) => Promise<IRoomDetails> = async (roomId: number) => {
+  getRoom: (roomId: number) => Promise<IRoomDetails> =  async (roomId: number) => {
     try {
       const res = await axios.get(`/api/user/homes/${this.id}/rooms/${roomId}`);
       return res.data.room;
@@ -35,6 +66,7 @@ export default class Home implements IHomeDetails {
       throw err;
     }
   };
+
   getRooms: () => Promise<user_room[]> = async () => {
     try {
       const res = await axios.get(`/api/user/homes/${this.id}/rooms`);
@@ -44,3 +76,5 @@ export default class Home implements IHomeDetails {
     }
   };
 }
+
+
