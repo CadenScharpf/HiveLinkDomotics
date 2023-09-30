@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { IRouteProps } from "../../../common/types/IRouteProps";
-import { HomesContext } from "../HomesLayout";
 import {
   Link,
   Outlet,
@@ -16,21 +15,15 @@ import Paths, {
 } from "../../../common/constants/Paths";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
-import { IHomeDetails, user_home } from "hive-link-common";
-import Home from "./Home";
+import Home, { HomeProvider } from "./Home";
 
-export const HomeContext = React.createContext<{home: Home | null}>({ home: null });
 
 function HomeLayout(props: IRouteProps) {
-  const [homeInfo, setHomeInfo] = React.useState<IHomeDetails>();
-  const activeNavIndex = React.useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
-  const _homeContext = useContext(HomesContext);
   const home = useLoaderData() as Home;
-  
 
   const pathWithParams = templatePath(props.path, {
     userHomeId: home.id.toString(),
@@ -41,18 +34,8 @@ function HomeLayout(props: IRouteProps) {
     []
   );
 
-  React.useEffect(() => {
-      Home
-        .getHome(_homeContext.userHomeId)
-        .then((home) => {
-          setHomeInfo(home);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, [auth.user, _homeContext.userHomeId]);
 
-  return  (
+  return (
     <>
       <Box
         sx={{
@@ -83,7 +66,7 @@ function HomeLayout(props: IRouteProps) {
               </Button>
             );
           })}
-        {/*   {navPaths.map((path: any) => {
+          {/*   {navPaths.map((path: any) => {
             return (
                 <></>
             );
@@ -95,24 +78,21 @@ function HomeLayout(props: IRouteProps) {
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
       <Box sx={styles.userContent}>
-        {userHomeId && location.pathname.endsWith( "homes/" + userHomeId) ? (
+        {userHomeId && location.pathname.endsWith("homes/" + userHomeId) ? (
           <div>
             <h5>Home {userHomeId} dashboard</h5>
           </div>
         ) : (
-          <HomeContext.Provider value={{ home: new Home(home) }}>
-          <Outlet />
-          </HomeContext.Provider>
+            <HomeProvider home={home}>
+              <Outlet />
+            </HomeProvider>
         )}
       </Box>
     </>
-  ) ;
+  );
 }
 
-export const useHome = () => {
-  const homeContext = useContext(HomeContext);
-  return homeContext.home;
-}
+
 
 const layout = {
   navHeight: 40,
@@ -136,7 +116,7 @@ const styles: Record<string, any> = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    borderTop: "1.5px solid black",
+    borderTop: "none",
     borderBottom: "1.5px solid black",
     //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
   },

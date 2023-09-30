@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 
 const HomeContext = React.createContext<Home | null>(null);
 
-export function UserHomeProvider({ children, home }: { children: React.ReactNode; home: Home }) {
+export function HomeProvider({ children, home }: { children: React.ReactNode; home: Home }) {
   const [homeData, setHomeData] = useState<Home>(home);
 
   return (

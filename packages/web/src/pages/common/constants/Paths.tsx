@@ -26,19 +26,21 @@ import RoomLayout from "../../user/homes/home/rooms/room/RoomLayout";
 import axios from "axios";
 import { homedir } from "os";
 import Home from "../../user/homes/home/Home";
+import { Room } from "../../user/homes/home/rooms/room/Room";
 
 export interface IPathConfig {
   Base: string;
   Title?: string;
   Roles: number[];
   Component: React.ComponentType<{ path: string }>;
-  loader?: (params: Params) => Promise<any>;
+  Loader?: (params: Params) => Promise<any>;
+  Crumb?: (data: any) => string;
   Subpaths: IPathConfig[];
 }
 
 export interface IPath extends IPathConfig {
   Location: string;
-  loader: (params: Params) => Promise<any>;
+  Loader: (params: Params) => Promise<any>;
   Subpaths: IPath[];
 }
 
@@ -76,26 +78,33 @@ const pathConfig: IPathConfig = {
           Title: "My Homes",
           Roles: [0, 1],
           Component: HomesLayout,
+          Crumb: (data: any) => "My Homes",
           Subpaths: [
             {
               Base: ":userHomeId",
               Title: "Home Dashboard",
               Roles: [0, 1],
               Component: HomeLayout,
-              loader: async (params: Params) =>
+              Loader: async (params: Params) =>
                 params.userHomeId ? Home.getHome(params.userHomeId) : null,
+              Crumb: (data: Home) => data.name, 
               Subpaths: [
                 {
                   Base: "rooms",
                   Title: "Rooms",
                   Roles: [0, 1],
+                  Crumb: (data: any) => "Rooms",
                   Component: RoomsLayout,
+                  
                   Subpaths: [
                     {
                       Base: ":roomId",
                       Title: "Room",
                       Roles: [0, 1],
                       Component: RoomLayout,
+                      Loader: async (params: Params) =>
+                        params.roomId && params.userHomeId ? Room.getRoom(params.roomId, params.userHomeId) : null,
+                      Crumb: (data: Room) => data.name,
                       Subpaths: [
                         {
                           Base: "devices",
@@ -190,8 +199,9 @@ function exportPaths(pathConfig: IPathConfig, parentLoc: string): IPath {
     Location: parentLoc + pathConfig.Base,
     Roles: pathConfig.Roles,
     Component: pathConfig.Component,
-    loader: pathConfig.loader
-      ? pathConfig.loader
+    Crumb: pathConfig.Crumb,
+    Loader: pathConfig.Loader
+      ? pathConfig.Loader
       : async (params: Params) => {
           return null;
         },
@@ -254,7 +264,8 @@ export const getPathRoutes = (
     <Route
       path={path.Base}
       key={absPath + " route"}
-      loader={({ params }) => path.loader(params)}
+      loader={({ params }) => path.Loader(params)}
+      handle={{crumb: path.Crumb}}
       element={
         <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
           {/* Instantiate the component here */}

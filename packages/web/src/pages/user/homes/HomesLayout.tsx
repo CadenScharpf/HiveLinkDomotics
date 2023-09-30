@@ -9,7 +9,6 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import HomesPage from "./HomesPage";
 
-export const HomesContext = createContext({ userHomeId: -1 });
 
 function HomesLayout(props: IRouteProps) {
   const location = useLocation();
@@ -17,7 +16,6 @@ function HomesLayout(props: IRouteProps) {
   const isBase = location.pathname === props.path;
   const navigate = useNavigate();
   const { userHomeId } = useParams();
-  const homeId = parseInt(userHomeId?? "-1");
   
   const navPaths = getFilteredSubpaths(
     "homes",
@@ -44,9 +42,7 @@ function HomesLayout(props: IRouteProps) {
         {isBase ? (
           <HomesPage path={props.path} />
         ) : (
-            <HomesContext.Provider value={{ userHomeId: homeId}}>
               <Outlet />
-            </HomesContext.Provider>
         )}
       </Box>
     </Box>

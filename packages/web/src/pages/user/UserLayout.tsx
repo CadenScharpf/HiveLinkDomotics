@@ -1,11 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { Link, Outlet, RouteMatch, useLocation, useMatches } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  RouteMatch,
+  useLocation,
+  useMatches,
+} from "react-router-dom";
 import { IRouteProps } from "../common/types/IRouteProps";
 import { IPath, getFilteredSubpaths } from "../common/constants/Paths";
 import { useAuth } from "../../common/hooks/auth";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext"; 
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -19,22 +26,34 @@ const layout = {
 function UserLayout(props: IUserLayoutProps) {
   const location = useLocation();
   const auth = useAuth();
-  const layoutContext = useContext(LayoutContext);
   const matches = useMatches();
-  
 
-
-  useEffect(() => {}, [location.pathname, auth.user]);
   return (
     <Box id="user-layout" sx={{ ...styles.userLayout }}>
-
       <Box
         id="user-content"
         sx={{
           ...styles.userContent,
         }}
       >
-        <UserNav path={props.path} />
+        <Box id="userNav" sx={styles.userNav}>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+            {matches
+              .filter((match: any) => Boolean(match.handle?.crumb))
+              .map((match: any) => {
+                return (
+                  <Box
+                    component={Link}
+                    key={match.pathname + "::bread-crumb"}
+                    to={match.pathname}
+                    sx={styles.breadCrumb}
+                  >
+                    {match.handle?.crumb(match.data)}
+                  </Box>
+                );
+              })}
+          </Breadcrumbs>
+        </Box>
 
         {location.pathname === props.path ? (
           <div>user dashboard</div>
@@ -84,9 +103,12 @@ const styles: Record<string, any> = {
     width: "100%",
     height: `${layout.navHeight}px`,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    justifyContent: "space-between",
+    alignItems: "center",
+    px: "8px",
+    py: "6px",
   },
+  breadCrumb: { textDecoration: "none" },
   userContent: {
     width: "100%",
     height: `calc(100% - ${layout.navHeight}px)`,

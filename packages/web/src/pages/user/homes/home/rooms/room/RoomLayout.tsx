@@ -2,32 +2,20 @@ import React, { useContext, useEffect } from 'react'
 import { RoomContext } from '../RoomsLayout'
 import { IRoomDetails } from 'hive-link-common';
 import { LinearProgress } from '@mui/material';
-import { HomeContext } from '../../HomeLayout';
 import { Room } from './Room';
+import { useLoaderData } from 'react-router-dom';
 
 function RoomLayout() {
-  const roomContext = useContext(RoomContext)
-  const homeContext = useContext(HomeContext)
   const [roomInfo, setRoomInfo] = React.useState<Room>();
+const room = useLoaderData() as Room;
 
-  useEffect(() => {
-    if (roomContext.roomId !== -1) {
-      homeContext.home?.getRoom(roomContext.roomId)
-        .then((room) => {
-          setRoomInfo(new Room(room))
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-  } 
-  , [roomContext.roomId, homeContext.home])
 
-  return roomInfo? (
+
+  return room? (
     <div>
-      <h1>{roomInfo.name} Dashboard</h1>
+      <h1>{room.name} Dashboard</h1>
     </div>
-  ) : (<><LinearProgress color="primary" sx={{width: '100%'}} /></>)
+  ) : (<>room not fount</>)
 }
 
 export default RoomLayout

@@ -19,10 +19,10 @@ import {
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
-import { HomesContext } from "../../HomesLayout";
 import _, { set } from "lodash";
 import { user_device } from "hive-link-common";
 import DevicesDashboard from "./DevicesDashboard";
+import { useHomeData } from "../Home";
 
 
 interface IDevicesLayoutProps extends IRouteProps {}
@@ -31,10 +31,11 @@ function DevicesLayout(props: IDevicesLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
-  const homeContext = useContext(HomesContext);
+  const homeContext = useHomeData();
   const path = templatePath(props.path, {
-    userHomeId: homeContext.userHomeId.toString(),
+    userHomeId: homeContext.id.toString(),
   });
+
   var isBase = location.pathname === path;
   const role = auth.user ? auth.user.role : -1;
   const navPaths = getFilteredSubpaths("devices", role, ["new"]);
@@ -44,14 +45,14 @@ function DevicesLayout(props: IDevicesLayoutProps) {
 
   useEffect(() => {
     auth.user
-      ?.getDevices(homeContext.userHomeId)
+      ?.getDevices(homeContext.id)
       .then((_devices) => {
         setDevices(_devices);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [auth.user, homeContext.userHomeId]);
+  }, [auth.user, homeContext]);
 
   return  (
     <Box sx={styles.container}>
