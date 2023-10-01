@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Params, Route, RouteMatch } from "react-router-dom";
-import ProtectedRoute from "../../../components/route/ProtectedRoute";
+import ProtectedRoute from "../../../common/components/auth/ProtectedRoute";
 import { user, user_home } from "hive-link-common";
 import Landing from "../../public/landing/Landing";
 import Login from "../../public/Login";

@@ -36,6 +36,7 @@ function RoomsLayout(props: IRouteProps) {
     </Box>
   ) : (
     <RoomContext.Provider value={{ roomId: parseInt(roomId ?? "-1") }}>
+      sdfas
       <Outlet />
     </RoomContext.Provider>
   );

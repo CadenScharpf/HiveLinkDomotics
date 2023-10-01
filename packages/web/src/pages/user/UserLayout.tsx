@@ -36,24 +36,7 @@ function UserLayout(props: IUserLayoutProps) {
           ...styles.userContent,
         }}
       >
-        <Box id="userNav" sx={styles.userNav}>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-            {matches
-              .filter((match: any) => Boolean(match.handle?.crumb))
-              .map((match: any) => {
-                return (
-                  <Box
-                    component={Link}
-                    key={match.pathname + "::bread-crumb"}
-                    to={match.pathname}
-                    sx={styles.breadCrumb}
-                  >
-                    {match.handle?.crumb(match.data)}
-                  </Box>
-                );
-              })}
-          </Breadcrumbs>
-        </Box>
+      
 
         {location.pathname === props.path ? (
           <div>user dashboard</div>
