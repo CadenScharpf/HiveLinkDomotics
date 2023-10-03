@@ -9,6 +9,7 @@ import {
   user_home,
 } from "hive-link-common";
 import Paths from "../common/constants/Paths";
+import Home from "./homes/home/Home";
 
 export default class User implements ISessionUser {
   id: ISessionUser["id"];
@@ -34,10 +35,10 @@ export default class User implements ISessionUser {
     }
   };
 
-  getHomes: () => Promise<user_home[]> = async () => {
+  getHomes: () => Promise<Home[]> = async () => {
     try {
       const res = await axios.get(`/api/user/homes`);
-      return res.data.homes;
+      return res.data.homes.map((home: IHomeDetails) => new Home(home));
     } catch (err) {
       throw err;
     }

@@ -52,15 +52,16 @@ function NavBar(props: INavBarProps) {
       top: 0,
       left: 0,
       width: "100%",
+      borderBottom: "1px solid grey",
     },
     nav: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       height: `${layoutContext.appBarHeight}px`,
-      background: '#006cb4',
+      background: 'white',
       width: "100%",
-      color: "white",
+      color: "black",
       zIndex: 1000,
     },
     crumbs: {
@@ -87,11 +88,27 @@ function NavBar(props: INavBarProps) {
     <Box sx={styles.NavBar}>
       <Box sx={{ ...styles.nav }}>
         <Stack direction={"row"} spacing={1} sx={{ ...styles.stack }}>
-          <IconButton sx={{ color: "white" }} onClick={props.toggleSideBar}>
+          <IconButton sx={{ color: "" }} onClick={props.toggleSideBar}>
             <MenuIcon sx={{ fontSize: "2rem" }} />
           </IconButton>
           <HiveIcon sx={{ fontSize: "2.2rem", color: "#E9AB17" }} />
-          <Typography variant="h5">HiveLink</Typography>
+          <Typography variant="h5" sx={{paddingRight: '10px'}}>HiveLink</Typography>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+            {matches
+              .filter((match: any) => Boolean(match.handle?.crumb))
+              .map((match: any) => {
+                return (
+                  <Box
+                    component={Link}
+                    key={match.pathname + "::bread-crumb"}
+                    to={match.pathname}
+                    sx={{ textDecoration: "none" }}
+                  >
+                    {match.handle?.crumb(match.data)}
+                  </Box>
+                );
+              })}
+          </Breadcrumbs>
         </Stack>
         <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}></Stack>
         <Stack direction={"row"} spacing={2} sx={{ ...styles.stack }}>
@@ -104,7 +121,7 @@ function NavBar(props: INavBarProps) {
                     navigate("/user/homes");
                   }}
                 >
-                  <HolidayVillageIcon sx={{ color: "white" }} />
+                  <HolidayVillageIcon sx={{ color: "" }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title={_.capitalize(auth.user.first_name)}>
@@ -114,7 +131,7 @@ function NavBar(props: INavBarProps) {
                     navigate("/user/profile");
                   }}
                 >
-                  <AccountBoxIcon sx={{ color: "white" }} />
+                  <AccountBoxIcon sx={{ color: "" }} />
                 </IconButton>
               </Tooltip>
               <IconButton
@@ -131,7 +148,7 @@ function NavBar(props: INavBarProps) {
           )}
         </Stack>
       </Box>
-      <Box sx={styles.crumbs}>
+      {/* <Box sx={styles.crumbs}>
 
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
             {matches
@@ -150,7 +167,7 @@ function NavBar(props: INavBarProps) {
               })}
           </Breadcrumbs>
 
-      </Box>
+      </Box> */}
     </Box>
   );
 }

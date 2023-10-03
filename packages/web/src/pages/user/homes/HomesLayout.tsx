@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
-import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../common/hooks/auth";
 import { getFilteredSubpaths } from "../../common/constants/Paths";
 import { Box, IconButton, Stack, Tooltip } from "@mui/material";
@@ -8,6 +8,7 @@ import _ from "lodash";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import HomesPage from "./HomesPage";
+import Home from "./home/Home";
 
 
 function HomesLayout(props: IRouteProps) {
@@ -15,6 +16,7 @@ function HomesLayout(props: IRouteProps) {
   const auth = useAuth();
   const isBase = location.pathname === props.path;
   const navigate = useNavigate();
+
   const { userHomeId } = useParams();
   
   const navPaths = getFilteredSubpaths(

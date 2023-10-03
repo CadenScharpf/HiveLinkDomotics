@@ -5,6 +5,7 @@ import {
   Outlet,
   useLoaderData,
   useLocation,
+  useMatches,
   useNavigate,
   useParams,
 } from "react-router-dom";
@@ -16,14 +17,23 @@ import Paths, {
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import _ from "lodash";
 import Home, { HomeProvider } from "./Home";
+import HomeDash from "./HomeDash";
 
-
-function HomeLayout(props: IRouteProps) {
+interface IHomeLayoutProps extends IRouteProps {
+  homeInfo? : Home;
+}
+function HomeLayout(props: IHomeLayoutProps) {
+  const [navOpen, setNavOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
   const home = useLoaderData() as Home;
+
+  const matches = useMatches();
+  let filteredMatches = matches.filter((match: any) => Boolean(match.handle?.crumb));
+  let lastMatch = filteredMatches.length > 0 ? filteredMatches[filteredMatches.length - 1] : null;
+  let handle = lastMatch ? lastMatch.handle as {crumb: (data: any) => string} : null;
 
   const pathWithParams = templatePath(props.path, {
     userHomeId: home.id.toString(),
@@ -51,7 +61,7 @@ function HomeLayout(props: IRouteProps) {
               }}
               variant="text"
             >
-              <Typography variant="h5">{home.name}</Typography>
+              <Typography sx={{}} variant="h5">{home.name}</Typography>
             </Button>
           </Tooltip>
 
@@ -60,6 +70,7 @@ function HomeLayout(props: IRouteProps) {
               <Button
                 key={`${pathWithParams}/${path.Base}::nav_item_key`}
                 variant="text"
+                sx={{  }}
                 onClick={() => navigate(`${pathWithParams}/${path.Base}`)}
               >
                 {path.Title || _.capitalize(path.Base)}
@@ -73,15 +84,15 @@ function HomeLayout(props: IRouteProps) {
           })} */}
         </Stack>
 
-        <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
+        {/* <Stack direction="row" spacing={1} sx={{...styles.navItems,}} >
+        <Typography color="primary">{handle ? (handle.crumb(lastMatch?.data) || "") : ""}</Typography>
+        </Stack> */}
 
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
       <Box sx={styles.userContent}>
         {userHomeId && location.pathname.endsWith("homes/" + userHomeId) ? (
-          <div>
-            <h5>Home {userHomeId} dashboard</h5>
-          </div>
+          <HomeDash home={home} homeRoutePath={location.pathname}/>
         ) : (
             <HomeProvider home={home}>
               <Outlet />
@@ -109,6 +120,7 @@ const styles: Record<string, any> = {
     flexDirection: "column",
     alignItems: "center",
     paddingBottom: 0,
+    background: 'white'
   },
   nav: {
     width: "100%",
@@ -119,6 +131,7 @@ const styles: Record<string, any> = {
     borderTop: "none",
     borderBottom: "1.5px solid black",
     //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
+    
   },
   navItems: { alignItems: "center" },
   userContent: {

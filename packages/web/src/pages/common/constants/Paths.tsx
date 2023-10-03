@@ -27,6 +27,7 @@ import axios from "axios";
 import { homedir } from "os";
 import Home from "../../user/homes/home/Home";
 import { Room } from "../../user/homes/home/rooms/room/Room";
+import NewRoomPage from "../../user/homes/home/rooms/NewRoom";
 
 export interface IPathConfig {
   Base: string;
@@ -63,9 +64,11 @@ const pathConfig: IPathConfig = {
     },
     {
       Base: "user",
-      Title: "Hive-Link App",
+      Title: "HiveLink App",
       Roles: [0, 1],
       Component: UserLayout,
+      Crumb: (data: any) => "HiveLink",
+
       Subpaths: [
         {
           Base: "profile",
@@ -159,6 +162,13 @@ const pathConfig: IPathConfig = {
                         },
                       ],
                     },
+                    {
+                      Base: 'new',
+                      Roles: [0, 1],
+                      Component: NewRoomPage,
+                      Crumb: (data: any) => "New Room",
+                      Subpaths: []
+                    }
                   ],
                 },
                 {
