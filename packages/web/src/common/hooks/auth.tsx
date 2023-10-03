@@ -1,6 +1,6 @@
 import { INewUser, ISessionUser} from "hive-link-common";
 import { createContext, useState, useContext, useEffect } from "react";
-import AuthService from "../../services/auth.service";
+import AuthService from "../services/auth.service";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import User from "../../pages/user/User";

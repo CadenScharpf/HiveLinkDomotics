@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IHomeDetails, IRoomDetails, user_room } from "hive-link-common";
+import { IHomeDetails, INewRoom, IRoomDetails, user_room } from "hive-link-common";
 import React, { useContext, useState } from "react";
 
 const HomeContext = React.createContext<Home | null>(null);
@@ -63,7 +63,7 @@ export default class Home implements IHomeDetails {
       const res = await axios.get(`/api/user/homes/${this.id}/rooms/${roomId}`);
       return res.data.room;
     } catch (err) {
-      throw err;
+      throw err;  
     }
   };
 
@@ -75,6 +75,15 @@ export default class Home implements IHomeDetails {
       throw err;
     }
   };
+
+   createRoom: (room: INewRoom) => Promise<IRoomDetails> = async (room: INewRoom) => {
+    try {
+      const res = await axios.post(`/api/user/homes/${this.id}/rooms`, room);
+      return res.data.room;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 

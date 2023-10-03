@@ -3,6 +3,7 @@ import {
   Link,
   Outlet,
   RouteMatch,
+  useLoaderData,
   useLocation,
   useMatches,
 } from "react-router-dom";
@@ -12,7 +13,9 @@ import { useAuth } from "../../common/hooks/auth";
 import { Box, Breadcrumbs, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext"; 
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import UserDashPage from "./UserDashPage";
+import Home from "./homes/home/Home";
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -25,8 +28,6 @@ const layout = {
 
 function UserLayout(props: IUserLayoutProps) {
   const location = useLocation();
-  const auth = useAuth();
-  const matches = useMatches();
 
   return (
     <Box id="user-layout" sx={{ ...styles.userLayout }}>
@@ -36,27 +37,10 @@ function UserLayout(props: IUserLayoutProps) {
           ...styles.userContent,
         }}
       >
-        <Box id="userNav" sx={styles.userNav}>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-            {matches
-              .filter((match: any) => Boolean(match.handle?.crumb))
-              .map((match: any) => {
-                return (
-                  <Box
-                    component={Link}
-                    key={match.pathname + "::bread-crumb"}
-                    to={match.pathname}
-                    sx={styles.breadCrumb}
-                  >
-                    {match.handle?.crumb(match.data)}
-                  </Box>
-                );
-              })}
-          </Breadcrumbs>
-        </Box>
-
         {location.pathname === props.path ? (
-          <div>user dashboard</div>
+          <>
+            <UserDashPage />{" "}
+          </>
         ) : (
           <Outlet />
         )}
@@ -98,6 +82,8 @@ const styles: Record<string, any> = {
     alignItems: "center",
     width: "100%",
     height: "100%",
+    /*     background: 'white',
+    maxWidth: 2000, */
   },
   userNav: {
     width: "100%",
@@ -111,9 +97,9 @@ const styles: Record<string, any> = {
   breadCrumb: { textDecoration: "none" },
   userContent: {
     width: "100%",
-    height: `calc(100% - ${layout.navHeight}px)`,
-    maxWidth: 2000,
-    border: "1.5px solid black",
+    height: `calc(100%)`,
+    border: "1px solid black",
+    borderTop: "none",
   },
   userNavItems: { alignItems: "center" },
 };

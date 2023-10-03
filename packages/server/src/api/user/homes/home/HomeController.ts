@@ -10,6 +10,14 @@ import {
 } from "hive-link-common";
 
 const prisma = new PrismaClient();
+
+/*
+  *  GET /homes
+  *  Get all homes for the current user
+  * @param {Request} req
+  * @param {Response} res
+  * @returns {Promise<IHomeDetails>} 
+*/
 async function getOne(_: IReq, res: Response) {
   try {
     const sUser = (await SessionUtil.getSessionData<ISessionUser>(

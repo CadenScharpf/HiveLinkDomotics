@@ -14,7 +14,6 @@ export const userRouter = Router();
 const validate = jetValidator();
 
 // Fprward routes
-userRouter.get(Paths.User.Base, UserController.getAll);
 userRouter.use(Paths.User.Homes.Base, HomesRouter);
 userRouter.use(Paths.User.Orders.Base, OrdersRouter)
 userRouter.use(Paths.User.Addresses.Base, AddressesRouter);
@@ -22,10 +21,10 @@ userRouter.use(Paths.User.Payments.Base, UserPaymentsRouter);
 userRouter.use(Paths.User.Cart.Base, ShoppingSessionRouter);
 
 // Get all users
+userRouter.get(Paths.User.Base, UserController.getAll);
+
+// Get all users
 //userRouter.get('/', adminMw, UserController.getAll);
-
-
-
 
 /* 
 userRouter.get(
