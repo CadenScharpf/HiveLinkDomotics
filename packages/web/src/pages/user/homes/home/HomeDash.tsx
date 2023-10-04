@@ -11,6 +11,7 @@ import React from "react";
 import Home from "./Home";
 import { useLocation, useNavigate } from "react-router-dom";
 import { homedir } from "os";
+import EditIcon from "@mui/icons-material/Edit";
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -22,8 +23,10 @@ const styles: Record<string, SxProps> = {
     /*         alignItems: 'center', */
   },
   sublist: {
-    paddingLeft: 2, display: "flex", flexDirection: "column"
-  }
+    paddingLeft: 2,
+    display: "flex",
+    flexDirection: "column",
+  },
 };
 
 function HomeDash(props: { home: Home; homeRoutePath: string }) {
@@ -35,21 +38,41 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
     <Box sx={styles.container}>
       {!isBase && (
         <>
-          {" "}
-          <Typography
-            sx={{}}
-            variant="h5"
-            color="primary"
-            component={Link}
-            onClick={() => {
-              navigate(props.homeRoutePath);
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            {props.home.name}
-          </Typography>
+            <Typography
+              sx={{}}
+              variant="h5"
+              color="primary"
+              component={Link}
+              onClick={() => {
+                navigate(props.homeRoutePath);
+              }}
+            >
+                
+              {props.home.name}
+            </Typography>
+            <IconButton
+              sx={{}}
+              onClick={() => {
+                navigate(props.homeRoutePath + "/edit");
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Box>
           <Typography variant="body1">
             {props.home.address.address_line1},{" "}
-            {props.home.address.address_line2}, {props.home.address.city}
+            {props.home.address.address_line2}
+          </Typography>
+          <Typography variant="body1">
+            {props.home.address.city}, {props.home.address.country}{" "}
+            {props.home.address.postal_code}
           </Typography>
         </>
       )}
@@ -65,54 +88,55 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
       >
         Rooms ({`${home.rooms.length}`})
       </Typography>
-      <Box sx={{ ...styles.sublist}}>
+      <Box sx={{ ...styles.sublist }}>
         {home.rooms.map((room) => {
-            const roomPath = props.homeRoutePath + "/rooms/" + room.id;
+          const roomPath = props.homeRoutePath + "/rooms/" + room.id;
           return (
-            <><Typography
-              key={room.id}
-              variant="body1"
-              component={Link}
-              onClick={() => {
-                navigate(roomPath);
-              }}
-            >
-              {room.name}
-            </Typography>
-            <Box sx={{ ...styles.sublist}}>
-            {room.user_device && (<>
-                <Typography
+            <>
+              <Typography
                 key={room.id}
                 variant="body1"
                 component={Link}
                 onClick={() => {
-                    navigate(roomPath + "/devices");
+                  navigate(roomPath);
                 }}
-                >
-                    Devices ({`${room.user_device?.length}`})
-                </Typography>
-                <Box sx={{ ...styles.sublist}}>
-                {room.user_device.map((device) => {
-                    const devicePath = roomPath + "/devices/" + device.id;
-                    return (
-                        <Typography
-                        key={device.id}
-                        variant="body1"
-                        component={Link}
-                        onClick={() => {
-                            navigate(devicePath);
-                        }}
-                        >
+              >
+                {room.name}
+              </Typography>
+              <Box sx={{ ...styles.sublist }}>
+                {room.user_device && (
+                  <>
+                    <Typography
+                      key={room.id}
+                      variant="body1"
+                      component={Link}
+                      onClick={() => {
+                        navigate(roomPath + "/devices");
+                      }}
+                    >
+                      Devices ({`${room.user_device?.length}`})
+                    </Typography>
+                    <Box sx={{ ...styles.sublist }}>
+                      {room.user_device.map((device) => {
+                        const devicePath = roomPath + "/devices/" + device.id;
+                        return (
+                          <Typography
+                            key={device.id}
+                            variant="body1"
+                            component={Link}
+                            onClick={() => {
+                              navigate(devicePath);
+                            }}
+                          >
                             {device.name}
-                        </Typography>
-                    );
-                })}
-                </Box>
-            </>)}
-            
-            </Box>
+                          </Typography>
+                        );
+                      })}
+                    </Box>
+                  </>
+                )}
+              </Box>
             </>
-            
           );
         })}
       </Box>
