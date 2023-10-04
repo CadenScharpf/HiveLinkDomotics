@@ -7,8 +7,8 @@ import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import _ from "lodash";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
-import HomesPage from "./HomesPage";
 import Home from "./home/Home";
+import HomesDash from "./HomesDash";
 
 
 function HomesLayout(props: IRouteProps) {
@@ -27,11 +27,10 @@ function HomesLayout(props: IRouteProps) {
   
   return (
     <Box sx={styles.container}>
-      <Box id="homes-nav" sx={{ ...styles.nav, display: isBase ? "flex" : "none" }}>
+      <Box id="homes-nav" sx={{ ...styles.nav, display: isBase ? "none" : "none" }}>
         <Box>
           {userHomeId && (<h5>Home id: {userHomeId}</h5>)}
         </Box>
-        
         <Stack direction="row" spacing={1} sx={styles.navItems}>
           <Tooltip title={"Add Home"}>
             <IconButton onClick={() => {navigate(props.path+"/new")}}>
@@ -42,7 +41,7 @@ function HomesLayout(props: IRouteProps) {
       </Box>
       <Box sx={{...styles.userContent, height: `calc(100% - ${isBase? layout.navHeight: 0}px)`,}}>
         {isBase ? (
-          <HomesPage path={props.path} />
+          <HomesDash/>
         ) : (
               <Outlet />
         )}

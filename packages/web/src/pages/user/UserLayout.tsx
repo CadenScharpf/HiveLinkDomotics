@@ -14,8 +14,8 @@ import { Box, Breadcrumbs, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import UserDashPage from "./UserDashPage";
 import Home from "./homes/home/Home";
+import UserDashPage from "./UserDashPage";
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -39,7 +39,7 @@ function UserLayout(props: IUserLayoutProps) {
       >
         {location.pathname === props.path ? (
           <>
-            <UserDashPage />{" "}
+            <UserDashPage/>
           </>
         ) : (
           <Outlet />
