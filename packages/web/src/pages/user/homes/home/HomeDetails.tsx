@@ -29,43 +29,15 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-function HomeDash(props: { home: Home; homeRoutePath: string }) {
+function HomeDetails(props: { home: Home; homeRoutePath: string }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isBase = location.pathname === props.homeRoutePath;
   const { home, homeRoutePath } = props;
   return (
     <Box sx={styles.container}>
-      {!isBase && (
+      {props.home.address && (
         <>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography
-              sx={{}}
-              variant="h5"
-              color="primary"
-              component={Link}
-              onClick={() => {
-                navigate(props.homeRoutePath);
-              }}
-            >
-                
-              {props.home.name}
-            </Typography>
-            <IconButton
-              sx={{}}
-              onClick={() => {
-                navigate(props.homeRoutePath + "/edit");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Box>
           <Typography variant="body1">
             {props.home.address.address_line1},{" "}
             {props.home.address.address_line2}
@@ -92,9 +64,8 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
         {home.rooms.map((room) => {
           const roomPath = props.homeRoutePath + "/rooms/" + room.id;
           return (
-            <>
+            <Box key={"roomDetails::" + room.id}>
               <Typography
-                key={room.id}
                 variant="body1"
                 component={Link}
                 onClick={() => {
@@ -107,7 +78,6 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
                 {room.user_device && (
                   <>
                     <Typography
-                      key={room.id}
                       variant="body1"
                       component={Link}
                       onClick={() => {
@@ -136,7 +106,7 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
                   </>
                 )}
               </Box>
-            </>
+            </Box>
           );
         })}
       </Box>
@@ -144,4 +114,4 @@ function HomeDash(props: { home: Home; homeRoutePath: string }) {
   );
 }
 
-export default HomeDash;
+export default HomeDetails;

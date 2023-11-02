@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IHomeDetails, INewRoom, IRoomDetails, user_room } from "hive-link-common";
+import { IHomeDetails, INewHome, INewRoom, IRoomDetails, user_room } from "hive-link-common";
 import React, { useContext, useState } from "react";
 
 const HomeContext = React.createContext<Home | null>(null);
@@ -48,7 +48,22 @@ export default class Home implements IHomeDetails {
     this.created_at = home.created_at;
     this.updated_at = home.updated_at;
   }
-
+  static getHomes: () => Promise<Home[]> = async () => {
+    try {
+      const res = await axios.get("/api/user/homes");
+      return res.data.homes.map((home: IHomeDetails) => new Home(home));
+    } catch (err) {
+      throw err;
+    }
+  }
+  static createHome: (home: INewHome) => Promise<Home> = async (home: INewHome) => {
+    try {
+      const res = await axios.post("/api/user/homes", home);
+      return new Home(res.data.home);
+    } catch (err) {
+      throw err;
+    }
+  }
   static getHome: (homeId: number | string) => Promise<IHomeDetails> = async (homeId: number | string) => {
     try {
       const res = await axios.get(`/api/user/homes/${homeId}`);

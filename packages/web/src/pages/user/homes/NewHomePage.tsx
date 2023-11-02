@@ -1,17 +1,22 @@
 import React from "react";
 import { IRouteProps } from "../../common/types/IRouteProps";
-import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Modal,
+  SxProps,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddHomeIcon from "@mui/icons-material/AddHome";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import {
   HomeSchema,
   INewHome,
   user_address,
   user_home,
 } from "hive-link-common";
-import axios from "axios";
-import { set } from "lodash";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRevalidator, useSubmit } from "react-router-dom";
 import NewAddress from "../address/NewAddress";
 import { useAuth } from "../../../common/hooks/auth";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,9 +25,11 @@ function NewHomePage(props: IRouteProps) {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>("");
   const [addresses, setAddresses] = React.useState<user_address[]>();
-  const auth = useAuth();
   const [addressModalOpen, setAddressModalOpen] =
     React.useState<boolean>(false);
+  const auth = useAuth();
+  const submit = useSubmit();
+  let revalidator = useRevalidator();
 
   React.useEffect(() => {
     if (auth.user) {
@@ -45,24 +52,17 @@ function NewHomePage(props: IRouteProps) {
         .then((home) => {
           console.log(home);
           navigate(`/user/homes/${home.id}`);
+          revalidator.revalidate();
         })
         .catch((error) => {
           setMessage(error.message);
           console.log(error);
         });
+    submit(null, {});
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
+    <Box sx={styles.container}>
       <Modal
         open={addressModalOpen}
         onClose={
@@ -77,26 +77,7 @@ function NewHomePage(props: IRouteProps) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            width: "75%",
-            height: "75%",
-            maxHeight: "1000px",
-            maxWidth: "1000px",
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            marginTop: "auto",
-            marginBottom: "auto",
-            marginLeft: "auto",
-            marginRight: "auto",
-            background: "white",
-          }}
-        >
+        <Box id="NewAddressModal" sx={styles.modal}>
           <NewAddress />
         </Box>
       </Modal>
@@ -156,5 +137,33 @@ function NewHomePage(props: IRouteProps) {
     </Box>
   );
 }
+const styles: Record<string, SxProps> = {
+  modal: {
+    display: "flex",
+    justifyContent: "center",
+    width: "75%",
+    height: "75%",
+    maxHeight: "1000px",
+    maxWidth: "1000px",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    marginTop: "auto",
+    marginBottom: "auto",
+    marginLeft: "auto",
+    marginRight: "auto",
+    background: "white",
+  },
+  container: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+};
 
 export default NewHomePage;

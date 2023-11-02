@@ -1,7 +1,13 @@
 import React from "react";
-import { Link, Params, Route, RouteMatch } from "react-router-dom";
+import {
+  ActionFunctionArgs,
+  Link,
+  Params,
+  Route,
+  RouteMatch,
+} from "react-router-dom";
 import ProtectedRoute from "../../../common/components/auth/ProtectedRoute";
-import { user, user_home } from "hive-link-common";
+import { INewHome, user, user_home } from "hive-link-common";
 import Landing from "../../public/landing/Landing";
 import Login from "../../public/Login";
 import Register from "../../public/Register";
@@ -26,8 +32,9 @@ import RoomLayout from "../../user/homes/home/rooms/room/RoomLayout";
 import axios from "axios";
 import { homedir } from "os";
 import Home from "../../user/homes/home/Home";
-import { Room } from "../../user/homes/home/rooms/room/Room";
+import { Room } from "../../user/homes/home/rooms/room/RoomModel";
 import NewRoomPage from "../../user/homes/home/rooms/NewRoom";
+import RoomDevices from "../../user/homes/home/rooms/room/RoomDevices";
 
 export interface IPathConfig {
   Base: string;
@@ -36,6 +43,7 @@ export interface IPathConfig {
   Component: React.ComponentType<{ path: string }>;
   Loader?: (params: Params) => Promise<any>;
   Crumb?: (data: any) => string;
+  ShouldRevalidate?(params: any): boolean;
   Subpaths: IPathConfig[];
 }
 
@@ -68,7 +76,7 @@ const pathConfig: IPathConfig = {
       Roles: [0, 1],
       Component: UserLayout,
       Crumb: (data: any) => "HiveLink",
-
+      
       Subpaths: [
         {
           Base: "profile",
@@ -82,6 +90,12 @@ const pathConfig: IPathConfig = {
           Roles: [0, 1],
           Component: HomesLayout,
           Crumb: (data: any) => "My Homes",
+          Loader: async (params: Params) => {
+            return Home.getHomes();
+          },
+          ShouldRevalidate: ({ currentUrl }) => {
+            return true;
+          },
           Subpaths: [
             {
               Base: ":userHomeId",
@@ -90,7 +104,10 @@ const pathConfig: IPathConfig = {
               Component: HomeLayout,
               Loader: async (params: Params) =>
                 params.userHomeId ? Home.getHome(params.userHomeId) : null,
-              Crumb: (data: Home) => data.name, 
+              Crumb: (data: Home) => data.name,
+              ShouldRevalidate: ({ currentUrl }) => {
+                return true;
+              },
               Subpaths: [
                 {
                   Base: "rooms",
@@ -98,7 +115,7 @@ const pathConfig: IPathConfig = {
                   Roles: [0, 1],
                   Crumb: (data: any) => "Rooms",
                   Component: RoomsLayout,
-                  
+
                   Subpaths: [
                     {
                       Base: ":roomId",
@@ -106,14 +123,20 @@ const pathConfig: IPathConfig = {
                       Roles: [0, 1],
                       Component: RoomLayout,
                       Loader: async (params: Params) =>
-                        params.roomId && params.userHomeId ? Room.getRoom(params.roomId, params.userHomeId) : null,
+                        params.roomId && params.userHomeId
+                          ? Room.getRoom(params.roomId, params.userHomeId)
+                          : null,
                       Crumb: (data: Room) => data.name,
                       Subpaths: [
                         {
                           Base: "devices",
                           Title: "Devices",
                           Roles: [0, 1],
-                          Component: DevicesLayout,
+                          Component: RoomDevices,
+                          Loader: async (params: Params) =>
+                        params.roomId && params.userHomeId
+                          ? Room.getDevices(params.roomId, params.userHomeId)
+                          : null,
                           Subpaths: [
                             {
                               Base: "new",
@@ -163,12 +186,12 @@ const pathConfig: IPathConfig = {
                       ],
                     },
                     {
-                      Base: 'new',
+                      Base: "new",
                       Roles: [0, 1],
                       Component: NewRoomPage,
                       Crumb: (data: any) => "New Room",
-                      Subpaths: []
-                    }
+                      Subpaths: [],
+                    },
                   ],
                 },
                 {
@@ -184,6 +207,7 @@ const pathConfig: IPathConfig = {
               Base: "new",
               Roles: [0, 1],
               Component: NewHomePage,
+              Crumb: (data: any) => "New Home",
               Subpaths: [],
             },
           ],
@@ -215,6 +239,7 @@ function exportPaths(pathConfig: IPathConfig, parentLoc: string): IPath {
       : async (params: Params) => {
           return null;
         },
+
     Subpaths: [],
   };
   path.Subpaths = pathConfig.Subpaths.map((subPath) => {
@@ -275,7 +300,8 @@ export const getPathRoutes = (
       path={path.Base}
       key={absPath + " route"}
       loader={({ params }) => path.Loader(params)}
-      handle={{crumb: path.Crumb}}
+      handle={{ crumb: path.Crumb }}
+      shouldRevalidate={path.ShouldRevalidate}
       element={
         <ProtectedRoute key={absPath + " component"} roles={path.Roles}>
           {/* Instantiate the component here */}
@@ -290,7 +316,7 @@ export const getPathRoutes = (
 
 export function templatePath(
   path: string,
-  params: Record<string, string>
+  params: Record<string, string  >
 ): string {
   let newPath = path;
   for (const [key, value] of Object.entries(params)) {

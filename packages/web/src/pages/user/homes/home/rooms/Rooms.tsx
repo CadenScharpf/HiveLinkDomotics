@@ -2,11 +2,12 @@ import React from 'react'
 import { useHomeData } from '../Home';
 import { Box, SxProps, Typography } from '@mui/material';
 import { user_room } from 'hive-link-common';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 function Rooms(props: {basePath: string}) {
     const homeContext = useHomeData();
     const navigate = useNavigate();
+
   return (
     <>
     {homeContext && homeContext.user_room?.length === 0 ? (
@@ -20,7 +21,7 @@ function Rooms(props: {basePath: string}) {
                 onClick={() => {
                   navigate(props.basePath + "/" + room.id);
                 }}
-                sx={{ border: "1px solid black" }}
+                sx={{ border: "1px solid grey" }}
                 key={"rooms-select-item::room-id:" + room.id}
               >
                 {room.name}

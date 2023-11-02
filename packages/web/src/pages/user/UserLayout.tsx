@@ -98,7 +98,7 @@ const styles: Record<string, any> = {
   userContent: {
     width: "100%",
     height: `calc(100%)`,
-    border: "1px solid black",
+    border: "1px solid grey",
     borderTop: "none",
   },
   userNavItems: { alignItems: "center" },
