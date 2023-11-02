@@ -43,7 +43,7 @@ function DevicesLayout(props: IDevicesLayoutProps) {
 
   useEffect(() => {}, [location.pathname, auth.user]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     auth.user
       ?.getDevices(homeContext.id)
       .then((_devices) => {
@@ -52,9 +52,11 @@ function DevicesLayout(props: IDevicesLayoutProps) {
       .catch((err) => {
         console.log(err);
       });
-  }, [auth.user, homeContext]);
+  }, [auth.user, homeContext]); */
 
-  return  (
+  /* return  (
+
+    
     <Box sx={styles.container}>
       {devices ? (<><Box sx={styles.nav}>
         <Typography variant="h6">Devices</Typography>
@@ -96,7 +98,10 @@ function DevicesLayout(props: IDevicesLayoutProps) {
       )}</>) : (<><LinearProgress color="primary" sx={{width: '100%'}} /></>)}
       
     </Box>
-  ) 
+
+  )  */
+
+  return <>user devices</>
 }
 
 // Devices Component Styles

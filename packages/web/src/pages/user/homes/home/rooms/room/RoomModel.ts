@@ -31,4 +31,13 @@ export class Room implements IRoomDetails {
     }
   }
 
+  static getDevices: (roomId: number | string, userHomeId:  | string) => Promise<IUserDeviceDetails[]> = async (roomId: number | string, userHomeId:  | string) => {
+    try {
+      const res = await axios.get(`/api/user/homes/${userHomeId}/rooms/${roomId}/devices`);
+      return res.data.devices as IUserDeviceDetails[];
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }

@@ -19,7 +19,7 @@ function Rooms() {
               });
             }
             }
-            sx={{ border: "1px solid black" }}
+            sx={{ border: "1px solid grey" }}
             key={"rooms-select-item::room-id:" + room.id}
           >
             {room.name}

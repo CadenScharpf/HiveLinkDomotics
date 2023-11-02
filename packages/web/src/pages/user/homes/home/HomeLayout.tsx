@@ -15,25 +15,20 @@ import Paths, {
   templatePath,
 } from "../../../common/constants/Paths";
 import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
-import _ from "lodash";
+import _, { template } from "lodash";
 import Home, { HomeProvider } from "./Home";
-import HomeDash from "./HomeDash";
+import HomeDetails from "./HomeDetails";
 
 interface IHomeLayoutProps extends IRouteProps {
   homeInfo? : Home;
 }
 function HomeLayout(props: IHomeLayoutProps) {
-  const [navOpen, setNavOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
   const { userHomeId } = useParams();
   const home = useLoaderData() as Home;
 
-  const matches = useMatches();
-  let filteredMatches = matches.filter((match: any) => Boolean(match.handle?.crumb));
-  let lastMatch = filteredMatches.length > 0 ? filteredMatches[filteredMatches.length - 1] : null;
-  let handle = lastMatch ? lastMatch.handle as {crumb: (data: any) => string} : null;
 
   const pathWithParams = templatePath(props.path, {
     userHomeId: home.id.toString(),
@@ -46,11 +41,13 @@ function HomeLayout(props: IHomeLayoutProps) {
 
 
   return (
-    <>
+    <Box id="home-layout-container" sx={{width: '100%', height: '100%'}}>
       <Box
+        id="home-layout-nav"
         sx={{
           ...styles.nav,
           display: location.pathname === props.path ? "flex" : "flex",
+
         }}
       >
         <Stack direction="row" spacing={1} sx={styles.navItems}>
@@ -90,16 +87,17 @@ function HomeLayout(props: IHomeLayoutProps) {
 
         <Stack direction="row" spacing={1} sx={styles.navItems}></Stack>
       </Box>
-      <Box sx={styles.userContent}>
+      <Box id="home-layout-content" sx={styles.content}>
+
         {userHomeId && location.pathname.endsWith("homes/" + userHomeId) ? (
-          <HomeDash home={home} homeRoutePath={location.pathname}/>
+          <HomeDetails home={home} homeRoutePath={location.pathname}/>
         ) : (
             <HomeProvider home={home}>
               <Outlet />
             </HomeProvider>
         )}
       </Box>
-    </>
+    </Box>
   );
 }
 
@@ -129,16 +127,17 @@ const styles: Record<string, any> = {
     justifyContent: "space-between",
     alignItems: "center",
     borderTop: "none",
-    borderBottom: "1.5px solid black",
+    borderBottom: "1.5px solid grey",
     //backgroundImage: `linear-gradient(to bottom, ${layout.color1} 35%, ${layout.color2})`,
     
   },
   navItems: { alignItems: "center" },
-  userContent: {
+  content: {
     height: `calc(100% - ${layout.navHeight}px)`,
     width: "100%",
     display: "flex",
     justifyContent: "center",
+    alignItems: "flex-start",
   },
 };
 

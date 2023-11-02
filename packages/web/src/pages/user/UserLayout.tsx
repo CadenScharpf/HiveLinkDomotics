@@ -14,8 +14,8 @@ import { Box, Breadcrumbs, Container, Stack, Typography } from "@mui/material";
 import _ from "lodash";
 import { LayoutContext } from "../../App";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import UserDashPage from "./UserDashPage";
 import Home from "./homes/home/Home";
+import UserDashPage from "./UserDashPage";
 
 interface IUserLayoutProps extends IRouteProps {}
 
@@ -39,7 +39,7 @@ function UserLayout(props: IUserLayoutProps) {
       >
         {location.pathname === props.path ? (
           <>
-            <UserDashPage />{" "}
+            <UserDashPage/>
           </>
         ) : (
           <Outlet />
@@ -98,7 +98,7 @@ const styles: Record<string, any> = {
   userContent: {
     width: "100%",
     height: `calc(100%)`,
-    border: "1px solid black",
+    border: "1px solid grey",
     borderTop: "none",
   },
   userNavItems: { alignItems: "center" },
